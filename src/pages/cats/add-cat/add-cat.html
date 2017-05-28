@@ -1,0 +1,68 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button (click)=dismiss()>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>고양이 등록</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #addCatForm="ngForm" novalidate>
+    <button ion-item no-lines detail-none>
+      <ion-avatar>
+        <img class="img_add" style="width:80px; height:80px;" src="{{catinfo.imgUrl}}" />
+      </ion-avatar>
+      <p text-center>사진 등록</p>
+    </button>
+
+    <ion-list>
+      <ion-item>
+        <ion-label color="GrayCat">이름 *</ion-label>
+        <ion-input [(ngModel)]="catinfo.name" name="name" #name="ngModel" type="text" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="name.valid || submitted == false" color="danger" padding-left>
+        이름을 지어주세요!
+      </p>
+      <ion-item>
+        <ion-label color="GrayCat">성별</ion-label>
+        <ion-select [(ngModel)]="catinfo.sex" interface="action-sheet" name="sex" #sex="ngModel">
+          <ion-option value="0">여</ion-option>
+          <ion-option value="1">남</ion-option>
+          <ion-option value="2">모름</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label color="GrayCat">서식 지역 *</ion-label>
+        <ion-input [(ngModel)]="catinfo.habitat" name="habitat" #habitat="ngModel" type="text" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="habitat.valid || submitted == false" color="danger" padding-left>
+        주로 마주치는 곳이 어딘가요?
+      </p>
+      <ion-item>
+        <ion-label color="GrayCat">특징 ① *</ion-label>
+        <ion-input [(ngModel)]="catinfo.info1" name="info1" #info1="ngModel" type="text" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="info1.valid || submitted == false" color="danger" padding-left>
+        특징을 하나 이상 적어주세요.
+      </p>
+      <ion-item>
+        <ion-label color="GrayCat">특징 ②</ion-label>
+        <ion-input [(ngModel)]="catinfo.info2" name="info2" #info2="ngModel" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="GrayCat">특징 ③</ion-label>
+        <ion-input [(ngModel)]="catinfo.info3" name="info3" #info3="ngModel" type="text"></ion-input>
+      </ion-item>
+
+    </ion-list>
+    <div padding>
+      <button ion-button (click)="onSubmit(addCatForm)" type="submit" outline color="AmberCat" block>등록</button>
+    </div>
+  </form>
+</ion-content>

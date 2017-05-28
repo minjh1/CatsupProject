@@ -1,0 +1,48 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button (click)=dismiss()>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>캐츠업 회원가입</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #signUpForm="ngForm" novalidate>
+    <ion-list>
+      <ion-item>
+        <ion-label color="GrayCat">이메일 *</ion-label>
+        <ion-input [(ngModel)]="signUpInfo.email" name="email" #email="ngModel" type="text" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
+        이메일(아이디)를 입력하세요!
+      </p>
+      <ion-item>
+        <ion-label color="GrayCat">비밀번호 *</ion-label>
+        <ion-input [(ngModel)]="signUpInfo.password" name="password" #pass="ngModel" type="password" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="pass.valid || submitted == false" color="danger" padding-left>
+        비밀번호를 입력하세요!
+      </p>
+      <ion-item>
+        <ion-label color="GrayCat">닉네임 *</ion-label>
+        <ion-input [(ngModel)]="signUpInfo.nickname" name="nickname" #nickname="ngModel" type="text" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="nickname.valid || submitted == false" color="danger" padding-left>
+        닉네임을 입력하세요!
+      </p>
+      <ion-item>
+        <ion-label color="GrayCat">한마디</ion-label>
+        <ion-input [(ngModel)]="signUpInfo.memo" name="memo" #memo="ngModel" type="text" required></ion-input>
+      </ion-item>
+    </ion-list>
+    <div padding>
+      <button ion-button (click)="SignUp(signUpForm)" type="submit" color="AmberCat" block>회원가입</button>
+    </div>
+  </form>
+</ion-content>

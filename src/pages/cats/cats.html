@@ -1,9 +1,3 @@
-<!--
-  Generated template for the Cats page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -13,29 +7,27 @@
 </ion-header>
 
 <ion-content class="outer-content">
-    <ion-list>
-      <ion-item-sliding *ngFor="let cat of cats">
-        <ion-item>
-          <ion-avatar item-left>
-            <img src="{{cat.avatar}}" alt="">
-          </ion-avatar>
-          <h2>{{cat.name}}</h2>
-          <p>{{cat.detail}}</p>
-        </ion-item>
-        <ion-item-options>
-          <button ion-button color="light">
-            <ion-icon name="ios-more"></ion-icon>
-            More
-          </button>
-          <button ion-button color="primary">
-            <ion-icon name="text"></ion-icon>
-            Text
-          </button>
-          <button ion-button color="secondary">
-            <ion-icon name="call"></ion-icon>
-            Call
-          </button>
-        </ion-item-options>
-      </ion-item-sliding>
-    </ion-list>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-fab right bottom>
+    <button ion-fab color="AmberCat" (click)="openAddCatPage()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-list>
+    <button ion-item *ngFor="let cat of cats" (click)="openDetailPage(cat)">
+      <ion-avatar item-left>
+        <img style="height: 4.6rem; width: 4.6rem;" src="{{cat.avatar}}">
+      </ion-avatar>
+      <span class="mainName">{{cat.names[0]}} </span><span class="subName">{{cat.names[1]}}</span><span *ngIf="cat.nameCount>2" class="subName">, {{cat.names[2]}}</span><br>
+      <span class="habitat">{{cat.habitat}} /</span><span class="info"> {{cat.info1}}</span>
+      <div item-right>
+        <ion-icon name="people" color="LightGrayCat"></ion-icon>
+        <span class="people">{{cat.connection}}</span>
+      </div>
+    </button>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

@@ -4,6 +4,44 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  수정중
+<ion-content>
+  <ion-card *ngFor="let feed of feeds" class="home_card">
+    <ion-item>
+      <ion-avatar item-left >
+        <img src="{{feed.catImg}}">
+      </ion-avatar>
+      <ion-avatar item-left>
+        <img src="{{feed.userImg}}">
+      </ion-avatar>
+      <h2>{{feed.catName}} / {{feed.userName}}</h2>
+      <p>{{feed.create_date}}</p>
+    </ion-item>
+
+    <img src="{{serverURL+feed.imgUrl[0]}}">
+    <ion-row>
+      <ion-col>
+        <button ion-button color="GrayCat" clear small icon-left>
+          <ion-icon name='heart'></ion-icon>
+          케첩 {{feed.likeCount}}
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button color="GrayCat" clear small icon-left (click)="openReplyPage(0, feed.wr_seq)">
+          <ion-icon name='text'></ion-icon>
+          댓글 {{feed.replyCount}}
+        </button>
+      </ion-col>
+      <ion-col align-self-center text-center>
+        <ion-note>
+          {{feed.create_date}}
+        </ion-note>
+      </ion-col>
+    </ion-row>
+    <ion-card-content class="card_content">
+      <p class="content_text">{{feed.content}}</p>
+    </ion-card-content>
+
+
+
+  </ion-card>
 </ion-content>

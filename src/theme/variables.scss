@@ -30,8 +30,19 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222,
   YellowCat:  #ffca28,
-  LightGrayCat: #9e9e9e,
+  LightGrayCat : #a1a1a1,
+  LightGrayCat2: #b3b3b3,
+  LightGrayCat3 :#d9d9d9,
   GrayCat: #616161,
+  GrayCat2 : #707070,
+  AmberCat :#ffab00,
+  SkyCat: #02c4fa,
+  BarunSkyCat : #02b8f9,
+  DarkSkyCat : #0b5e7c,
+  DarkBrownCat : #49322c,
+  OrangeCat : #ff5a00,
+  OrangeCat2 : #ff8200,
+  ySKyCat : #6bc6d3,
 );
 
 
@@ -59,9 +70,11 @@ $tabs-md-background:                      #f8f8f8;
 
 
 // Change the color of the tabs text
-$tabs-md-tab-color-active:                color($colors, YellowCat);
-$tabs-md-tab-color-inactive:              color($colors, LightGrayCat);
+$tabs-tab-color-active:                color($colors, YellowCat);
+$tabs-tab-color-inactive:              color($colors, GrayCat2);
+$tabs-md-tab-color-inactive:            color($colors, GrayCat2);
 //$tabs-md-tab-color:                       rgba(#8c8c8c, 0.7);
+
 
 //탭 아이콘 크기
 $tabs-md-tab-icon-size:                  2.8rem;
@@ -75,13 +88,26 @@ $segment-button-md-text-color-activated:  #fff;
 
 //툴바 크기
 $toolbar-md-height: 5.4rem;
-$toolbar-md-button-font-size: 1.8rem; //아이콘크기
+//$toolbar-md-button-font-size: 1.8rem; //아이콘크기
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
 
 
+//카드 IOS
+$card-ios-avatar-size: 5rem;
+$card-ios-border-radius: 0px;
+$card-ios-margin-top: 0px;
+$card-ios-margin-left: 0px;
+$card-ios-margin-right: 0px;
 
+//카드 MD
+$card-md-avatar-size: 5rem;
+$card-md-border-radius: 0px;
+$card-md-margin-top: 0px;
+$card-md-margin-left: 0px;
+$card-md-margin-right: 0px;
+$card-md-line-height: 5;
 
 // App Theme
 // --------------------------------------------------

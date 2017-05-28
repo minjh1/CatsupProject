@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button (click)=dismiss()>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>캐츠업 로그인</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form #LoginForm="ngForm" novalidate>
+    <ion-list>
+      <ion-item>
+        <ion-label color="GrayCat">이메일</ion-label>
+        <ion-input [(ngModel)]="loginInfo.email" name="email" #email="ngModel" type="text" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
+        이메일(아이디)를 입력하세요!
+      </p>
+      <ion-item>
+        <ion-label color="GrayCat">비밀번호</ion-label>
+        <ion-input [(ngModel)]="loginInfo.password" name="password" #pass="ngModel" type="password" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="pass.valid || submitted == false" color="danger" padding-left>
+        비밀번호를 입력하세요!
+      </p>
+    </ion-list>
+    <div padding>
+      <button ion-button (click)="Login(LoginForm)" type="submit" color="AmberCat" block>로그인</button>
+    </div>
+  </form>
+</ion-content>

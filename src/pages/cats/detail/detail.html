@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>고양이 프로필</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item no-lines>
+    <ion-avatar item-left>
+      <img style="width:60px; height:60px;" src="{{cat.avatar}}" />
+      </ion-avatar>
+      <span class="d_mainName">{{cat.names[0]}}</span><span class="d_subName"> {{cat.names[1]}}</span><span *ngIf="cat.nameCount>2" class="d_subName">, {{cat.names[2]}}</span><br>
+      <ion-icon name="people" style="font-size:2.2rem;" color="LightGrayCat"></ion-icon>
+      <span class="d_people">{{cat.connection}}</span><button outline style="margin-left:50px;" ion-button small color="AmberCat">나도 지켜보기</button>
+  </ion-item>
+  <ion-item no-lines>
+    <span class="d_title">\> 성별</span><br>
+    <div [ngSwitch]="cat.sex">
+      <span *ngSwitchCase="0" class="d_content"> 여</span>
+      <span *ngSwitchCase="1" class="d_content"> 남</span><br>
+    </div>
+    <br>
+    <span class="d_title">\> 서식 지역</span><br>
+    <span class="d_content">{{cat.habitat}}</span><br>
+    <br>
+    <span class="d_title">\> 특징</span><br>
+    <span class="d_content">① {{cat.info1}}</span><br>
+    <span class="d_content">② {{cat.info2}}</span><br>
+    <span class="d_content">③ {{cat.info3}}</span><br>
+  </ion-item>
+  <ion-row>
+    <ion-col>
+      <button style="" outline ion-button small block color="dark">댓글 17</button>
+    </ion-col>
+    <ion-col>
+      <button style="" outline ion-button small block color="dark">프로필 수정</button>
+    </ion-col>
+  </ion-row>
+</ion-content>
