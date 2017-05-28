@@ -14,15 +14,16 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'signup.html',
 })
 export class SignUpPage {
-  signUpInfo :
+  signUpInfo:
   {
-    email?:string,
-    password?:string,
-    nickname?:string,
-    memo?:string,
+    id?: string,
+    email?: string,
+    password?: string,
+    nickname?: string,
+    memo?: string,
   } = {};
 
-  submitted=false;
+  submitted = false;
   serverURL: string = 'http://45.249.160.73:5555';
 
   constructor(public navCtrl: NavController,
@@ -35,16 +36,17 @@ export class SignUpPage {
 
   }
 
-  dismiss(){
+  dismiss() {
     this.viewCtrl.dismiss() //페이지 끔
   }
 
-  SignUp(form: NgForm){
-    this.submitted=true;
-    if(form.valid){
+  SignUp(form: NgForm) {
+    this.submitted = true;
+    if (form.valid) {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
       let body = {
+        id: this.signUpInfo.id,
         email: this.signUpInfo.email,
         password: this.signUpInfo.password,
         nickname: this.signUpInfo.nickname,
@@ -52,10 +54,10 @@ export class SignUpPage {
       }
 
       this.http.post(this.serverURL + '/signUp', JSON.stringify(body),
-      { headers: headers })
+        { headers: headers })
         .map(res => res.json())
         .subscribe(data => {
-          if(data.result==true){ //성공
+          if (data.result == true) { //성공
             let alert = this.alertCtrl.create({
               title: '환영합니다',
               subTitle: '회원가입 성공!',
@@ -74,22 +76,25 @@ export class SignUpPage {
             });
             alert.present();
           }
-          else if(data.msg=="nickname check"){ // result==false
-            let alert = this.alertCtrl.create({
-              title: '회원가입 실패',
-              subTitle: '이미 존재하는 닉네임입니다!',
-              buttons: ['OK']
-            });
-            alert.present();
-          }else if (data.msg=="email check"){
-            let alert = this.alertCtrl.create({
-              title: '회원가입 실패',
-              subTitle: '이미 존재하는 이메일입니다!',
-              buttons: ['OK']
-            });
-            alert.present();
+          else {
+            if (data.msg == "nickname check") { // result==false
+              let alert = this.alertCtrl.create({
+                title: '회원가입 실패',
+                subTitle: '이미 존재하는 닉네임입니다!',
+                buttons: ['OK']
+              });
+              alert.present();
+            }
+            else if (data.msg == "id check") {
+              let alert = this.alertCtrl.create({
+                title: '회원가입 실패',
+                subTitle: '이미 존재하는 아이디입니다!',
+                buttons: ['OK']
+              });
+              alert.present();
+            }
           }
-          console.log(data.result+" "+data.seq+" "+data.msg);
+          console.log(data.result + " " + data.seq + " " + data.msg);
         }, error => {
           console.log(JSON.stringify(error.json()));
         })

@@ -16,7 +16,7 @@ import { Storage } from '@ionic/storage';
 export class LoginPage {
   loginInfo :
   {
-    email?:string,
+    id?:string,
     password?:string,
   } = {};
 
@@ -43,7 +43,7 @@ export class LoginPage {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
       let body = {
-        email: this.loginInfo.email,
+        id: this.loginInfo.id,
         password: this.loginInfo.password,
       }
 
@@ -57,20 +57,23 @@ export class LoginPage {
               this.userData.login(data.seq);
             })
           }
-          else if(data.msg=="email check"){ // result==false
-            let alert = this.alertCtrl.create({
-              title: '로그인 실패',
-              subTitle: '존재하지 않는 이메일입니다.',
-              buttons: ['OK']
-            });
-            alert.present();
-          }else if (data.msg=="password check"){
-            let alert = this.alertCtrl.create({
-              title: '로그인 실패',
-              subTitle: '비밀번호를 다시 확인해주세요.',
-              buttons: ['OK']
-            });
-            alert.present();
+          else {
+            if(data.msg=="id check"){ // result==false
+              let alert = this.alertCtrl.create({
+                title: '로그인 실패',
+                subTitle: '존재하지 않는 아이디입니다.',
+                buttons: ['OK']
+              });
+              alert.present();
+            }
+            else if (data.msg=="password check"){
+              let alert = this.alertCtrl.create({
+                title: '로그인 실패',
+                subTitle: '비밀번호를 다시 확인해주세요.',
+                buttons: ['OK']
+              });
+              alert.present();
+            }
           }
           console.log(data.result+" "+data.seq+" "+data.msg);
         }, error => {

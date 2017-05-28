@@ -13,11 +13,11 @@
   <form #LoginForm="ngForm" novalidate>
     <ion-list>
       <ion-item>
-        <ion-label color="GrayCat">이메일</ion-label>
-        <ion-input [(ngModel)]="loginInfo.email" name="email" #email="ngModel" type="text" required></ion-input>
+        <ion-label color="GrayCat">아이디</ion-label>
+        <ion-input [(ngModel)]="loginInfo.id" name="id" #id="ngModel" type="text" required></ion-input>
       </ion-item>
-      <p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>
-        이메일(아이디)를 입력하세요!
+      <p ion-text [hidden]="id.valid || submitted == false" color="danger" padding-left>
+        아이디를 입력하세요!
       </p>
       <ion-item>
         <ion-label color="GrayCat">비밀번호</ion-label>

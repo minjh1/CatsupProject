@@ -20,6 +20,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from "@angular/http";
 import { IonicStorageModule } from '@ionic/storage';
+import { Facebook } from '@ionic-native/facebook';
 
 import { UserData } from '../providers/user-data';
 
@@ -69,7 +70,8 @@ import { UserData } from '../providers/user-data';
     StatusBar,
     SplashScreen,
     UserData,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Facebook,
   ]
 })
 export class AppModule {}
