@@ -15,7 +15,7 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, private http: Http) {
     console.log("home");
-    this.getFeeds(0, 6);
+    this.getFeeds(0, 15);
   }
 
   getFeeds(offset: number, limit: number) {

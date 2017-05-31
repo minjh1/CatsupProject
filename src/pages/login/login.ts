@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
-import { Http, Headers } from '@angular/http';
 import { AlertController } from 'ionic-angular';
+import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { TabsPage } from '../tabs/tabs';
