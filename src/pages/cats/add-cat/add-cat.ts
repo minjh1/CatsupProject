@@ -20,7 +20,7 @@ export class AddCat {
   submitted=false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
-    this.catinfo.imgUrl="assets/img/plus.png";
+    this.catinfo.imgUrl="assets/img/add2.png";
   }
 
   dismiss(){

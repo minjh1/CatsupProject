@@ -24,6 +24,8 @@ import { Facebook } from '@ionic-native/facebook';
 
 import { UserData } from '../providers/user-data';
 
+import {Autosize} from 'ionic2-autosize';
+
 //import { Cat } from '../models/cat';
 
 @NgModule({
@@ -41,6 +43,7 @@ import { UserData } from '../providers/user-data';
     TutorialPage,
     LoginPage,
     SignUpPage,
+    Autosize,
   ],
   imports: [
     BrowserModule,

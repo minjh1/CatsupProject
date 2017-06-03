@@ -3,15 +3,37 @@
     <ion-title>
       글쓰기
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-right color="OrangeCat2">
+        완료
+        <ion-icon name="paw"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
+    <ion-item no-lines detail-none>
+      <ion-icon name="logo-octocat" item-start></ion-icon>
+      고양이
+    </ion-item>
+    <ion-item no-lines detail-none>
+      <ion-avatar>
+        <img class="cat_add" style="width:58px; height:58px;" src="{{write_content.cat_img}}" (click)="select_cat()" />
+      </ion-avatar>
+    </ion-item>
+    <ion-item no-lines detail-none>
+      <ion-icon name="images"></ion-icon>
+      사진
+    </ion-item>
+    <img src="{{write_content.photos[0]}}" class="photo_add" style="width:78px; height:78px;" (click)="select_cat()" />
+    <ion-item no-lines detail-none>
+      <ion-icon name="text"></ion-icon>
+      글
+    </ion-item>
     <ion-item>
-      <ion-icon name="ionic" item-left></ion-icon>
-      @ionicframework
+      <ion-textarea placeholder="내용 입력.." autosize></ion-textarea>
     </ion-item>
   </ion-list>
 </ion-content>

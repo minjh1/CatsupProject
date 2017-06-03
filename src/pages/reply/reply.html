@@ -22,7 +22,7 @@
   <ion-toolbar>
     <ion-input [(ngModel)]="reply_text" type="text" placeholder="댓글 쓰기" (input)="colorChange()"></ion-input>
     <ion-buttons end>
-      <button ion-button icon-only [color]="iconColor">
+      <button ion-button icon-only [color]="iconColor" (click)="addReply()">
         <ion-icon name="send"></ion-icon>
       </button>
     </ion-buttons >

@@ -110,6 +110,17 @@ $card-md-margin-left: 0px;
 $card-md-margin-right: 0px;
 $card-md-line-height: 5;
 
+//그리드
+$grid-padding-width: 2px;
+
+//인풋 아이템 하이라이트
+$text-input-md-highlight-color:	color($colors, YellowCat);
+$text-input-ios-highlight-color:	color($colors, YellowCat);
+$text-input-wp-highlight-color:	color($colors, YellowCat);
+
+$text-input-highlight-color-valid:	color($colors, ySKyCat);
+$text-input-highlight-color-invalid: color($colors, OrangeCat2);
+
 // App Theme
 // --------------------------------------------------
 // Ionic apps can have different themes applied, which can

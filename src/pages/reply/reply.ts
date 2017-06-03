@@ -4,6 +4,7 @@ import { Reply } from '../../models/reply';
 import { Content } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { UserData } from '../../providers/user-data'
 
 @Component({
   selector: 'page-reply',
@@ -15,12 +16,17 @@ export class ReplyPage {
   replyType: number;
   seq: number;
   serverURL: string = 'http://45.249.160.73:5555';
+  user_seq: number;
 
   replies: Reply[] = [];
   iconColor: string = "LightGrayCat";
   reply_text: string;
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    private http: Http) {
+
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private http: Http,
+    public userData: UserData) {
+
     this.replyType = this.navParams.get("replyType"); //게시글?프로필?
     this.seq = this.navParams.get("seq");
     if (this.replyType == 0) { //글이면
@@ -28,6 +34,11 @@ export class ReplyPage {
     } else { //고양이 프로필이면
       this.getCatRelies(10,0, this.seq);
     }
+
+    this.userData.getUserSeq().then(
+      (seq) => {
+        this.user_seq=seq;
+      });
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad Reply');
@@ -67,5 +78,27 @@ export class ReplyPage {
       this.iconColor = "LightGrayCat";
     }
   }
-
+  addReply(){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let body = {
+      type: this.replyType,
+      seq: this.seq,
+      user_seq: this.user_seq,
+      content: this.reply_text,
+    }
+    if (this.reply_text != "") {
+      this.http.post(this.serverURL + '/addReply', JSON.stringify(body),
+      { headers: headers })
+        .map(res => res.json())
+        .subscribe(data => {
+          this.replies.push(new Reply(data.reply_seq, this.serverURL+data.imgUrl,
+            data.user_seq, data.nickname,
+            data.content, data.create_date));
+          
+        }, error => {
+          console.log(JSON.stringify(error.json()));
+        })
+    }
+  }
 }
