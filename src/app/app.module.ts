@@ -15,6 +15,7 @@ import { ReplyPage } from '../pages/reply/reply';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
 import { SignUpPage } from '../pages/signup/signup';
+import { MyCatPage } from '../pages/mycat/mycat';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -24,7 +25,12 @@ import { Facebook } from '@ionic-native/facebook';
 
 import { UserData } from '../providers/user-data';
 
-import {Autosize} from 'ionic2-autosize';
+import {Autosize} from 'ionic2-autosize'; //텍스트아리아 크기자동조절
+import { Camera } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
+import { Transfer } from '@ionic-native/transfer';
+import { ImagePicker } from '@ionic-native/image-picker'; //이미지 다중선택
+
 
 //import { Cat } from '../models/cat';
 
@@ -44,6 +50,7 @@ import {Autosize} from 'ionic2-autosize';
     LoginPage,
     SignUpPage,
     Autosize,
+    MyCatPage,
   ],
   imports: [
     BrowserModule,
@@ -68,13 +75,18 @@ import {Autosize} from 'ionic2-autosize';
     TutorialPage,
     LoginPage,
     SignUpPage,
+    MyCatPage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     UserData,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     Facebook,
+    Camera,
+    File,
+    Transfer,
+    ImagePicker,
   ]
 })
-export class AppModule {}
+export class AppModule { }

@@ -13,7 +13,7 @@ import { UserData } from '../../providers/user-data'
 export class ReplyPage {
   @ViewChild(Content) content: Content;
 
-  replyType: number;
+  replyType: number; //0:글, 1:냥로필
   seq: number;
   serverURL: string = 'http://45.249.160.73:5555';
   user_seq: number;
@@ -30,9 +30,9 @@ export class ReplyPage {
     this.replyType = this.navParams.get("replyType"); //게시글?프로필?
     this.seq = this.navParams.get("seq");
     if (this.replyType == 0) { //글이면
-      this.getFeedReplies(10,0, this.seq);
+      this.getFeedReplies(20,0, this.seq);
     } else { //고양이 프로필이면
-      this.getCatRelies(10,0, this.seq);
+      this.getCatRelies(20,0, this.seq);
     }
 
     this.userData.getUserSeq().then(
@@ -95,7 +95,7 @@ export class ReplyPage {
           this.replies.push(new Reply(data.reply_seq, this.serverURL+data.imgUrl,
             data.user_seq, data.nickname,
             data.content, data.create_date));
-          
+
         }, error => {
           console.log(JSON.stringify(error.json()));
         })

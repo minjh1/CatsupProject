@@ -12,11 +12,24 @@ export class Cat {
   info3: string="";
   create_date: string="";
   connection: number;
-  constructor(seq:number, avatar:string, nameCount:number, names:string[], counts:number[], sex:number, habitat: string, info1:string,info2:string,info3:string,create_date:string,connection:number){
+  constructor(
+    seq:number,
+    avatar:string,
+    nameCount:number,
+    names:string[],
+    counts:number[],
+    sex:number,
+    habitat: string,
+    info1:string,
+    info2:string,
+    info3:string,
+    create_date:string,
+    connection:number){
     this.seq=seq;
     this.avatar=avatar;
     this.nameCount=nameCount;
     this.names=names;
+    this.counts=counts;
     this.sex=sex;
     this.habitat=habitat;
     this.info1 =info1;

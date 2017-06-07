@@ -20,7 +20,7 @@ export class CatsPage {
   cats: Cat[] = [];
   serverURL:string = 'http://45.249.160.73:5555';
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, public modalCtrl:ModalController) {
-    this.getCats(0,4);
+    this.getCats(0,15);
     /*
       this.cats.push(new Cat('assets/img/cat1.png','까치','나비','순둥이','금오공대','흰 털에 검은무늬'));
       this.cats.push(new Cat('assets/img/cat3.png','냥냥이','노랑이','마요','대구 XX동', '옅은 노랑, 친근함'));
