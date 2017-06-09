@@ -12,11 +12,15 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <div class="title_bar">
+    기본 정보
+    <span class="arrow"><ion-icon name="clipboard"></ion-icon></span>
+  </div>
   <form #addCatForm="ngForm" novalidate>
-    <button ion-item no-lines detail-none>
-      <ion-avatar>
-        <img class="img_add" style="width:80px; height:80px;" src="{{catinfo.imgUrl}}" />
+    <button ion-item no-lines detail-none (click)="select_photo()">
+      <ion-avatar class="center_avatar">
+        <img class="img_addcat" style="width:80px; height:80px;" src="{{imgUrl}}" />
       </ion-avatar>
       <p text-center>사진 등록</p>
     </button>
@@ -38,13 +42,6 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label color="GrayCat">서식 지역 *</ion-label>
-        <ion-input [(ngModel)]="catinfo.habitat" name="habitat" #habitat="ngModel" type="text" required></ion-input>
-      </ion-item>
-      <p ion-text [hidden]="habitat.valid || submitted == false" color="danger" padding-left>
-        주로 마주치는 곳이 어딘가요?
-      </p>
-      <ion-item>
         <ion-label color="GrayCat">특징 ① *</ion-label>
         <ion-input [(ngModel)]="catinfo.info1" name="info1" #info1="ngModel" type="text" required></ion-input>
       </ion-item>
@@ -59,7 +56,17 @@
         <ion-label color="GrayCat">특징 ③</ion-label>
         <ion-input [(ngModel)]="catinfo.info3" name="info3" #info3="ngModel" type="text"></ion-input>
       </ion-item>
-
+      <div class="title_bar" (click)="openMap()">
+        지도로 찾기
+        <span class="arrow"><ion-icon name="pin"></ion-icon></span>
+      </div>
+      <ion-item>
+        <ion-label color="GrayCat">서식 지역 *</ion-label>
+        <ion-input [(ngModel)]="catinfo.habitat" name="habitat" #habitat="ngModel" type="text" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="habitat.valid || submitted == false" color="danger" padding-left>
+        주로 마주치는 곳이 어딘가요?
+      </p>
     </ion-list>
     <div padding>
       <button ion-button (click)="onSubmit(addCatForm)" type="submit" outline color="AmberCat" block>등록</button>

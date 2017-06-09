@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class UserData {
+  serverURL: string = 'http://45.249.160.73:5555';
 
   constructor(
     public events: Events,

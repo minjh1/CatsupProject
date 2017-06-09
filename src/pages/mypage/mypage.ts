@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,ModalController } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { UserData } from '../../providers/user-data'
 import { Feed } from '../../models/feed';
+import { MyCatPage } from '../mycat/mycat';
+
 /**
  * Generated class for the Mypage page.
  *
@@ -36,8 +38,9 @@ export class MyPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
-    public userData: UserData) {
-    this.grid = Array(Math.ceil(this.images.length / 3)); //MATHS!
+    public userData: UserData,
+    public modalCtrl: ModalController,) {
+    this.grid = []; //MATHS!
     this.rowNum = 0; //counter to iterate over the rows in the grid
     this.getFeedCount = 0;
 
@@ -175,6 +178,9 @@ export class MyPage {
       })
 
   }
-
+  openMyCatPage(){
+    let modal = this.modalCtrl.create(MyCatPage, { pageType: 1 });
+    modal.present();
+  }
 
 }

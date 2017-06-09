@@ -31,8 +31,10 @@ export class MyCatPage {
         this.getMyCats(0, 20, seq);
       });
   }
-
-  dismiss(cat) {
+  dismiss(){
+    this.viewCtrl.dismiss();
+  }
+  select_dismiss(cat) {
     this.viewCtrl.dismiss(cat); //페이지 끔
   }
   getMyCats(offset: number, limit: number, user_seq: number) {
@@ -60,7 +62,7 @@ export class MyCatPage {
   }
   selectCat(cat) {
     if (this.pageType == 0) { //글쓰기
-      this.dismiss(cat);
+      this.select_dismiss(cat);
     } else { //마이페이지
 
     }

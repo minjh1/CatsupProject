@@ -1,9 +1,11 @@
 page-add-cat {
 
 }
-.img_add {
-  border:1px solid gray;
+.img_addcat {
+  border:2px solid #cccccc;
   margin-bottom: 8px;
+}
+.center_avatar{
   display: flex;
   flex-direction: column;    /* align flex items vertically */
   justify-content: center;   /* center items vertically, in this case */

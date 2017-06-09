@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,ModalController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import {Autosize} from 'ionic2-autosize';
 
 import { Camera, CameraOptions  } from '@ionic-native/camera';
@@ -17,7 +17,7 @@ import { MyCatPage } from '../mycat/mycat';
 
 
 @Component({
-  selector: 'page-contact',
+  selector: 'page-write',
   templateUrl: 'write.html',
 })
 export class WritePage {
@@ -33,7 +33,7 @@ export class WritePage {
   cat_name: string;
   cat_habitat: string;
   cat_info: string;
-  upload_count:number;
+  upload_count: number;
   submitted = false;
   serverURL: string = 'http://45.249.160.73:5555';
   constructor(
@@ -68,19 +68,19 @@ export class WritePage {
     }
   }
   openSelectCatPage() {
-    let modal =this.modalCtrl.create(MyCatPage,{pageType:0});
-    modal.onDidDismiss(data=>{
-      if(data!=0){ //고양이 선택했으면
-          this.write_content.cat_seq=data.seq;
-          this.cat_img=data.avatar;
-          this.cat_name=data.name;
-          this.cat_info=data.info1;
-          this.cat_habitat=data.habitat;
+    let modal = this.modalCtrl.create(MyCatPage, { pageType: 0 });
+    modal.onDidDismiss(data => {
+      if (data != null) {
+        this.write_content.cat_seq = data.seq;
+        this.cat_img = data.avatar;
+        this.cat_name = data.name;
+        this.cat_info = data.info1;
+        this.cat_habitat = data.habitat;
       }
     })
     modal.present();
   }
-  check(data:any){
+  check(data: any) {
     alert(data);
   }
   select_photos() {
@@ -90,7 +90,6 @@ export class WritePage {
     this.imagePicker.getPictures(options).then((results) => {
       for (var i = 0; i < results.length; i++) {
         this.photos.push(results[i]);
-
       }
       this.write_content.type = 1; //이미지
     }, (err) => { });
@@ -105,20 +104,20 @@ export class WritePage {
     const fileTransfer: TransferObject = this.transfer.create();
     for (var i = 0; i < this.photos.length; i++) {
 
-      var filename = this.photos[i].substr(this.photos[i].lastIndexOf('/')+1);
+      var filename = this.photos[i].substr(this.photos[i].lastIndexOf('/') + 1);
       let fileOptions: FileUploadOptions = {
         fileKey: 'image',
         fileName: filename,
         params:
         {
-          seq:feed_seq,//글 seq를 넣자
+          seq: feed_seq,//글 seq를 넣자
         }
       }
       fileTransfer.upload(this.photos[i], this.serverURL + '/uploadPhotos', fileOptions)
         .then((data) => {
           this.upload_count++;
-          if(this.upload_count==this.photos.length){ //업로드 완료
-            this.showAlert("업로드 완료");
+          if (this.upload_count == this.photos.length) { //업로드 완료
+            //this.showAlert("업로드 완료");
             this.navCtrl.parent.select(2); //새로고침의 의미로 한번클릭
             this.navCtrl.parent.select(0); //홈 탭으로 이동
             this.navCtrl.parent.select(0);//새로고침의 의미로 두번
@@ -149,6 +148,23 @@ export class WritePage {
           }
         }
       });
+  }
+  TakePicture() {
+    var options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      allowEdit: true,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      encodingType: 0,
+      saveToPhotoAlbum : true,
+    }
+
+    this.camera.getPicture(options).then((imageUrl) => {
+      this.photos.push(imageUrl);
+      this.write_content.type = 1; //이미지
+    }, (err) => {
+      //  alert("사진을 불러오지 못했습니다.");
+    });
   }
 }
   /*
