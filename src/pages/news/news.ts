@@ -8,7 +8,6 @@ import { NavController } from 'ionic-angular';
 export class NewsPage {
 
   constructor(public navCtrl: NavController) {
-
   }
 
 }

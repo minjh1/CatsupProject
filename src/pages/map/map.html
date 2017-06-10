@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button (click)=dismiss()>
+      <ion-icon name="close"></ion-icon>
+    </button>
+    </ion-buttons>
+    <ion-title>서식지역 선택</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div #map id="map"></div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <div class="map_footer" (click)="complete()">
+      완료
+      <span class="arrow"><ion-icon name="paw"></ion-icon></span>
+    </div>
+  </ion-toolbar>
+</ion-footer>

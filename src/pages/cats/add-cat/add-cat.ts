@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { AlertController,NavController, NavParams, ViewController } from 'ionic-angular';
+import { AlertController,NavController, NavParams, ViewController,ModalController } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { Camera, CameraOptions  } from '@ionic-native/camera';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import { UserData } from '../../../providers/user-data';
+import { MapPage } from '../../map/map';
 
 @Component({
   selector: 'page-add-cat',
@@ -33,6 +34,8 @@ export class AddCat {
     private transfer: Transfer,
     public userData: UserData,
     public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+
   ) {
     this.imgUrl="assets/img/add2.png";
     this.userData.getUserSeq().then((seq)=>{
@@ -92,5 +95,15 @@ export class AddCat {
       buttons: ['OK']
     });
     alert.present();
+  }
+  openMap(){
+    let modal = this.modalCtrl.create(MapPage, { pageType: 0 });
+    modal.onDidDismiss(data => {
+      if (data != null) {
+        this.catinfo.latitude = data.latitude;
+        this.catinfo.longitude = data.longitude;
+      }
+    })
+    modal.present();
   }
 }

@@ -16,6 +16,7 @@ import { TutorialPage } from '../pages/tutorial/tutorial';
 import { LoginPage } from '../pages/login/login';
 import { SignUpPage } from '../pages/signup/signup';
 import { MyCatPage } from '../pages/mycat/mycat';
+import { MapPage } from '../pages/map/map';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -30,9 +31,7 @@ import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { ImagePicker } from '@ionic-native/image-picker'; //이미지 다중선택
-
-
-//import { Cat } from '../models/cat';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
@@ -51,6 +50,7 @@ import { ImagePicker } from '@ionic-native/image-picker'; //이미지 다중선�
     SignUpPage,
     Autosize,
     MyCatPage,
+    MapPage,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +76,7 @@ import { ImagePicker } from '@ionic-native/image-picker'; //이미지 다중선�
     LoginPage,
     SignUpPage,
     MyCatPage,
+    MapPage,
   ],
   providers: [
     StatusBar,
@@ -87,6 +88,7 @@ import { ImagePicker } from '@ionic-native/image-picker'; //이미지 다중선�
     File,
     Transfer,
     ImagePicker,
+    Geolocation,
   ]
 })
 export class AppModule { }
