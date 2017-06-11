@@ -59,44 +59,6 @@ export class MyPage {
       });
   */
 
-    /*
-
-        this.images.push("http://45.249.160.73:5555/image/jb.png");
-        this.images.push("http://45.249.160.73:5555/image/im1.png");
-        this.images.push("http://45.249.160.73:5555/image/jb.png");
-        this.images.push("http://45.249.160.73:5555/image/jb3.png");
-        this.images.push("http://45.249.160.73:5555/image/im4.png");
-        this.images.push("http://45.249.160.73:5555/image/jb3.png");
-        this.images.push("http://45.249.160.73:5555/image/jb.png");
-        this.images.push("http://cfile27.uf.tistory.com/image/2113BB4E5397AF581E92D2");
-        this.images.push("http://45.249.160.73:5555/image/im1.png");
-        this.images.push("http://45.249.160.73:5555/image/jb.png");
-        this.images.push("http://45.249.160.73:5555/image/jb3.png");
-        this.images.push("http://45.249.160.73:5555/image/im4.png");
-        this.images.push("http://45.249.160.73:5555/image/jb3.png");
-
-        this.grid = Array(Math.ceil(this.images.length / 3)); //MATHS!
-        let rowNum = 0; //counter to iterate over the rows in the grid
-
-        for (let i = 0; i < this.images.length; i += 3) { //iterate images
-          this.grid[rowNum] = Array(3); //declare three elements per row
-          if (this.images[i]) { //check file URI exists
-            this.grid[rowNum][0] = this.images[i] //insert image
-          }
-          if (this.images[i + 1]) { //repeat for the second image
-            this.grid[rowNum][1] = this.images[i + 1]
-          }else{
-            this.grid[rowNum][1] = "http://homepages.neiu.edu/~whuang2/cs300/images/white.png"
-          }
-          if (this.images[i + 2]) { //repeat for the second image
-            this.grid[rowNum][2] = this.images[i + 2]
-          }else{
-            this.grid[rowNum][2] = "http://homepages.neiu.edu/~whuang2/cs300/images/white.png"
-          }
-          rowNum++; //go on to the next row
-        }
-    */
-
   }
 
   ionViewDidLoad() {

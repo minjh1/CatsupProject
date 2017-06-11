@@ -30,9 +30,17 @@ export class HomePage {
       .map(res => res.json())
       .subscribe(data => {
         for (let i = 0; i < data.length; i++) {
-          this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL+data[i].catImg, data[i].catName,
-            data[i].user_seq, this.serverURL+data[i].userImg, data[i].userName, data[i].imgUrl, data[i].content, data[i].create_date,
-            data[i].likeCount, data[i].replyCount));
+          if (data[i].userImg.indexOf("/") == 0) {
+            this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL+data[i].catImg, data[i].catName,
+              data[i].user_seq, this.serverURL+data[i].userImg, data[i].userName, data[i].imgUrl, data[i].content, data[i].create_date,
+              data[i].likeCount, data[i].replyCount));
+          }
+          else{
+            this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL+data[i].catImg, data[i].catName,
+              data[i].user_seq, data[i].userImg, data[i].userName, data[i].imgUrl, data[i].content, data[i].create_date,
+              data[i].likeCount, data[i].replyCount));
+          }
+
         }
       }, error => {
         console.log(JSON.stringify(error.json()));

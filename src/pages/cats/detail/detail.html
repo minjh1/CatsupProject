@@ -20,7 +20,7 @@
       <span *ngSwitchCase="1" class="d_content"> 남</span><br>
     </div>
     <br>
-    <span class="d_title">\> 서식 지역</span><br>
+    <span class="d_title">\> 서식 지역</span><br> <span class="arrow" [hidden]="cat.latitude==null" (click)="openMap()"><ion-icon name="pin"></ion-icon></span>
     <span class="d_content">{{cat.habitat}}</span><br>
     <br>
     <span class="d_title">\> 특징</span><br>

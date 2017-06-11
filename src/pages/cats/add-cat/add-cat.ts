@@ -63,9 +63,7 @@ export class AddCat {
       }
       fileTransfer.upload(this.imgUrl, this.userData.serverURL + '/addCatProfile', fileOptions)
         .then((data) => {
-            this.dismiss();
-            this.navCtrl.parent.select(3); //새로고침
-            this.navCtrl.parent.select(3); //새로고침
+          this.dismiss();
         }, (err) => {
 
         });
@@ -100,8 +98,11 @@ export class AddCat {
     let modal = this.modalCtrl.create(MapPage, { pageType: 0 });
     modal.onDidDismiss(data => {
       if (data != null) {
+        console.log(JSON.stringify(data));
         this.catinfo.latitude = data.latitude;
         this.catinfo.longitude = data.longitude;
+        this.catinfo.habitat=data.placeName;
+        console.log("서식:"+this.catinfo.habitat);
       }
     })
     modal.present();

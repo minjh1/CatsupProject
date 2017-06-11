@@ -57,9 +57,16 @@ export class ReplyPage {
       .map(res => res.json())
       .subscribe(data => {
         for (let i = 0; i < data.length; i++) {
-          this.replies.push(new Reply(data[i].reply_seq, this.serverURL+data[i].imgUrl,
-            data[i].user_seq, data[i].nickname,
-            data[i].content, data[i].create_date));
+          if (data[i].imgUrl.indexOf("/") == 0) {
+            this.replies.push(new Reply(data[i].reply_seq, this.serverURL+data[i].imgUrl,
+              data[i].user_seq, data[i].nickname,
+              data[i].content, data[i].create_date));
+          }
+          else{
+            this.replies.push(new Reply(data[i].reply_seq, data[i].imgUrl,
+              data[i].user_seq, data[i].nickname,
+              data[i].content, data[i].create_date));
+          }
         }
       }, error => {
         console.log(JSON.stringify(error.json()));
@@ -92,9 +99,17 @@ export class ReplyPage {
       { headers: headers })
         .map(res => res.json())
         .subscribe(data => {
-          this.replies.push(new Reply(data.reply_seq, this.serverURL+data.imgUrl,
-            data.user_seq, data.nickname,
-            data.content, data.create_date));
+            if (data.imgUrl.indexOf("/") == 0) {
+              this.replies.push(new Reply(data.reply_seq, this.serverURL+data.imgUrl,
+                data.user_seq, data.nickname,
+                data.content, data.create_date));
+            }
+            else{
+              this.replies.push(new Reply(data.reply_seq, data.imgUrl,
+                data.user_seq, data.nickname,
+                data.content, data.create_date));
+            }
+
 
         }, error => {
           console.log(JSON.stringify(error.json()));

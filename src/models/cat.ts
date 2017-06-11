@@ -7,6 +7,8 @@ export class Cat {
   counts:number[];
   sex: number;
   habitat: string="";
+  latitude: string="";
+  longitude:string="";
   info1: string="";
   info2: string="";
   info3: string="";
@@ -20,6 +22,8 @@ export class Cat {
     counts:number[],
     sex:number,
     habitat: string,
+    latitude: string,
+    longitude:string,
     info1:string,
     info2:string,
     info3:string,
@@ -32,6 +36,8 @@ export class Cat {
     this.counts=counts;
     this.sex=sex;
     this.habitat=habitat;
+    this.latitude=latitude;
+    this.longitude=longitude;
     this.info1 =info1;
     this.info2 =info2;
     this.info3 =info3;

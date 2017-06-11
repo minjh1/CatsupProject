@@ -16,8 +16,8 @@ export class MyApp {
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public storage: Storage) {
 
-    //this.rootPage = TutorialPage;
-    this.rootPage = TabsPage;
+    this.rootPage = TutorialPage;
+    //this.rootPage = TabsPage;
 /*
     this.storage.get('hasSeenTutorial')
       .then((hasSeenTutorial) => {

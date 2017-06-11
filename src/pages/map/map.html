@@ -5,7 +5,7 @@
       <ion-icon name="close"></ion-icon>
     </button>
     </ion-buttons>
-    <ion-title>서식지역 선택</ion-title>
+    <ion-title>{{title}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -15,7 +15,7 @@
 <ion-footer>
   <ion-toolbar>
     <div class="map_footer" (click)="complete()">
-      완료
+      {{footer_text}}
       <span class="arrow"><ion-icon name="paw"></ion-icon></span>
     </div>
   </ion-toolbar>
