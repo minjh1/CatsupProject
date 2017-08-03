@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ViewController,PopoverController } from 'ionic-angular';
 import { Feed } from '../../models/feed';
 import { ReplyPage } from '../reply/reply';
 import { Http, Headers } from '@angular/http';
+import { MyPopoverPage } from './pop_over/my_pop_over';
+import { OtherPopoverPage } from './pop_over/other_pop_over';
+import { UserData } from '../../providers/user-data'
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -13,8 +16,11 @@ export class HomePage {
   feeds: Feed[] = [];
   serverURL: string = 'http://45.249.160.73:5555';
 
-  constructor(public navCtrl: NavController, private http: Http) {
-    console.log("home");
+  constructor(
+    public navCtrl: NavController,
+    private http: Http,
+    public popoverCtrl: PopoverController,
+    public userData: UserData,) {
     this.getFeeds(0, 15);
   }
 
@@ -52,5 +58,16 @@ export class HomePage {
       replyType: replyType,
       seq: seq
     });
+  }
+  openPopover(wr_seq, user_seq){
+    if(this.userData.userSeq==user_seq){ //내글
+      this.presentPopover(MyPopoverPage);
+    }else{ //다른 사람 글
+      this.presentPopover(OtherPopoverPage);
+    }
+  }
+  presentPopover(PageName) {
+    let popover = this.popoverCtrl.create(PageName);
+    popover.present();
   }
 }

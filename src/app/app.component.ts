@@ -7,6 +7,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 //import { UserData } from '../providers/user-data';
 import { Storage } from '@ionic/storage';
+import { UserData } from '../providers/user-data'
 
 @Component({
   templateUrl: 'app.html'
@@ -14,10 +15,15 @@ import { Storage } from '@ionic/storage';
 export class MyApp {
   rootPage:any;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public storage: Storage) {
+  constructor(public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public storage: Storage,
+    public userData: UserData) {
 
-    this.rootPage = TutorialPage;
-    //this.rootPage = TabsPage;
+    this.userData.getUserSeq();
+    //this.rootPage = TutorialPage;
+    this.rootPage = TabsPage;
 /*
     this.storage.get('hasSeenTutorial')
       .then((hasSeenTutorial) => {

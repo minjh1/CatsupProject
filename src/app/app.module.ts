@@ -6,6 +6,8 @@ import { MyApp } from './app.component';
 import { NewsPage } from '../pages/news/news';
 import { WritePage } from '../pages/write/write';
 import { HomePage } from '../pages/home/home';
+import { MyPopoverPage } from '../pages/home/pop_over/my_pop_over';
+import { OtherPopoverPage } from '../pages/home/pop_over/other_pop_over';
 import { TabsPage } from '../pages/tabs/tabs';
 import { MyPage } from '../pages/mypage/mypage';
 import { CatsPage } from '../pages/cats/cats';
@@ -17,6 +19,9 @@ import { LoginPage } from '../pages/login/login';
 import { SignUpPage } from '../pages/signup/signup';
 import { MyCatPage } from '../pages/mycat/mycat';
 import { MapPage } from '../pages/map/map';
+import { ImageCropperPage } from '../pages/image-cropper/image-cropper';
+
+import { ImageCropperModule } from 'ng2-img-cropper';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -32,6 +37,7 @@ import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { ImagePicker } from '@ionic-native/image-picker'; //이미지 다중선택
 import { Geolocation } from '@ionic-native/geolocation';
+import { Crop } from '@ionic-native/crop';
 
 @NgModule({
   declarations: [
@@ -51,6 +57,9 @@ import { Geolocation } from '@ionic-native/geolocation';
     Autosize,
     MyCatPage,
     MapPage,
+    MyPopoverPage,
+    OtherPopoverPage,
+    ImageCropperPage,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +68,7 @@ import { Geolocation } from '@ionic-native/geolocation';
       tabsHideOnSubPages: true,
     }),
     IonicStorageModule.forRoot(),
+    ImageCropperModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -77,6 +87,9 @@ import { Geolocation } from '@ionic-native/geolocation';
     SignUpPage,
     MyCatPage,
     MapPage,
+    MyPopoverPage,
+    OtherPopoverPage,
+    ImageCropperPage,
   ],
   providers: [
     StatusBar,
@@ -89,6 +102,7 @@ import { Geolocation } from '@ionic-native/geolocation';
     Transfer,
     ImagePicker,
     Geolocation,
+    Crop,
   ]
 })
 export class AppModule { }

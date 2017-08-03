@@ -7,7 +7,7 @@ export class Feed {
   user_seq: number;
   userImg : string;
   userName: string;
-  imgUrl: string[];
+  imgUrl: string[]=[];
   content: string="";
   create_date: string;
   likeCount: number;

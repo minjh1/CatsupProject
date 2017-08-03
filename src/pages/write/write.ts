@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { NavController, ModalController, ActionSheetController, AlertController  } from 'ionic-angular';
 import {Autosize} from 'ionic2-autosize';
 
 import { Camera, CameraOptions  } from '@ionic-native/camera';
+
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import { File } from '@ionic-native/file';
 import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker';
 
 import { UserData } from '../../providers/user-data';
 import { Http, Headers } from '@angular/http';
-import { AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import { NgForm } from '@angular/forms';
 
 import { MyCatPage } from '../mycat/mycat';
-
+import { ImageCropperPage } from '../image-cropper/image-cropper';
+import { Crop } from '@ionic-native/crop';
 
 @Component({
   selector: 'page-write',
@@ -34,6 +35,7 @@ export class WritePage {
   cat_habitat: string;
   cat_info: string;
   upload_count: number;
+  aspectRatio: number;
   submitted = false;
   serverURL: string = 'http://45.249.160.73:5555';
   constructor(
@@ -46,6 +48,8 @@ export class WritePage {
     private http: Http,
     public modalCtrl: ModalController,
     public userData: UserData,
+    public actionSheetCtrl: ActionSheetController,
+    private crop: Crop,
   ) {
     this.photos = [];
     this.cat_img = "assets/img/add.png";
@@ -64,9 +68,17 @@ export class WritePage {
     else if (this.write_content.content == undefined) {
       this.showAlert("글을 입력해주세요.")
     } else {
+
+      if (this.photos.length > 0) {
+        this.write_content.type = 1;
+      } else if (this.photos.length == 0) {
+        this.write_content.type = 0;
+      }
+
       this.addFeed(this.write_content);
     }
   }
+
   openSelectCatPage() {
     let modal = this.modalCtrl.create(MyCatPage, { pageType: 0 });
     modal.onDidDismiss(data => {
@@ -83,17 +95,7 @@ export class WritePage {
   check(data: any) {
     alert(data);
   }
-  select_photos() {
-    var options: ImagePickerOptions = {
-      maximumImagesCount: 10,
-    }
-    this.imagePicker.getPictures(options).then((results) => {
-      for (var i = 0; i < results.length; i++) {
-        this.photos.push(results[i]);
-      }
-      this.write_content.type = 1; //이미지
-    }, (err) => { });
-  }
+
   delete_photo(photo: string) {
     let index: number = this.photos.indexOf(photo);
     if (index !== -1) {
@@ -156,38 +158,178 @@ export class WritePage {
       allowEdit: true,
       sourceType: this.camera.PictureSourceType.CAMERA,
       encodingType: 0,
-      saveToPhotoAlbum : true,
+      saveToPhotoAlbum: true,
     }
 
     this.camera.getPicture(options).then((imageUrl) => {
       this.photos.push(imageUrl);
-      this.write_content.type = 1; //이미지
+      alert(imageUrl);
     }, (err) => {
-      //  alert("사진을 불러오지 못했습니다.");
+      this.showAlert("사진을 불러오지 못했습니다.");
     });
   }
-}
-  /*
-  select_photo() {
+  select_ratio() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: '업로드 할 사진의 비율을 선택해주세요.',
+      buttons: [
+        {
+          text: '4:3',
+          icon: 'photos',
+          handler: () => {
+            this.aspectRatio=4/3;
+            this.openPhotoLibrary();
+          }
+        }, {
+          text: '1:1',
+          icon: 'photos',
+          handler: () => {
+            this.aspectRatio=1/1;
+            this.openPhotoLibrary();
+          }
+        }, {
+          text: '3:4',
+          icon: 'photos',
+          handler: () => {
+            this.aspectRatio=3/4;
+            this.openPhotoLibrary();
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          //icon: !this.platform.is('ios') ? 'close' : null,
+          icon: 'close',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+  openPhotoLibrary2() {
     var options: CameraOptions = {
       quality: 100,
+      //targetWidth: this.imageTargetWidth,
+      //targetHeight: this.imageTargetHeight,
       destinationType: this.camera.DestinationType.FILE_URI,
-      mediaType: this.camera.MediaType.ALLMEDIA,
+      mediaType: this.camera.MediaType.PICTURE,
+      encodingType: 0,
+      saveToPhotoAlbum: true,
       sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM,
     }
 
     this.camera.getPicture(options).then((imageUrl) => {
-      this.write_content.photos[0] = imageUrl;
-      alert("imageUrl : " + imageUrl);
-      this.file.resolveLocalFilesystemUrl(imageUrl).then((fileEntry) => {
-        alert("isFile : " + fileEntry.isFile);
-        alert("fullPath : " + fileEntry.fullPath);
-      }, () => {
-        this.createNewFileEntry(imageUrl);
-      });
-    }, (err) => {
-      alert("에러");
-    });
+      //    this.openCropperPage(imageUrl);
+      alert(imageUrl);
+      this.crop.crop(imageUrl, { quality: 100 })
+        .then(
+        (newImage) => {
+          alert('new image path is: ' + newImage)
+          this.photos.push(newImage)
+        },
+        (error) =>
+        { console.error('Error cropping image', error) }
+        );
 
-  }
+
+
+      /*
+      this.file.resolveLocalFilesystemUrl(imageUrl).then((fileEntry) => {
+        alert(fileEntry.fullPath);
+        alert(fileEntry.nativeURL);
+        var newFileUri = this.file.dataDirectory + "images/";
+        var oldFileUri = fileEntry.nativeURL;
+        var fileExt = "." + oldFileUri.split('.').pop();
+
+        var newFileName= "car"+fileExt;
+
+        this.file.resolveDirectoryUrl(newFileUri).then((dirEntry)=>{
+          fileEntry.moveTo(dirEntry, newFileName);
+          alert("성공");
+        },(err)=>{alert("err!!!")});
+
+
+      }, (err) => {
+        this.showAlert("사진을 불러오지 못했습니다.");
+      });
+
+      /*
+    //  var currentName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1,imageUrl.lastIndexOf('?'));
+      var currentName = imageUrl.replace(/^.*[\\\/]/, '');
+      //currentName = currentName.substring(0,imageUrl.lastIndexOf('?'));
+      //alert("템프: "+this.file.tempDirectory);
+      //alert("캐시: "+this.file.cacheDirectory);
+      //alert("데이타: "+this.file.dataDirectory);
+      var d = new Date(),
+      n = d.getTime(),
+      newFileName = n + ".jpg";
+      alert(currentName+" => "+newFileName);
+      this.file.moveFile(this.file.cacheDirectory, currentName, this.file.dataDirectory, newFileName).then((entry)=>{
+        alert("n-url: "+entry.nativeURL);
+        alert("n-url: "+entry.fullPath);
+
+      },(err)=>{
+        alert("실패"+err);
+      });
+      */
+      /*
+      var newUrl = "file:///storage/emulated/0/Pictures/";
+      this.file.checkDir("file:///storage/emulated/0/","Pictures").then((result)=>{
+        alert("체크!:"+result);
+      },(err)=>{
+        alert("err");
+      });
+      //alert("data:"+this.file.dataDirectory);
+    //  alert("cache:"+this.file.cacheDirectory);
+      alert("이미지유알엘"+imageUrl);
+      var currentUrl = imageUrl.substring(0,imageUrl.lastIndexOf('/')+1);
+      alert("현주소"+currentUrl);
+      var filename = imageUrl.substr(imageUrl.lastIndexOf('/') + 1);
+      //var filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1,imageUrl.lastIndexOf('?'));
+      alert("현재이름"+filename);
+      var newName=filename+'.jpg';
+      //var newName=filename;
+      this.file.copyFile(currentUrl,filename,newUrl,newName).then((fileEntry)=>{
+        alert('복사성공full:'+fileEntry.fullPath+" "+fileEntry.filesystem);
+      },(err)=>{
+        alert("복사실패"+err);
+      })
+      this.photos.push(newUrl+newName);
+      alert("최종:" + newUrl+newName);
 */
+    }, (err) => {
+      this.showAlert("사진을 불러오지 못했습니다.");
+    });
+  }
+  select_photos() {
+    if (this.photos.length == 0) {
+      this.select_ratio();
+    }
+    else {
+      this.openPhotoLibrary();
+    }
+  }
+
+  openPhotoLibrary() {
+    var options: ImagePickerOptions = {
+      maximumImagesCount: 10,
+    }
+    this.imagePicker.getPictures(options).then((results) => {
+      if(results.length!=0){
+        this.openCropperPage(results);
+      }
+    }, (err) => { });
+  }
+  openCropperPage(images) {
+    let modal = this.modalCtrl.create(ImageCropperPage, { images: images, ratio:this.aspectRatio });
+    modal.onDidDismiss(data => {
+      if (data != null) {
+        for (var i = 0; i < data.length; i++) {
+          this.photos.push(data[i]);
+        }
+      }
+    })
+    modal.present();
+  }
+}

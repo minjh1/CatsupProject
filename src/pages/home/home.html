@@ -4,44 +4,65 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="home">
   <ion-card *ngFor="let feed of feeds" class="home_card">
     <ion-item>
-      <ion-avatar item-left >
-        <img src="{{feed.catImg}}">
-      </ion-avatar>
-      <ion-avatar item-left>
-        <img src="{{feed.userImg}}">
-      </ion-avatar>
-      <h2>{{feed.catName}} / {{feed.userName}}</h2>
-      <p>{{feed.create_date}}</p>
+      <div class="icons" item-start>
+          <ion-row>
+            <ion-col>
+              <ion-avatar>
+                <img class="catIcon" src="{{feed.catImg}}">
+              </ion-avatar>
+            </ion-col>
+            <ion-col>
+              <ion-avatar>
+                <img class="userIcon" src="{{feed.userImg}}">
+              </ion-avatar>
+            </ion-col>
+          </ion-row>
+      </div>
+      <div class="namebar">
+        <h2>{{feed.catName}} / {{feed.userName}}</h2>
+        <p>{{feed.create_date}}</p>
+      </div>
+      <div class="icons2" item-end>
+        <button ion-button color="LightGrayCat" clear icon-only
+        (click)="openPopover(feed.wr_seq, feed.user_seq)">
+          <ion-icon name="more" style="zoom:1.3;"></ion-icon>
+        </button>
+      </div>
     </ion-item>
-
-    <img src="{{serverURL+feed.imgUrl[0]}}">
-    <ion-row>
-      <ion-col>
-        <button ion-button color="GrayCat" clear small icon-left>
-          <ion-icon name='heart'></ion-icon>
-          케첩 {{feed.likeCount}}
-        </button>
-      </ion-col>
-      <ion-col>
-        <button ion-button color="GrayCat" clear small icon-left (click)="openReplyPage(0, feed.wr_seq)">
-          <ion-icon name='text'></ion-icon>
-          댓글 {{feed.replyCount}}
-        </button>
-      </ion-col>
-      <ion-col align-self-center text-center>
-        <ion-note>
-          {{feed.create_date}}
-        </ion-note>
-      </ion-col>
-    </ion-row>
+    <img *ngIf="feed.imgUrl.length==1" src="{{serverURL+feed.imgUrl[0]}}">
+    <ion-slides *ngIf="feed.imgUrl.length>1" pager>
+      <ion-slide *ngFor="let imgUrl of feed.imgUrl">
+        <img src="{{serverURL+imgUrl}}">
+      </ion-slide>
+    </ion-slides>
+    <div class="likebar">
+      <ion-row>
+        <ion-col text-center>
+          <button ion-button color="GrayCat" clear small icon-left>
+            <ion-icon name='heart'></ion-icon>
+            케첩 {{feed.likeCount}}
+          </button>
+        </ion-col>
+        <ion-col text-center (click)="openReplyPage(0, feed.wr_seq)">
+          <button ion-button color="GrayCat" clear small icon-left >
+            <ion-icon name='text'></ion-icon>
+            댓글 {{feed.replyCount}}
+          </button>
+        </ion-col>
+        <ion-col text-center>
+          <button ion-button color="GrayCat" clear small icon-left>
+            <ion-icon name='share-alt'></ion-icon>
+            공유
+          </button>
+        </ion-col>
+      </ion-row>
+    </div>
     <ion-card-content class="card_content">
       <p class="content_text">{{feed.content}}</p>
     </ion-card-content>
-
-
 
   </ion-card>
 </ion-content>

@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class UserData {
   serverURL: string = 'http://45.249.160.73:5555';
+  userSeq : number;
 
   constructor(
     public events: Events,
@@ -37,6 +38,7 @@ export class UserData {
 
   getUserSeq(): Promise<number> {
     return this.storage.get('userSeq').then((value) => {
+      this.userSeq=value;
       return value;
     });
   };

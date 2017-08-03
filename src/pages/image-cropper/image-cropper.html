@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button (click)="dismiss()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+    </ion-buttons>
+    <ion-title>사진 편집</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <!--
+  <img #imageSrc id="cimg"/>-->
+  <img *ngIf="images.length==1" #imageSrc>
+  <ion-slides pager *ngIf="images.length>1">
+    <ion-slide *ngFor="let image of images" class="slide-bg">
+      <img #imageSrc />
+    </ion-slide>
+  </ion-slides>
+  <!--
+  <img *ngIf="imageElements.length==1" src="{{imageElements[0]}}">
+  <ion-slides *ngIf="imageElements.length>1" pager>
+    <ion-slide *ngFor="let img of imageElements">
+      <img src="{{img}}">
+    </ion-slide>
+  </ion-slides>
+  -->
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="map_footer" *ngIf="images.length>1">
+      <ion-row>
+        <ion-col (click)="toLeft()">
+          <span class="arrow"><ion-icon name="arrow-round-back"></ion-icon></span> 이전
+        </ion-col>
+        <ion-col col-6 (click)="cropDone()">
+          완료
+          <span class="arrow"><ion-icon name="paw"></ion-icon></span>
+        </ion-col>
+        <ion-col (click)="toRight()">
+          다음
+          <span class="arrow"><ion-icon name="arrow-round-forward"></ion-icon></span>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div class="map_footer" *ngIf="images.length==1" (click)="cropDone()">
+      완료
+      <span class="arrow"><ion-icon name="paw"></ion-icon></span>
+    </div>
+  </ion-toolbar>
+
+</ion-footer>

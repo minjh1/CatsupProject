@@ -1,8 +1,40 @@
-.card_content{
-  margin-top: 0px;
-  padding-top: 0px;
+page-home {
+  .home{
+    background-color: #eeeeee;
+  }
+  .likebar{
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  .namebar {
+    position: relative;
+  }
+  .userIcon {
+    border: 1px solid #c1c1c1;
+    margin-left: 3px;
+    margin-right: 5px;
+  }
+  .catIcon {
+    border: 1px solid #c1c1c1;
+  }
 
-}
-p.content_text{
-  font-size: 1.5rem;
+  .card_content {
+    margin-top: 0;
+    padding-top: 3px;
+  }
+
+  p.content_text {
+    font-size: 1.5rem;
+  }
+
+  .swiper-pagination {
+    padding: 3px;
+    bottom: 0;
+
+    .swiper-pagination-bullet {
+      background: #FFF;
+      margin: 0 3px;
+      box-shadow: 1px 1px 3px #595959;
+    }
+  }
 }
