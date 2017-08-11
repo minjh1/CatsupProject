@@ -15,7 +15,6 @@ import { NgForm } from '@angular/forms';
 
 import { MyCatPage } from '../mycat/mycat';
 import { ImageCropperPage } from '../image-cropper/image-cropper';
-import { Crop } from '@ionic-native/crop';
 
 @Component({
   selector: 'page-write',
@@ -49,7 +48,6 @@ export class WritePage {
     public modalCtrl: ModalController,
     public userData: UserData,
     public actionSheetCtrl: ActionSheetController,
-    private crop: Crop,
   ) {
     this.photos = [];
     this.cat_img = "assets/img/add.png";
@@ -206,102 +204,6 @@ export class WritePage {
     });
     actionSheet.present();
   }
-
-  openPhotoLibrary2() {
-    var options: CameraOptions = {
-      quality: 100,
-      //targetWidth: this.imageTargetWidth,
-      //targetHeight: this.imageTargetHeight,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      mediaType: this.camera.MediaType.PICTURE,
-      encodingType: 0,
-      saveToPhotoAlbum: true,
-      sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM,
-    }
-
-    this.camera.getPicture(options).then((imageUrl) => {
-      //    this.openCropperPage(imageUrl);
-      alert(imageUrl);
-      this.crop.crop(imageUrl, { quality: 100 })
-        .then(
-        (newImage) => {
-          alert('new image path is: ' + newImage)
-          this.photos.push(newImage)
-        },
-        (error) =>
-        { console.error('Error cropping image', error) }
-        );
-
-
-
-      /*
-      this.file.resolveLocalFilesystemUrl(imageUrl).then((fileEntry) => {
-        alert(fileEntry.fullPath);
-        alert(fileEntry.nativeURL);
-        var newFileUri = this.file.dataDirectory + "images/";
-        var oldFileUri = fileEntry.nativeURL;
-        var fileExt = "." + oldFileUri.split('.').pop();
-
-        var newFileName= "car"+fileExt;
-
-        this.file.resolveDirectoryUrl(newFileUri).then((dirEntry)=>{
-          fileEntry.moveTo(dirEntry, newFileName);
-          alert("성공");
-        },(err)=>{alert("err!!!")});
-
-
-      }, (err) => {
-        this.showAlert("사진을 불러오지 못했습니다.");
-      });
-
-      /*
-    //  var currentName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1,imageUrl.lastIndexOf('?'));
-      var currentName = imageUrl.replace(/^.*[\\\/]/, '');
-      //currentName = currentName.substring(0,imageUrl.lastIndexOf('?'));
-      //alert("템프: "+this.file.tempDirectory);
-      //alert("캐시: "+this.file.cacheDirectory);
-      //alert("데이타: "+this.file.dataDirectory);
-      var d = new Date(),
-      n = d.getTime(),
-      newFileName = n + ".jpg";
-      alert(currentName+" => "+newFileName);
-      this.file.moveFile(this.file.cacheDirectory, currentName, this.file.dataDirectory, newFileName).then((entry)=>{
-        alert("n-url: "+entry.nativeURL);
-        alert("n-url: "+entry.fullPath);
-
-      },(err)=>{
-        alert("실패"+err);
-      });
-      */
-      /*
-      var newUrl = "file:///storage/emulated/0/Pictures/";
-      this.file.checkDir("file:///storage/emulated/0/","Pictures").then((result)=>{
-        alert("체크!:"+result);
-      },(err)=>{
-        alert("err");
-      });
-      //alert("data:"+this.file.dataDirectory);
-    //  alert("cache:"+this.file.cacheDirectory);
-      alert("이미지유알엘"+imageUrl);
-      var currentUrl = imageUrl.substring(0,imageUrl.lastIndexOf('/')+1);
-      alert("현주소"+currentUrl);
-      var filename = imageUrl.substr(imageUrl.lastIndexOf('/') + 1);
-      //var filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1,imageUrl.lastIndexOf('?'));
-      alert("현재이름"+filename);
-      var newName=filename+'.jpg';
-      //var newName=filename;
-      this.file.copyFile(currentUrl,filename,newUrl,newName).then((fileEntry)=>{
-        alert('복사성공full:'+fileEntry.fullPath+" "+fileEntry.filesystem);
-      },(err)=>{
-        alert("복사실패"+err);
-      })
-      this.photos.push(newUrl+newName);
-      alert("최종:" + newUrl+newName);
-*/
-    }, (err) => {
-      this.showAlert("사진을 불러오지 못했습니다.");
-    });
-  }
   select_photos() {
     if (this.photos.length == 0) {
       this.select_ratio();
@@ -310,7 +212,6 @@ export class WritePage {
       this.openPhotoLibrary();
     }
   }
-
   openPhotoLibrary() {
     var options: ImagePickerOptions = {
       maximumImagesCount: 10,

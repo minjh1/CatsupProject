@@ -6,8 +6,10 @@ import { MyApp } from './app.component';
 import { NewsPage } from '../pages/news/news';
 import { WritePage } from '../pages/write/write';
 import { HomePage } from '../pages/home/home';
-import { MyPopoverPage } from '../pages/home/pop_over/my_pop_over';
-import { OtherPopoverPage } from '../pages/home/pop_over/other_pop_over';
+import { MyPopoverPage } from '../pages/pop_over/my_pop_over';
+import { OtherPopoverPage } from '../pages/pop_over/other_pop_over';
+import { MyReplyPopPage } from '../pages/pop_over/my_reply_pop';
+import { OtherReplyPopPage } from '../pages/pop_over/other_reply_pop';
 import { TabsPage } from '../pages/tabs/tabs';
 import { MyPage } from '../pages/mypage/mypage';
 import { CatsPage } from '../pages/cats/cats';
@@ -20,8 +22,6 @@ import { SignUpPage } from '../pages/signup/signup';
 import { MyCatPage } from '../pages/mycat/mycat';
 import { MapPage } from '../pages/map/map';
 import { ImageCropperPage } from '../pages/image-cropper/image-cropper';
-
-import { ImageCropperModule } from 'ng2-img-cropper';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -60,6 +60,8 @@ import { Crop } from '@ionic-native/crop';
     MyPopoverPage,
     OtherPopoverPage,
     ImageCropperPage,
+    MyReplyPopPage,
+    OtherReplyPopPage,
   ],
   imports: [
     BrowserModule,
@@ -68,7 +70,6 @@ import { Crop } from '@ionic-native/crop';
       tabsHideOnSubPages: true,
     }),
     IonicStorageModule.forRoot(),
-    ImageCropperModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -90,6 +91,8 @@ import { Crop } from '@ionic-native/crop';
     MyPopoverPage,
     OtherPopoverPage,
     ImageCropperPage,
+    MyReplyPopPage,
+    OtherReplyPopPage,
   ],
   providers: [
     StatusBar,
@@ -102,7 +105,6 @@ import { Crop } from '@ionic-native/crop';
     Transfer,
     ImagePicker,
     Geolocation,
-    Crop,
   ]
 })
 export class AppModule { }

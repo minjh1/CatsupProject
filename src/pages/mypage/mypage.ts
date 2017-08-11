@@ -40,16 +40,7 @@ export class MyPage {
     private http: Http,
     public userData: UserData,
     public modalCtrl: ModalController,) {
-    this.grid = []; //MATHS!
-    this.rowNum = 0; //counter to iterate over the rows in the grid
-    this.getFeedCount = 0;
 
-    this.userData.getUserSeq().then(
-      (seq) => {
-        this.user_seq = seq;
-        this.getUserData(seq);
-        this.getUserFeeds(0, 15, seq);
-      });
 
     /*
       platform.ready().then((readySource) => {
@@ -63,8 +54,16 @@ export class MyPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Mypage');
+    this.grid = []; //MATHS!
+    this.rowNum = 0; //counter to iterate over the rows in the grid
+    this.getFeedCount = 0;
 
-
+    this.userData.getUserSeq().then(
+      (seq) => {
+        this.user_seq = seq;
+        this.getUserData(seq);
+        this.getUserFeeds(0, 15, seq);
+      });
   }
   getUserData(seq: number) {
 
@@ -111,11 +110,27 @@ export class MyPage {
       .map(res => res.json())
       .subscribe(data => {
         for (let i = 0; i < data.length; i++) {
+          var text_cut = data[i].content.indexOf('\n');
+          var content_preview, content_temp;
+          if (text_cut==-1 || text_cut > 90){ // 엔터없으면 90자까지 표시
+            content_preview = data[i].content.substr(0, 90);
+          }else{ //있음
+            var count=2; //최대 3줄 표시
+            while(count--){
+              content_temp = data[i].content.substr(text_cut+1,50);
+              var text_cut_temp = content_temp.indexOf('\n');
+              if (text_cut_temp == -1){
+                break;
+              }
+              text_cut += text_cut_temp+1;
+            }
+            content_preview = data[i].content.substr(0,text_cut);
+          }
           this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL + data[i].catImg, data[i].catName,
-            data[i].user_seq, this.serverURL + data[i].userImg, data[i].userName, data[i].imgUrl, data[i].content, data[i].create_date,
+            data[i].user_seq, this.serverURL + data[i].userImg, data[i].userName, data[i].imgUrl,content_preview, data[i].content, data[i].create_date,
             data[i].likeCount, data[i].replyCount));
         }
-
+/*
         for (let i = this.getFeedCount; i < this.getFeedCount + data.length; i += 3) { //iterate images
           this.grid[this.rowNum] = Array(3); //declare three elements per row
           if (this.feeds[i]) { //check file URI exists
@@ -133,6 +148,7 @@ export class MyPage {
           }
           this.rowNum++; //go on to the next row
         }
+        */
         this.getFeedCount += data.length;
 
       }, error => {

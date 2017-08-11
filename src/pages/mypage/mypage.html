@@ -50,14 +50,19 @@
     </div>
   </ion-grid>
   <hr>
+
+  <div class="pins">
+      <img class="pin" *ngFor="let feed of feeds" [src]="this.serverURL+feed.imgUrl[0]"/>
+  </div>
+<!--
   <ion-grid>
     <ion-row *ngFor="let row of grid">
-      <ion-col width-33 *ngFor="let file_uri of row">
+      <ion-col col-4 *ngFor="let file_uri of row">
         <div class="thumb">
         <img [src]="file_uri">
         </div>
       </ion-col>
     </ion-row>
   </ion-grid>
-
+-->
 </ion-content>

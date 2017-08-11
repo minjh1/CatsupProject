@@ -61,7 +61,12 @@
       </ion-row>
     </div>
     <ion-card-content class="card_content">
-      <p class="content_text">{{feed.content}}</p>
+      <div *ngIf="feed.content.length!=feed.content_preview.length && feed.content_more == false">
+        <p class="content_text">{{feed.content_preview}}...<span class="more"(click)="content_more(feed)"> more</span></p>
+      </div>
+      <div *ngIf="feed.content.length==feed.content_preview.length || feed.content_more==true">
+        <p class="content_text">{{feed.content}}</p>
+      </div>
     </ion-card-content>
 
   </ion-card>

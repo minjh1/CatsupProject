@@ -1,30 +1,19 @@
 page-reply {
-
-}
-.mainName{
-  font-size : 1.4rem;
-  color :#212121;
-  font-weight: 500;
-}
-.subName{
-  font-size: 1rem;
-  color: #9e9e9e;
-  font-weight: 500;
-}
-.habitat{
-  font-size: 1.3rem;
-  color:#616161;
-  //font-weight: 500;
-}
-.info{
-  font-size: 1.2rem;
-  color:#616161;
-  font-weight: 500;
-}
-.people{
-  font-size: 1.6rem;
-  color:#212121;
-}
-.avatar {
-  border:1px solid #d9d9d9;
+  .username{
+    font-size : 1.4rem;
+    color :#1d1d1d;
+    font-weight: 500;
+  }
+  .content{
+    font-size: 1.3rem;
+    color:#333333;
+    //font-weight: 500;
+  }
+  .avatar {
+    border:1px solid #d9d9d9;
+  }
+  .time {
+    font-size : 1.2rem;
+    color : #7c7c7c;
+  }
 }

@@ -8,13 +8,15 @@ export class Feed {
   userImg : string;
   userName: string;
   imgUrl: string[]=[];
+  content_preview: string="";
   content: string="";
+  content_more:boolean=false;
   create_date: string;
   likeCount: number;
   replyCount: number;
 
   constructor(wr_seq: number, type: number,cat_seq: number, catImg: string, catName: string, user_seq: number, userImg : string,
-    userName:string, imgUrl: string[],content: string,create_date: string,likeCount: number,replyCount: number){
+    userName:string, imgUrl: string[], content_preview:string, content: string,create_date: string,likeCount: number,replyCount: number){
     this.wr_seq=wr_seq;
     this.type=type;
     this.cat_seq=cat_seq;
@@ -24,6 +26,7 @@ export class Feed {
     this.userImg=userImg;
     this.userName=userName;
     this.imgUrl=imgUrl;
+    this.content_preview = content_preview;
     this.content=content;
     this.create_date=create_date;
     this.likeCount=likeCount;

@@ -19,7 +19,10 @@ import 'rxjs/add/operator/map';
 export class CatsPage {
   cats: Cat[] = [];
   serverURL: string = 'http://45.249.160.73:5555';
-  constructor(public navCtrl: NavController, public navParams: NavParams, private http: Http, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private http: Http,
+    public modalCtrl: ModalController) {
     this.getCats(0, 15);
     /*
       this.cats.push(new Cat('assets/img/cat1.png','까치','나비','순둥이','금오공대','흰 털에 검은무늬'));
@@ -54,26 +57,26 @@ export class CatsPage {
 
       this.navCtrl.parent.select(3); //새로고침
     });
-  addCatPage.present();
-}
-openDetailPage(cat) {
-  this.navCtrl.push(CatProfilePage, {
-    cat: cat,
-  });
-}
-doInfinite(infiniteScroll) {
-  console.log('Begin async operation');
-  /*
-     setTimeout(() => {
-       for (let i = 0; i < 30; i++) {
-         this.items.push( this.items.length );
-       }
+    addCatPage.present();
+  }
+  openDetailPage(cat) {
+    this.navCtrl.push(CatProfilePage, {
+      cat: cat,
+    });
+  }
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+    /*
+       setTimeout(() => {
+         for (let i = 0; i < 30; i++) {
+           this.items.push( this.items.length );
+         }
 
-       console.log('Async operation has ended');
-       infiniteScroll.complete();
-     }, 500);
-     */
-}
+         console.log('Async operation has ended');
+         infiniteScroll.complete();
+       }, 500);
+       */
+  }
 
 
 }

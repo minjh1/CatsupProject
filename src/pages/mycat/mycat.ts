@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
 import { MyCat } from '../../models/myCat';
+import { Cat } from '../../models/cat';
 import { CatProfilePage } from '../cats/detail/detail'
 import { Http, Headers } from '@angular/http';
 import { UserData } from '../../providers/user-data'
@@ -14,8 +15,9 @@ import 'rxjs/add/operator/map';
 export class MyCatPage {
   pageType: number; //0:글쓰기에서, 1:마이페이지에서
   cats: MyCat[] = [];
+  cat : Cat;
   user_seq: number;
-  serverURL: string = 'http://45.249.160.73:5555';
+  serverURL: string;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -24,6 +26,7 @@ export class MyCatPage {
     public userData: UserData,
     public viewCtrl: ViewController,
   ) {
+    this.serverURL = this.userData.serverURL;
     this.pageType = this.navParams.get("pageType");
     this.userData.getUserSeq().then(
       (seq) => {
@@ -64,8 +67,28 @@ export class MyCatPage {
     if (this.pageType == 0) { //글쓰기
       this.select_dismiss(cat);
     } else { //마이페이지
-
+      this.getCat(cat.seq);
     }
+  }
+
+  getCat(cat_seq) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let body = {
+      cat_seq: cat_seq
+    }
+
+    this.http.post(this.serverURL + '/getCat', JSON.stringify(body), { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+          this.cat = new Cat(data.cat_seq, this.serverURL + data.avatar, data.nameCount, data.nameArray,
+            data.countArray, data.sex, data.habitat, data.latitude, data.longitude, data.info1, data.info2, data.info3,
+            data.create_date, data.connection);
+          this.openDetailPage(this.cat);
+
+      }, error => {
+        console.log(JSON.stringify(error.json()));
+      })
   }
   openDetailPage(cat) {
     this.navCtrl.push(CatProfilePage, {

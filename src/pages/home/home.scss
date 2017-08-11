@@ -24,7 +24,12 @@ page-home {
   }
 
   p.content_text {
+    white-space: pre-line;
     font-size: 1.5rem;
+  }
+  .more{
+    color: #ffba0a;
+    font-weight: 400;
   }
 
   .swiper-pagination {
