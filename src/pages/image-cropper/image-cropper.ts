@@ -75,6 +75,8 @@ export class ImageCropperPage {
   }
 
   cropDone()  {
+
+    //    alert("cropDone");
     let croppedImg = new Array(this.images.length);
     for (var i = 0; i < this.images.length; i++) {
       croppedImg[i] = this.cropperInstances[i].getCroppedCanvas
@@ -103,7 +105,7 @@ export class ImageCropperPage {
     var DataBlob = content;
     //alert(DataBlob.type+" "+folderpath+filename);
 
-    console.log("Starting to write the file :3");
+    //alert("Starting to write the file :3");
     this.file.writeFile(folderpath, filename, DataBlob).then(()=>{
       this.writeFileCount++;
       this.savedFileUrl.push(folderpath+filename);

@@ -23,6 +23,7 @@ import { MyCatPage } from '../pages/mycat/mycat';
 import { MapPage } from '../pages/map/map';
 import { ImageCropperPage } from '../pages/image-cropper/image-cropper';
 
+import { ImageCropperModule } from 'ng2-img-cropper';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from "@angular/http";

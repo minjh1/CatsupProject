@@ -213,6 +213,7 @@ export class WritePage {
     }
   }
   openPhotoLibrary() {
+    
     var options: ImagePickerOptions = {
       maximumImagesCount: 10,
     }
