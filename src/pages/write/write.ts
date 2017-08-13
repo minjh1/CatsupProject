@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController, ActionSheetController, AlertController  } from 'ionic-angular';
+import { NavController, ModalController, ActionSheetController, AlertController, LoadingController  } from 'ionic-angular';
 import {Autosize} from 'ionic2-autosize';
 
 import { Camera, CameraOptions  } from '@ionic-native/camera';
@@ -36,6 +36,7 @@ export class WritePage {
   upload_count: number;
   aspectRatio: number;
   submitted = false;
+  loading;
   serverURL: string = 'http://45.249.160.73:5555';
   constructor(
     public navCtrl: NavController,
@@ -48,6 +49,7 @@ export class WritePage {
     public modalCtrl: ModalController,
     public userData: UserData,
     public actionSheetCtrl: ActionSheetController,
+    public loadingCtrl: LoadingController,
   ) {
     this.photos = [];
     this.cat_img = "assets/img/add.png";
@@ -66,13 +68,12 @@ export class WritePage {
     else if (this.write_content.content == undefined) {
       this.showAlert("글을 입력해주세요.")
     } else {
-
+      this.presentLoading();
       if (this.photos.length > 0) {
         this.write_content.type = 1;
       } else if (this.photos.length == 0) {
         this.write_content.type = 0;
       }
-
       this.addFeed(this.write_content);
     }
   }
@@ -117,15 +118,18 @@ export class WritePage {
         .then((data) => {
           this.upload_count++;
           if (this.upload_count == this.photos.length) { //업로드 완료
-            //this.showAlert("업로드 완료");
-            this.navCtrl.parent.select(2); //새로고침의 의미로 한번클릭
-            this.navCtrl.parent.select(0); //홈 탭으로 이동
-            this.navCtrl.parent.select(0);//새로고침의 의미로 두번
-          }
+            this.loading.dismiss();
+            this.refresh();
+            }
         }, (err) => {
 
         });
     }
+  }
+  refresh(){
+    this.navCtrl.parent.select(2); //새로고침의 의미로 한번클릭
+    this.navCtrl.parent.select(0); //홈 탭으로 이동
+    this.navCtrl.parent.select(0);//새로고침의 의미로 두번
   }
   showAlert(text: string) {
     let alert = this.alertCtrl.create({
@@ -145,6 +149,9 @@ export class WritePage {
         if (data.result == true) { //성공
           if (body.type == 1) {
             this.image_upload(data.wr_seq);
+          }else{
+            this.loading.dismiss();
+            this.refresh();
           }
         }
       });
@@ -213,7 +220,7 @@ export class WritePage {
     }
   }
   openPhotoLibrary() {
-    
+
     var options: ImagePickerOptions = {
       maximumImagesCount: 10,
     }
@@ -233,5 +240,12 @@ export class WritePage {
       }
     })
     modal.present();
+  }
+  presentLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: '업로드 중입니다 ^.^'
+    });
+
+    this.loading.present();
   }
 }

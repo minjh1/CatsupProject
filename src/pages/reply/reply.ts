@@ -162,18 +162,6 @@ export class ReplyPage {
           }else if (this.replyType == 1){
             this.getCatRelies(20, 0, this.seq);
           }
-          /*
-            if (data.imgUrl.indexOf("/") == 0) {
-              this.replies.push(new Reply(data.reply_seq, this.serverURL+data.imgUrl,
-                data.user_seq, data.nickname,
-                data.content, data.create_date));
-            }
-            else{
-              this.replies.push(new Reply(data.reply_seq, data.imgUrl,
-                data.user_seq, data.nickname,
-                data.content, data.create_date));
-            }
-*/
           this.reply_text = "";
 
         }, error => {

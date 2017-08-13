@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController,NavController, NavParams, ViewController,ModalController } from 'ionic-angular';
+import { AlertController,NavController, NavParams, ViewController,ModalController,LoadingController } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { Camera, CameraOptions  } from '@ionic-native/camera';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
@@ -24,6 +24,7 @@ export class AddCat {
     user_seq?:number,
   } = {};
   submitted=false;
+  loading;
 
   imgUrl:string;
 
@@ -35,6 +36,7 @@ export class AddCat {
     public userData: UserData,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
+    public loadingCtrl: LoadingController,
 
   ) {
     this.imgUrl="assets/img/add2.png";
@@ -50,6 +52,7 @@ export class AddCat {
     this.submitted =true;
     if (form.valid){
       this.upload();
+      this.presentLoading();
     }
   }
   upload(){
@@ -63,10 +66,15 @@ export class AddCat {
       }
       fileTransfer.upload(this.imgUrl, this.userData.serverURL + '/addCatProfile', fileOptions)
         .then((data) => {
+          this.loading.dismiss();
           this.dismiss();
+          this.refresh();
         }, (err) => {
 
         });
+  }
+  refresh(){
+    this.navCtrl.parent.select(3); //새로고침의 의미로 한번클릭
   }
   select_photo() {
     var options: CameraOptions = {
@@ -106,5 +114,12 @@ export class AddCat {
       }
     })
     modal.present();
+  }
+  presentLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: '잠시만 기다려주세요 ^^)/'
+    });
+
+    this.loading.present();
   }
 }

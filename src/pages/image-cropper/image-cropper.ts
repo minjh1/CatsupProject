@@ -1,5 +1,5 @@
 import { Component, ViewChild, ViewChildren, QueryList, ElementRef, Type } from '@angular/core';
-import { NavController, NavParams, ViewController, Loading, Slides } from 'ionic-angular';
+import { NavController, NavParams, ViewController, Loading, Slides, LoadingController } from 'ionic-angular';
 import Cropper from 'cropperjs';
 
 import { File } from '@ionic-native/file';
@@ -17,15 +17,17 @@ export class ImageCropperPage {
   croppedCanvasWidth: number;
   croppedCanvasHeight: number;
   imageElements: ElementRef[] = [];
-  writeFileCount:number=0;
-  savedFileUrl:string[]=[];
+  writeFileCount: number = 0;
+  savedFileUrl: string[] = [];
   images: any[] = [];
+  loading;
   @ViewChild(Slides) slides: Slides;
   @ViewChildren('imageSrc') imageElement: QueryList<ElementRef>;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController,
     private file: File,
-    ) {
+    public loadingCtrl: LoadingController,
+  ) {
     this.images = this.navParams.get('images');
     this.ratio = this.navParams.get('ratio');
     this.cropperInstances = new Array(this.images.length);
@@ -74,47 +76,55 @@ export class ImageCropperPage {
     this.viewCtrl.dismiss();
   }
 
-  cropDone()  {
-
+  cropDone() {
+    this.presentLoading();
     //    alert("cropDone");
     let croppedImg = new Array(this.images.length);
     for (var i = 0; i < this.images.length; i++) {
       croppedImg[i] = this.cropperInstances[i].getCroppedCanvas
-      ({ width: this.croppedCanvasWidth, height: this.croppedCanvasHeight }).toBlob((blob)=>{
-        var time = new Date().getTime();
-        this.saveBlobAsImageFile(this.file.externalCacheDirectory, time+'.jpg', blob);
-      },'image/jpg',0.8);
+        ({ width: this.croppedCanvasWidth, height: this.croppedCanvasHeight }).toBlob((blob) => {
+          var time = new Date().getTime();
+          this.saveBlobAsImageFile(this.file.externalCacheDirectory, time + '.jpg', blob);
+        }, 'image/jpg', 0.8);
     }
   }
-  toRight(){
-    if(!this.slides.isEnd()){
+  toRight() {
+    if (!this.slides.isEnd()) {
       this.slides.lockSwipes(false);
       this.slides.slideNext();
       this.slides.lockSwipes(true);
     }
   }
-  toLeft(){
-    if(!this.slides.isBeginning()){
+  toLeft() {
+    if (!this.slides.isBeginning()) {
       this.slides.lockSwipes(false);
       this.slides.slidePrev();
       this.slides.lockSwipes(true);
     }
   }
-  saveBlobAsImageFile(folderpath,filename,content){
+  saveBlobAsImageFile(folderpath, filename, content) {
     // Convert the base64 string in a Blob
     var DataBlob = content;
     //alert(DataBlob.type+" "+folderpath+filename);
 
     //alert("Starting to write the file :3");
-    this.file.writeFile(folderpath, filename, DataBlob).then(()=>{
+    this.file.writeFile(folderpath, filename, DataBlob).then(() => {
       this.writeFileCount++;
-      this.savedFileUrl.push(folderpath+filename);
-      if(this.writeFileCount==this.images.length){ //저장다했으면
+      this.savedFileUrl.push(folderpath + filename);
+      if (this.writeFileCount == this.images.length) { //저장다했으면
+        this.loading.dismiss();
         this.viewCtrl.dismiss(this.savedFileUrl);
       }
     })
-    .catch((err)=>{
-      alert('error writing blob'+err);
-    })
+      .catch((err) => {
+        alert('error writing blob' + err);
+      })
+  }
+  presentLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: '잠시만 기다려주세요 ^^)/'
+    });
+
+    this.loading.present();
   }
 }
