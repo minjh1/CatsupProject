@@ -27,8 +27,8 @@ export class MyPage {
   catsup_count: number;
 
   images: Array<string> = [];
-  grid: Array<Array<string>>; //array of arrays
-  rowNum: number;
+  //grid: Array<Array<string>>; //array of arrays
+//  rowNum: number;
 
   feeds: Array<Feed> = [];
   getFeedCount: number;
@@ -40,30 +40,18 @@ export class MyPage {
     private http: Http,
     public userData: UserData,
     public modalCtrl: ModalController,) {
-
-
-    /*
-      platform.ready().then((readySource) => {
-        this.p_width = platform.width();
-        console.log('Width: ' + platform.width() / 3);
-        console.log('Height: ' + platform.height());
-      });
-  */
-
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad Mypage');
-    this.grid = []; //MATHS!
-    this.rowNum = 0; //counter to iterate over the rows in the grid
     this.getFeedCount = 0;
-
     this.userData.getUserSeq().then(
       (seq) => {
         this.user_seq = seq;
         this.getUserData(seq);
         this.getUserFeeds(0, 15, seq);
       });
+
   }
   getUserData(seq: number) {
 
@@ -109,6 +97,7 @@ export class MyPage {
     this.http.post(this.serverURL + '/getUserFeeds', JSON.stringify(body), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
+        console.log(data.length);
         for (let i = 0; i < data.length; i++) {
           var text_cut = data[i].content.indexOf('\n');
           var content_preview, content_temp;
@@ -160,5 +149,24 @@ export class MyPage {
     let modal = this.modalCtrl.create(MyCatPage, { pageType: 1 });
     modal.present();
   }
-
+  doRefresh(refresher) {
+      this.feeds=[];
+      this.getFeedCount = 0;
+      this.userData.getUserSeq().then(
+        (seq) => {
+          this.user_seq = seq;
+          this.getUserData(seq);
+          this.getUserFeeds(0, 15, seq);
+        });
+      setTimeout(() => {
+        console.log('Async operation has ended');
+        refresher.complete();
+      }, 1000);
+    }
+    doInfinite(infiniteScroll) {
+    this.getUserFeeds(this.getFeedCount, 15, this.userData.userSeq);
+        setTimeout(() => {
+          infiniteScroll.complete();
+        }, 500);
+      }
 }

@@ -1,0 +1,27 @@
+page-post {
+
+  //@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+  //@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+  //@import url(https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css);
+  //@import url(https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css);
+  //@import url(https://googledrive.com/host/0BxmAw3HA4YGCfkpJRUw0RGNraDFnVzRFdjhaQnRFQ3BzZ00tRFZobGlKcmprb1hiSUFvZkE/nanumbarunpenr.css);
+
+  //@import url(https://cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css);
+    @import url(https://cdn.rawgit.com/puryfury/3b64232f8bd756b506c58d05f3a1099d/raw/63cdb9b39220747c29414739301c3572757a1cac/IropkeBatangM.css);
+  .post_content {
+    padding-top: 0px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: 0px;
+    line-height: 1.5;
+    //letter-spacing: 0.1px;
+    font-family: Iropke Batang;
+    //font-family: BM JUA;
+    font-size:18px;
+    //font-family: Noto Sans KR;
+    //font-family: Nanum Gothic;
+    //font-family: Nanum Barun Gothic;
+    //font-family: nanumbarunpen;
+    //font-weight: 500;
+  }
+}

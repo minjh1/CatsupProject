@@ -19,16 +19,15 @@ import 'rxjs/add/operator/map';
 export class CatsPage {
   cats: Cat[] = [];
   serverURL: string = 'http://45.249.160.73:5555';
+  getCatCount:number;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
     public modalCtrl: ModalController) {
+  }
+  ionViewDidLoad() {
+    this.getCatCount=0;
     this.getCats(0, 15);
-    /*
-      this.cats.push(new Cat('assets/img/cat1.png','까치','나비','순둥이','금오공대','흰 털에 검은무늬'));
-      this.cats.push(new Cat('assets/img/cat3.png','냥냥이','노랑이','마요','대구 XX동', '옅은 노랑, 친근함'));
-      this.cats.push(new Cat('assets/img/bob.png','Bob','','','London','목도리를 하고있음'));
-      */
   }
   getCats(offset: number, limit: number) {
     let headers = new Headers();
@@ -46,6 +45,7 @@ export class CatsPage {
             data[i].countArray, data[i].sex, data[i].habitat, data[i].latitude, data[i].longitude, data[i].info1, data[i].info2, data[i].info3,
             data[i].create_date, data[i].connection));
         }
+        this.getCatCount+=data.length;
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -65,17 +65,19 @@ export class CatsPage {
     });
   }
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
-    /*
+    this.getCats(this.getCatCount, 15);
        setTimeout(() => {
-         for (let i = 0; i < 30; i++) {
-           this.items.push( this.items.length );
-         }
-
-         console.log('Async operation has ended');
          infiniteScroll.complete();
        }, 500);
-       */
+  }
+  doRefresh(refresher) {
+    this.cats = [];
+    this.getCatCount=0;
+    this.getCats(0, 15);
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 1000);
   }
 
 

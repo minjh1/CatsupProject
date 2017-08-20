@@ -1,19 +1,96 @@
+
 page-about {
-  ion-col {
-    border-width: 1px;
-    border-bottom-style: solid;
-    border-color: #BDBDBD;
+  @import url(http://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
+  //@import url('https://cdn.rawgit.com/YJSoft/Webfonts/0.1/BM_JUA.css');
+  @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+  //@import url(https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css);
+  @import url(https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css);
+  
+  .post{
+    margin-right: 6px;
+    margin-top:6px;
+    margin-left: 6px;
+    margin-bottom: 6px;
+    text-align: center;
   }
-
-  img {
-    height: 114px;
+  .post_img{
     width: 100%;
-    padding: 6px;
+    border-radius: 4px;
   }
+  .card-title {
+    position: absolute;
+    top: 46%;
+    font-size: 3.4rem; //나눔펜
+    width: 94%;
+    margin-left: 10px;
+    font-weight: normal;
+    color: #fff;
+    text-shadow: 0px 0px 5px #000000;
+    font-family: Nanum Pen Script;
+  }
+  .card-title2 {
+    position: absolute;
+    top: 48%;
+    font-size: 2.9rem;
+    font-size: 3rem;
+    width: 94%;
+    margin-left: 10px;
+    font-weight: normal;
+    color: #fff;
+    text-shadow: 0px 0px 5px #000000;
+    font-family:BM JUA;
+  }
+  .news_title_bar{
+    padding-top: 4px;
+    padding-left: 16px;
+    padding-right: 2px;
+    padding-bottom: 4px;
+    background-color:#f5f5f5;
+    font-size: 1.4rem;
+  }
+  .swiper-pagination {
+    //padding: 3px;
+    bottom: 0;
 
-  .title {
+    .swiper-pagination-bullet {
+      background: #FFF;
+      margin: 0 3px;
+      box-shadow: 1px 1px 3px #595959;
+    }
+  }
+  .arrow{
+    font-size: 20px;
+    color: #ffc10a;
+  }
+  .pins{
+    column-count: 2;
+    column-gap: 6px;
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 6px;
+  }
+  .pin {
+    display: inline-grid;
+    margin: 0px;
+    margin-bottom: 6px;
+    padding: 0px;
+    border-radius: 6px;
+    box-shadow: 1px 1px 3px #c2c2c2;
+  //  box-shadow: 0px 0px 5px #d7d7d7;
+  }
+  .news_img{
+    width: 100%;
+    border-radius: 6px;
+    height: 90px;
+  }
+  .news_title{
+    height: 50px;
     padding-left: 6px;
     padding-right: 6px;
-    padding-bottom: 2px;
+    padding-top: 4px;
+    padding-bottom: 3px;
+   //font-family: NanumSquare;
+    font-family: Nanum Barun Gothic;
+    //font-family: Noto Sans KR;
   }
 }

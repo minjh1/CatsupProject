@@ -19,6 +19,10 @@
 
 
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div class="topdiv">
   <ion-item no-lines>
     <ion-avatar item-left>
@@ -54,15 +58,7 @@
   <div class="pins">
       <img class="pin" *ngFor="let feed of feeds" [src]="this.serverURL+feed.imgUrl[0]"/>
   </div>
-<!--
-  <ion-grid>
-    <ion-row *ngFor="let row of grid">
-      <ion-col col-4 *ngFor="let file_uri of row">
-        <div class="thumb">
-        <img [src]="file_uri">
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
--->
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+</ion-infinite-scroll>
 </ion-content>

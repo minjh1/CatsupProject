@@ -21,12 +21,48 @@
   .pa{
     padding-left: 9px;
   }
-  .title_bar{
-    padding-top: 16px;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-bottom: 16px;
+  .grey{
     background-color:#f5f5f5;
+  }
+  .title_bar{
+    padding-top: 4px;
+    padding-left: 17px;
+    padding-right: 2px;
+    padding-bottom: 4px;
+    background-color:#f5f5f5;
+    font-size: 1.4rem;
+  }
+  .title_bar_text{
+    padding-top: 16px;
+    padding-left: 18px;
+    padding-right: 16px;
+    padding-bottom: 17px;
+    background-color:#f5f5f5;
+    font-size: 1.4rem;
+  }
+  .title_bar1{
+    padding-top: 4px;
+    padding-left: 16px;
+    padding-right: 2px;
+    padding-bottom: 4px;
+    background-color:#f5f5f5;
+    font-size: 1.4rem;
+  }
+  .title_bar2{
+    padding-top: 4px;
+    padding-left: 8px;
+    padding-right: 0px;
+    padding-bottom: 4px;
+    background-color:#f5f5f5;
+    font-size: 1.4rem;
+  }
+  .title_bar3{
+    padding-top: 4px;
+    padding-left: 3px;
+    padding-right: 1px;
+    padding-bottom: 4px;
+    background-color:#f5f5f5;
+    font-size: 1.4rem;
   }
   .arrow{
     margin-left: 4px;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, PopoverController,AlertController  } from 'ionic-angular';
+import { NavController, ViewController, PopoverController,AlertController, ModalController } from 'ionic-angular';
 import { Feed } from '../../models/feed';
 import { ReplyPage } from '../reply/reply';
 import { Http, Headers } from '@angular/http';
@@ -15,17 +15,18 @@ import 'rxjs/add/operator/map';
 export class HomePage {
   feeds: Feed[] = [];
   serverURL: string = 'http://45.249.160.73:5555';
-
+  getFeedCount:number;
   constructor(
     public navCtrl: NavController,
     private http: Http,
     public popoverCtrl: PopoverController,
     public userData: UserData,
-  public alertCtrl: AlertController, ) {
+  public alertCtrl: AlertController,
+public modalCtrl: ModalController, ) {
   }
   ionViewDidLoad() {
-
-    this.getFeeds(0, 15);
+    this.getFeedCount=0;
+    this.getFeeds(0, 10);
   }
 
   getFeeds(offset: number, limit: number) {
@@ -39,6 +40,8 @@ export class HomePage {
     this.http.post(this.serverURL + '/getFeeds', JSON.stringify(body), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
+        console.log(data);
+          console.log(data.length);
         for (let i = 0; i < data.length; i++) {
           var text_cut = data[i].content.indexOf('\n');
           var content_preview, content_temp;
@@ -69,16 +72,23 @@ export class HomePage {
           }
 
         }
+        this.getFeedCount+=data.length;
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
   }
 
   openReplyPage(replyType, seq) {
-    this.navCtrl.push(ReplyPage, {
+    let modal = this.modalCtrl.create(ReplyPage, {
       replyType: replyType,
       seq: seq
     });
+    modal.onDidDismiss(data => {
+      if (data != null) {
+
+      }
+    })
+    modal.present();
   }
   deleteFeed(wr_seq){
     let headers = new Headers();
@@ -86,7 +96,6 @@ export class HomePage {
     let body = {
       wr_seq: wr_seq
     }
-
     this.http.post(this.serverURL + '/deleteFeed', JSON.stringify(body), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
@@ -162,4 +171,20 @@ export class HomePage {
   content_more(feed){
     feed.content_more=true;
   }
+  doRefresh(refresher) {
+    this.getFeedCount=0;
+    this.feeds=[];
+    this.getFeeds(0, 10);
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 1200);
+  }
+  doInfinite(infiniteScroll) {
+    this.getFeeds(this.getFeedCount, 10);
+    setTimeout(() => {
+      infiniteScroll.complete();
+    }, 500);
+  }
+
 }

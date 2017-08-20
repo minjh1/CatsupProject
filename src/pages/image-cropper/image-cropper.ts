@@ -1,8 +1,7 @@
 import { Component, ViewChild, ViewChildren, QueryList, ElementRef, Type } from '@angular/core';
 import { NavController, NavParams, ViewController, Loading, Slides, LoadingController } from 'ionic-angular';
 import Cropper from 'cropperjs';
-
-import { File } from '@ionic-native/file';
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery';
 
 @Component({
   selector: 'page-image-cropper',
@@ -17,22 +16,21 @@ export class ImageCropperPage {
   croppedCanvasWidth: number;
   croppedCanvasHeight: number;
   imageElements: ElementRef[] = [];
-  writeFileCount: number = 0;
   savedFileUrl: string[] = [];
+  blobUrl: string[] = [];
   images: any[] = [];
-  loading;
   @ViewChild(Slides) slides: Slides;
   @ViewChildren('imageSrc') imageElement: QueryList<ElementRef>;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController,
-    private file: File,
+    private base64ToGallery: Base64ToGallery,
     public loadingCtrl: LoadingController,
   ) {
     this.images = this.navParams.get('images');
     this.ratio = this.navParams.get('ratio');
     this.cropperInstances = new Array(this.images.length);
-  }
 
+  }
   ionViewDidLoad() {
     switch (this.ratio) {
       case 4 / 3:
@@ -48,13 +46,11 @@ export class ImageCropperPage {
         this.croppedCanvasHeight = 1000;
         break;
     }
-
     this.imageElement.forEach((img: ElementRef, i) => {
       img.nativeElement.src = this.images[i];
       this.cropImage(i, img);
     })
     this.slides.lockSwipes(true);
-
   }
   cropImage(i, img: ElementRef) {
     this.cropperInstances[i] = new Cropper(img.nativeElement, {
@@ -71,22 +67,31 @@ export class ImageCropperPage {
       modal: true,
     });
   }
-
   dismiss() {
     this.viewCtrl.dismiss();
   }
-
   cropDone() {
-    this.presentLoading();
-    //    alert("cropDone");
-    let croppedImg = new Array(this.images.length);
-    for (var i = 0; i < this.images.length; i++) {
-      croppedImg[i] = this.cropperInstances[i].getCroppedCanvas
-        ({ width: this.croppedCanvasWidth, height: this.croppedCanvasHeight }).toBlob((blob) => {
-          var time = new Date().getTime();
-          this.saveBlobAsImageFile(this.file.externalCacheDirectory, time + '.jpg', blob);
-        }, 'image/jpg', 0.8);
-    }
+    let loading = this.loadingCtrl.create({
+      content: '잠시만 기다려주세요 ^^)/'
+    });
+    loading.present().then(() => {
+      let croppedImg = [];
+      let savedImg = [];
+      for (var i = 0; i < this.images.length; i++) {
+        croppedImg.push(this.cropperInstances[i].getCroppedCanvas
+          ({ width: this.croppedCanvasWidth, height: this.croppedCanvasHeight }).toDataURL('image/jpg', 0.8));
+        this.base64ToGallery.base64ToGallery(croppedImg[i], { prefix: 'catsup_' }).then(
+          res => {
+            this.savedFileUrl.push(res); //URL
+            if (this.savedFileUrl.length == this.images.length) { //저장다했으면
+              loading.dismiss();
+              this.viewCtrl.dismiss(this.savedFileUrl);
+            }
+          },
+          err => console.log('Error saving image to gallery ', err)
+        );
+      }
+    });
   }
   toRight() {
     if (!this.slides.isEnd()) {
@@ -101,30 +106,5 @@ export class ImageCropperPage {
       this.slides.slidePrev();
       this.slides.lockSwipes(true);
     }
-  }
-  saveBlobAsImageFile(folderpath, filename, content) {
-    // Convert the base64 string in a Blob
-    var DataBlob = content;
-    //alert(DataBlob.type+" "+folderpath+filename);
-
-    //alert("Starting to write the file :3");
-    this.file.writeFile(folderpath, filename, DataBlob).then(() => {
-      this.writeFileCount++;
-      this.savedFileUrl.push(folderpath + filename);
-      if (this.writeFileCount == this.images.length) { //저장다했으면
-        this.loading.dismiss();
-        this.viewCtrl.dismiss(this.savedFileUrl);
-      }
-    })
-      .catch((err) => {
-        alert('error writing blob' + err);
-      })
-  }
-  presentLoading() {
-    this.loading = this.loadingCtrl.create({
-      content: '잠시만 기다려주세요 ^^)/'
-    });
-
-    this.loading.present();
   }
 }

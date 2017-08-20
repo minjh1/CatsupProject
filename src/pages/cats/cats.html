@@ -7,6 +7,9 @@
 </ion-header>
 
 <ion-content class="outer-content">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-fab right bottom>
     <button ion-fab color="AmberCat" (click)="openAddCatPage()">

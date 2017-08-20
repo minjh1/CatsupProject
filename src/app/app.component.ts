@@ -21,10 +21,10 @@ export class MyApp {
     public storage: Storage,
     public userData: UserData) {
 
-    this.userData.getUserSeq();
+    //this.userData.getUserSeq();
     //this.rootPage = TutorialPage;
-    this.rootPage = TabsPage;
-/*
+    //this.rootPage = TabsPage;
+
     this.storage.get('hasSeenTutorial')
       .then((hasSeenTutorial) => {
         if (hasSeenTutorial) {
@@ -34,7 +34,7 @@ export class MyApp {
         }
         this.platformReady();
       });
-*/
+
   }
 
   platformReady(){

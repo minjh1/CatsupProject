@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams,PopoverController } from 'ionic-angular';
+import { NavController, NavParams, PopoverController, ViewController } from 'ionic-angular';
 import { Reply } from '../../models/reply';
 import { Content } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
@@ -28,7 +28,9 @@ export class ReplyPage {
     public navParams: NavParams,
     private http: Http,
     public userData: UserData,
-  public popoverCtrl: PopoverController,) {
+    public popoverCtrl: PopoverController,
+    public viewCtrl: ViewController,
+  ) {
 
     this.replyType = this.navParams.get("replyType"); //게시글?프로필?
     this.seq = this.navParams.get("seq");
@@ -45,6 +47,9 @@ export class ReplyPage {
       (seq) => {
         this.user_seq = seq;
       });
+  }
+  dismiss() {
+    this.viewCtrl.dismiss() //페이지 끔
   }
   getFeedReplies(limit, offset, seq) {
     let headers = new Headers();
@@ -86,53 +91,53 @@ export class ReplyPage {
       this.presentPopover(OtherReplyPopPage, reply.reply_seq, reply.user_seq);
     }
   }
-  presentPopover(PageName, reply_seq, user_seq){
+  presentPopover(PageName, reply_seq, user_seq) {
     let popover = this.popoverCtrl.create(PageName);
-    popover.onDidDismiss(data=>{
-      if(data!=null){
-        if (data=="delete_reply"){ //글삭제
+    popover.onDidDismiss(data => {
+      if (data != null) {
+        if (data == "delete_reply") { //글삭제
           this.deleteReply(reply_seq);
         }
-        else if (data=="modify_reply"){ //글수정
+        else if (data == "modify_reply") { //글수정
           this.modifyReply(reply_seq);
         }
-        else{ //글신고
-          this.reportReply(data,reply_seq,user_seq);
+        else { //글신고
+          this.reportReply(data, reply_seq, user_seq);
         }
       }
 
     });
     popover.present();
   }
-  deleteReply(reply_seq){
+  deleteReply(reply_seq) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let body = {
-      reply_type : this.replyType,
+      reply_type: this.replyType,
       reply_seq: reply_seq
     }
 
     this.http.post(this.serverURL + '/deleteReply', JSON.stringify(body), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
-        if(data=="success"){
+        if (data == "success") {
           this.replies = [];
-          if (this.replyType == 0){
+          if (this.replyType == 0) {
             this.getFeedReplies(20, 0, this.seq);
-          }else if (this.replyType == 1){
+          } else if (this.replyType == 1) {
             this.getCatRelies(20, 0, this.seq);
           }
-        }else{
-        //  this.showAlert("글을 삭제하지 못하였습니다.")
+        } else {
+          //  this.showAlert("글을 삭제하지 못하였습니다.")
         }
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
   }
-  modifyReply(reply_seq){
+  modifyReply(reply_seq) {
 
   }
-  reportReply(data,reply_seq,user_seq){
+  reportReply(data, reply_seq, user_seq) {
 
   }
   colorChange() {
@@ -157,9 +162,9 @@ export class ReplyPage {
         .map(res => res.json())
         .subscribe(data => {
           this.replies = [];
-          if (this.replyType == 0){
+          if (this.replyType == 0) {
             this.getFeedReplies(20, 0, this.seq);
-          }else if (this.replyType == 1){
+          } else if (this.replyType == 1) {
             this.getCatRelies(20, 0, this.seq);
           }
           this.reply_text = "";

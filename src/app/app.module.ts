@@ -22,13 +22,15 @@ import { SignUpPage } from '../pages/signup/signup';
 import { MyCatPage } from '../pages/mycat/mycat';
 import { MapPage } from '../pages/map/map';
 import { ImageCropperPage } from '../pages/image-cropper/image-cropper';
+import { PostPage } from '../pages/post/post';
 
-import { ImageCropperModule } from 'ng2-img-cropper';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from "@angular/http";
 import { IonicStorageModule } from '@ionic/storage';
 import { Facebook } from '@ionic-native/facebook';
+import { BrowserTab } from '@ionic-native/browser-tab';
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery';
 
 import { UserData } from '../providers/user-data';
 
@@ -38,7 +40,6 @@ import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { ImagePicker } from '@ionic-native/image-picker'; //이미지 다중선택
 import { Geolocation } from '@ionic-native/geolocation';
-import { Crop } from '@ionic-native/crop';
 
 @NgModule({
   declarations: [
@@ -63,12 +64,13 @@ import { Crop } from '@ionic-native/crop';
     ImageCropperPage,
     MyReplyPopPage,
     OtherReplyPopPage,
+    PostPage,
   ],
   imports: [
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp, {
-      tabsHideOnSubPages: true,
+    //  tabsHideOnSubPages: true,
     }),
     IonicStorageModule.forRoot(),
   ],
@@ -94,6 +96,7 @@ import { Crop } from '@ionic-native/crop';
     ImageCropperPage,
     MyReplyPopPage,
     OtherReplyPopPage,
+    PostPage,
   ],
   providers: [
     StatusBar,
@@ -106,6 +109,8 @@ import { Crop } from '@ionic-native/crop';
     Transfer,
     ImagePicker,
     Geolocation,
+    BrowserTab,
+    Base64ToGallery,
   ]
 })
 export class AppModule { }

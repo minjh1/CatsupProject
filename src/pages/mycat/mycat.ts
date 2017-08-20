@@ -15,9 +15,10 @@ import 'rxjs/add/operator/map';
 export class MyCatPage {
   pageType: number; //0:글쓰기에서, 1:마이페이지에서
   cats: MyCat[] = [];
-  cat : Cat;
+  cat: Cat;
   user_seq: number;
   serverURL: string;
+  getCatCount: number;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -31,10 +32,11 @@ export class MyCatPage {
     this.userData.getUserSeq().then(
       (seq) => {
         this.user_seq = seq;
-        this.getMyCats(0, 20, seq);
+        this.getCatCount = 0;
+        this.getMyCats(0, 15, seq);
       });
   }
-  dismiss(){
+  dismiss() {
     this.viewCtrl.dismiss();
   }
   select_dismiss(cat) {
@@ -51,14 +53,12 @@ export class MyCatPage {
     this.http.post(this.serverURL + '/getMyCatList', JSON.stringify(body), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
-        if (data.result == false) {
-        } else {
-          for (let i = 0; i < data.length; i++) {
-            this.cats.push(new MyCat(data[i].cat_seq, data[i].name,
-              this.serverURL + data[i].avatar,
-              data[i].habitat, data[i].info1));
-          }
+        for (let i = 0; i < data.length; i++) {
+          this.cats.push(new MyCat(data[i].cat_seq, data[i].name,
+            this.serverURL + data[i].avatar,
+            data[i].habitat, data[i].info1));
         }
+        this.getCatCount += data.length;
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -81,10 +81,10 @@ export class MyCatPage {
     this.http.post(this.serverURL + '/getCat', JSON.stringify(body), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
-          this.cat = new Cat(data.cat_seq, this.serverURL + data.avatar, data.nameCount, data.nameArray,
-            data.countArray, data.sex, data.habitat, data.latitude, data.longitude, data.info1, data.info2, data.info3,
-            data.create_date, data.connection);
-          this.openDetailPage(this.cat);
+        this.cat = new Cat(data.cat_seq, this.serverURL + data.avatar, data.nameCount, data.nameArray,
+          data.countArray, data.sex, data.habitat, data.latitude, data.longitude, data.info1, data.info2, data.info3,
+          data.create_date, data.connection);
+        this.openDetailPage(this.cat);
 
       }, error => {
         console.log(JSON.stringify(error.json()));
@@ -96,17 +96,11 @@ export class MyCatPage {
     });
   }
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
-    /*
-       setTimeout(() => {
-         for (let i = 0; i < 30; i++) {
-           this.items.push( this.items.length );
-         }
+    this.getMyCats(this.getCatCount, 15, this.userData.userSeq);
+    setTimeout(() => {
+      infiniteScroll.complete();
+    }, 500);
 
-         console.log('Async operation has ended');
-         infiniteScroll.complete();
-       }, 500);
-       */
   }
 
 

@@ -1,4 +1,3 @@
-
 export class Cat {
   seq: number;
   avatar: string="";
