@@ -4,6 +4,8 @@ import { Cat } from '../../models/cat';
 import { CatProfilePage } from './detail/detail';
 import { AddCat } from './add-cat/add-cat';
 import { Http, Headers } from '@angular/http';
+import { UserListPage } from '../user-list/user-list';
+import { UserData } from '../../providers/user-data'
 import 'rxjs/add/operator/map';
 
 /**
@@ -18,12 +20,14 @@ import 'rxjs/add/operator/map';
 })
 export class CatsPage {
   cats: Cat[] = [];
-  serverURL: string = 'http://45.249.160.73:5555';
+  serverURL: string;
   getCatCount:number;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController,
+    public userData: UserData) {
+    this.serverURL = this.userData.serverURL;
   }
   ionViewDidLoad() {
     this.getCatCount=0;
@@ -79,6 +83,5 @@ export class CatsPage {
       refresher.complete();
     }, 1000);
   }
-
 
 }

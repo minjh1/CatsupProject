@@ -10,7 +10,7 @@
       <img style="width:60px; height:60px;" src="{{cat.avatar}}" />
       </ion-avatar>
       <span class="d_mainName">{{cat.names[0]}}</span><span class="d_subName"> {{cat.names[1]}}</span><span *ngIf="cat.nameCount>2" class="d_subName">, {{cat.names[2]}}</span><br>
-      <ion-icon name="people" style="font-size:2.2rem;" color="LightGrayCat"></ion-icon>
+      <ion-icon (click)="openWatchList(cat.seq)" name="people" style="font-size:2.2rem;" color="LightGrayCat"></ion-icon>
       <span class="d_people">{{cat.connection}}</span><button outline style="margin-left:50px;" ion-button small color="AmberCat" (click)="watchCat()" >{{watchButton}}</button>
   </ion-item>
   <ion-item no-lines>

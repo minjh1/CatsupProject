@@ -23,6 +23,7 @@ import { MyCatPage } from '../pages/mycat/mycat';
 import { MapPage } from '../pages/map/map';
 import { ImageCropperPage } from '../pages/image-cropper/image-cropper';
 import { PostPage } from '../pages/post/post';
+import { UserListPage } from '../pages/user-list/user-list';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -65,6 +66,7 @@ import { Geolocation } from '@ionic-native/geolocation';
     MyReplyPopPage,
     OtherReplyPopPage,
     PostPage,
+    UserListPage,
   ],
   imports: [
     BrowserModule,
@@ -97,6 +99,7 @@ import { Geolocation } from '@ionic-native/geolocation';
     MyReplyPopPage,
     OtherReplyPopPage,
     PostPage,
+    UserListPage,
   ],
   providers: [
     StatusBar,

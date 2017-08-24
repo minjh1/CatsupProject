@@ -28,6 +28,7 @@ export class MyApp {
     this.storage.get('hasSeenTutorial')
       .then((hasSeenTutorial) => {
         if (hasSeenTutorial) {
+          this.userData.getUserSeq();
           this.rootPage = TabsPage;
         } else {
           this.rootPage = TutorialPage;

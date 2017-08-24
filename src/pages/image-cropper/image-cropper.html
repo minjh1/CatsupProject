@@ -18,36 +18,34 @@
       <img #imageSrc />
     </ion-slide>
   </ion-slides>
-  <!--
-  <img *ngIf="imageElements.length==1" src="{{imageElements[0]}}">
-  <ion-slides *ngIf="imageElements.length>1" pager>
-    <ion-slide *ngFor="let img of imageElements">
-      <img src="{{img}}">
-    </ion-slide>
-  </ion-slides>
-  -->
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <div class="map_footer" *ngIf="images.length>1">
-      <ion-row>
-        <ion-col (click)="toLeft()">
-          <span class="arrow"><ion-icon name="arrow-round-back"></ion-icon></span> 이전
+    <div class="grey">
+      <ion-row *ngIf="images.length>1">
+        <ion-col>
+          <button ion-item no-lines detail-none class="crop_footer" (click)="toLeft()">
+            <span class="c_arrow"><ion-icon name="arrow-round-back"></ion-icon></span> 이전
+          </button>
         </ion-col>
-        <ion-col col-6 (click)="cropDone()">
-          완료
-          <span class="arrow"><ion-icon name="paw"></ion-icon></span>
+        <ion-col col-6>
+          <button ion-item no-lines detail-none class="crop_footer" (click)="cropDone()">
+            완료
+            <span class="c_arrow"><ion-icon name="paw"></ion-icon></span>
+          </button>
         </ion-col>
-        <ion-col (click)="toRight()">
-          다음
-          <span class="arrow"><ion-icon name="arrow-round-forward"></ion-icon></span>
+        <ion-col>
+          <button ion-item no-lines detail-none class="crop_footer" (click)="toRight()">
+            다음
+            <span class="c_arrow"><ion-icon name="arrow-round-forward"></ion-icon></span>
+          </button>
         </ion-col>
       </ion-row>
-    </div>
-    <div class="map_footer" *ngIf="images.length==1" (click)="cropDone()">
-      완료
-      <span class="arrow"><ion-icon name="paw"></ion-icon></span>
+    <button ion-item no-lines detail-none class="crop_footer" *ngIf="images.length==1" (click)="cropDone()">
+    완료
+    <span class="c_arrow"><ion-icon name="paw"></ion-icon></span>
+    </button>
     </div>
   </ion-toolbar>
 

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="pageType==0">
       <button ion-button (click)=dismiss()>
       <ion-icon name="close"></ion-icon>
     </button>
@@ -12,15 +12,18 @@
 <ion-content class="outer-content">
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
-    <button ion-item *ngFor="let cat of cats" (click)="selectCat(cat)">
+    <button ion-item detail-none *ngFor="let cat of cats" (click)="selectCat(cat)">
       <ion-avatar item-left>
         <img style="height: 4.6rem; width: 4.6rem;" src="{{cat.avatar}}">
       </ion-avatar>
       <span class="mainName">{{cat.name}} </span> <br>
       <span class="habitat">{{cat.habitat}} /</span><span class="info"> {{cat.info1}}</span>
-      <div item-right>
+      <div item-right *ngIf="pageType==0">
         <ion-icon name="heart" color="OrangeCat2"></ion-icon>
         <span class="select">선택</span>
+      </div>
+      <div item-right *ngIf="pageType==1">
+        <ion-icon name="ios-arrow-forward" class="arrow"></ion-icon>
       </div>
     </button>
   </ion-list>

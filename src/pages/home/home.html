@@ -43,20 +43,24 @@
     </ion-slides>
     <div class="likebar">
       <ion-row>
-        <ion-col text-center>
-          <button ion-button color="GrayCat" clear small icon-left>
+        <ion-col text-center (click)="Like(feed)">
+          <button ion-button color="GrayCat" clear small icon-left *ngIf="feed.isLiked==false" class="buttonText">
             <ion-icon name='heart'></ion-icon>
-            케첩 {{feed.likeCount}}
+            케첩
+          </button>
+          <button ion-button color="GrayCat" clear small icon-left *ngIf="feed.isLiked==true" class="buttonText">
+            <ion-icon class="liked" name='heart'></ion-icon>
+            케첩
           </button>
         </ion-col>
         <ion-col text-center (click)="openReplyPage(0, feed.wr_seq)">
-          <button ion-button color="GrayCat" clear small icon-left >
+          <button ion-button color="GrayCat" clear small icon-left class="buttonText">
             <ion-icon name='text'></ion-icon>
-            댓글 {{feed.replyCount}}
+            댓글
           </button>
         </ion-col>
         <ion-col text-center>
-          <button ion-button color="GrayCat" clear small icon-left>
+          <button ion-button color="GrayCat" clear small icon-left class="buttonText">
             <ion-icon name='share-alt'></ion-icon>
             공유
           </button>
@@ -70,8 +74,8 @@
       <div *ngIf="feed.content.length==feed.content_preview.length || feed.content_more==true">
         <p class="content_text">{{feed.content}}</p>
       </div>
+        <p class="infobar"><span (click)="openLikeList(feed.wr_seq)">케첩 {{feed.likeCount}}명</span><span *ngIf="feed.replyCount>0" (click)="openReplyPage(0, feed.wr_seq)"> · 댓글 {{feed.replyCount}}개</span></p>
     </ion-card-content>
-
   </ion-card>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
    <ion-infinite-scroll-content></ion-infinite-scroll-content>

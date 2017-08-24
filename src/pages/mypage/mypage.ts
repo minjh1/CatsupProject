@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { UserData } from '../../providers/user-data'
@@ -17,6 +17,7 @@ import { MyCatPage } from '../mycat/mycat';
   templateUrl: 'mypage.html',
 })
 export class MyPage {
+  pageType: number ; //0:나, 1:타인
   user_seq: number;
   id: string;
   nickname: string;
@@ -25,33 +26,38 @@ export class MyPage {
   cat_count: number;
   feed_count: number;
   catsup_count: number;
+  feedPlus:number = 15;
 
   images: Array<string> = [];
-  //grid: Array<Array<string>>; //array of arrays
-//  rowNum: number;
-
   feeds: Array<Feed> = [];
   getFeedCount: number;
 
-  serverURL: string = 'http://45.249.160.73:5555';
+  serverURL: string;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
     public userData: UserData,
-    public modalCtrl: ModalController,) {
+    public modalCtrl: ModalController) {
+    this.serverURL = this.userData.serverURL;
+    if(this.navParams.get("pageType") == null){
+      this.pageType = 0;
+    }else{
+      this.pageType = this.navParams.get("pageType");
+    }
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad Mypage');
     this.getFeedCount = 0;
-    this.userData.getUserSeq().then(
-      (seq) => {
-        this.user_seq = seq;
-        this.getUserData(seq);
-        this.getUserFeeds(0, 15, seq);
-      });
-
+    if (this.pageType == 0) {
+      this.user_seq = this.userData.userSeq;
+      this.getUserData(this.user_seq);
+      this.getUserFeeds(0, this.feedPlus, this.user_seq);
+    } else {
+      this.user_seq = this.navParams.get("user_seq");
+      this.getUserData(this.user_seq);
+      this.getUserFeeds(0, this.feedPlus, this.user_seq);
+    }
   }
   getUserData(seq: number) {
 
@@ -101,43 +107,49 @@ export class MyPage {
         for (let i = 0; i < data.length; i++) {
           var text_cut = data[i].content.indexOf('\n');
           var content_preview, content_temp;
-          if (text_cut==-1 || text_cut > 90){ // 엔터없으면 90자까지 표시
+          if (text_cut == -1 || text_cut > 90) { // 엔터없으면 90자까지 표시
             content_preview = data[i].content.substr(0, 90);
-          }else{ //있음
-            var count=2; //최대 3줄 표시
-            while(count--){
-              content_temp = data[i].content.substr(text_cut+1,50);
+          } else { //있음
+            var count = 2; //최대 3줄 표시
+            while (count--) {
+              content_temp = data[i].content.substr(text_cut + 1, 50);
               var text_cut_temp = content_temp.indexOf('\n');
-              if (text_cut_temp == -1){
+              if (text_cut_temp == -1) {
                 break;
               }
-              text_cut += text_cut_temp+1;
+              text_cut += text_cut_temp + 1;
             }
-            content_preview = data[i].content.substr(0,text_cut);
+            content_preview = data[i].content.substr(0, text_cut);
+          }
+
+          if (data[i].like_users.indexOf(this.userData.userSeq) == -1) {
+            var isLiked = false;
+          } else {
+            var isLiked = true;
           }
           this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL + data[i].catImg, data[i].catName,
-            data[i].user_seq, this.serverURL + data[i].userImg, data[i].userName, data[i].imgUrl,content_preview, data[i].content, data[i].create_date,
-            data[i].likeCount, data[i].replyCount));
+            data[i].user_seq, this.serverURL + data[i].userImg, data[i].userName, data[i].imgUrl, content_preview, data[i].content, data[i].create_date,
+            data[i].likeCount, isLiked, data[i].replyCount));
         }
-/*
-        for (let i = this.getFeedCount; i < this.getFeedCount + data.length; i += 3) { //iterate images
-          this.grid[this.rowNum] = Array(3); //declare three elements per row
-          if (this.feeds[i]) { //check file URI exists
-            this.grid[this.rowNum][0] = this.serverURL + this.feeds[i].imgUrl[0] //insert image
-          }
-          if (this.feeds[i + 1]) { //repeat for the second image
-            this.grid[this.rowNum][1] = this.serverURL + this.feeds[i + 1].imgUrl[0]
-          } else {
-            this.grid[this.rowNum][1] = "http://homepages.neiu.edu/~whuang2/cs300/images/white.png"
-          }
-          if (this.feeds[i + 2]) { //repeat for the second image
-            this.grid[this.rowNum][2] = this.serverURL + this.feeds[i + 2].imgUrl[0]
-          } else {
-            this.grid[this.rowNum][2] = "http://homepages.neiu.edu/~whuang2/cs300/images/white.png"
-          }
-          this.rowNum++; //go on to the next row
-        }
-        */
+        /*
+                for (let i = this.getFeedCount; i < this.getFeedCount + data.length; i += 3) { //iterate images
+                  this.grid[this.rowNum] = Array(3); //declare three elements per row
+                  if (this.feeds[i]) { //check file URI exists
+                    this.grid[this.rowNum][0] = this.serverURL + this.feeds[i].imgUrl[0] //insert image
+                  }
+                  if (this.feeds[i + 1]) { //repeat for the second image
+                    this.grid[this.rowNum][1] = this.serverURL + this.feeds[i + 1].imgUrl[0]
+                  } else {
+                    this.grid[this.rowNum][1] = "http://homepages.neiu.edu/~whuang2/cs300/images/white.png"
+                  }
+                  if (this.feeds[i + 2]) { //repeat for the second image
+                    this.grid[this.rowNum][2] = this.serverURL + this.feeds[i + 2].imgUrl[0]
+                  } else {
+                    this.grid[this.rowNum][2] = "http://homepages.neiu.edu/~whuang2/cs300/images/white.png"
+                  }
+                  this.rowNum++; //go on to the next row
+                }
+                */
         this.getFeedCount += data.length;
 
       }, error => {
@@ -145,28 +157,24 @@ export class MyPage {
       })
 
   }
-  openMyCatPage(){
-    let modal = this.modalCtrl.create(MyCatPage, { pageType: 1 });
-    modal.present();
+  openMyCatPage() {
+    this.navCtrl.push(MyCatPage, { pageType: 1, user_seq:this.user_seq });
   }
   doRefresh(refresher) {
-      this.feeds=[];
-      this.getFeedCount = 0;
-      this.userData.getUserSeq().then(
-        (seq) => {
-          this.user_seq = seq;
-          this.getUserData(seq);
-          this.getUserFeeds(0, 15, seq);
-        });
-      setTimeout(() => {
-        console.log('Async operation has ended');
-        refresher.complete();
-      }, 1000);
-    }
-    doInfinite(infiniteScroll) {
-    this.getUserFeeds(this.getFeedCount, 15, this.userData.userSeq);
-        setTimeout(() => {
-          infiniteScroll.complete();
-        }, 500);
-      }
+    this.feeds = [];
+    this.getFeedCount = 0;
+    this.getUserData(this.user_seq);
+    this.getUserFeeds(0, this.feedPlus, this.user_seq);
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 1000);
+  }
+  doInfinite(infiniteScroll) {
+    this.getUserFeeds(this.getFeedCount, this.feedPlus, this.user_seq);
+    setTimeout(() => {
+      infiniteScroll.complete();
+    }, 500);
+  }
 }

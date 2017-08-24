@@ -1,10 +1,30 @@
 page-home {
+  @import url('https://cdn.rawgit.com/YJSoft/Webfonts/0.1/BM_JUA.css');
   .home{
     background-color: #eeeeee;
   }
   .likebar{
+    padding-top: 2px;
+  }
+  .infobar{
+    font-size: 13px;
+    color : #777777;
+    font-family: BM JUA;
+    padding-top: 2px;
+    right: 15px;
+    position: absolute;
+  }
+  .card_content {
+    margin-top: 0;
     padding-top: 3px;
-    padding-bottom: 3px;
+    margin-bottom: 22px;
+  }
+  .content_text {
+    white-space: pre-line;
+    font-size: 1.5rem;
+  }
+  .buttonText{
+    font-size: 14px;
   }
   .namebar {
     position: relative;
@@ -16,16 +36,6 @@ page-home {
   }
   .catIcon {
     border: 1px solid #c1c1c1;
-  }
-
-  .card_content {
-    margin-top: 0;
-    padding-top: 3px;
-  }
-
-  p.content_text {
-    white-space: pre-line;
-    font-size: 1.5rem;
   }
   .more{
     color: #ffba0a;
@@ -42,4 +52,11 @@ page-home {
       box-shadow: 1px 1px 3px #595959;
     }
   }
+}
+.toast{
+  text-align:center;
+}
+.liked {
+  color : #de5b5b;
+  font-size: 15px;
 }

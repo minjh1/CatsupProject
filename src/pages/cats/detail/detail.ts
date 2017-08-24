@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavParams, ModalController, AlertController, ToastController   } from 'ionic-angular'
+import { NavParams,NavController, ModalController, AlertController, ToastController } from 'ionic-angular'
 import { Cat } from '../../../models/cat';
 import { MapPage } from '../../map/map';
 import { Http, Headers } from '@angular/http';
 import { UserData } from '../../../providers/user-data'
+import { UserListPage } from '../../user-list/user-list';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -20,6 +21,7 @@ export class CatProfilePage {
 
   constructor(public navParams: NavParams,
     public modalCtrl: ModalController,
+    public navCtrl: NavController,
     private http: Http,
     public userData: UserData,
     public alertCtrl: AlertController,
@@ -194,4 +196,10 @@ export class CatProfilePage {
     toast.present();
   }
 
+  openWatchList(cat_seq) {
+    this.navCtrl.push(UserListPage, {
+      pageType: 1,
+      seq: cat_seq,
+    });
+  }
 }

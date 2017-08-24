@@ -29,12 +29,15 @@ export class MyCatPage {
   ) {
     this.serverURL = this.userData.serverURL;
     this.pageType = this.navParams.get("pageType");
-    this.userData.getUserSeq().then(
-      (seq) => {
-        this.user_seq = seq;
-        this.getCatCount = 0;
-        this.getMyCats(0, 15, seq);
-      });
+  }
+  ionViewDidLoad() {
+    this.getCatCount = 0;
+    if(this.pageType==1){
+      this.user_seq=this.navParams.get("user_seq");
+      this.getMyCats(0, 15, this.user_seq);
+    }else{
+      this.getMyCats(0, 15, this.userData.userSeq);
+    }
   }
   dismiss() {
     this.viewCtrl.dismiss();

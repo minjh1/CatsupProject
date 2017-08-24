@@ -1,4 +1,19 @@
 page-image-cropper {
+  .c_arrow{
+    margin-left: 3px;
+    margin-right: 3px;
+    font-size: 15px;
+    color: #ffc10a;
+  }
+  .grey{
+    background-color:#f5f5f5;
+  }
+  .crop_footer{
+    text-align: center;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color:#f5f5f5;
+  }
   .cimg {
     width: 100%;
     height: 100%;
