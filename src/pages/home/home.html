@@ -14,18 +14,18 @@
           <ion-row>
             <ion-col>
               <ion-avatar>
-                <img class="catIcon" src="{{feed.catImg}}">
+                <img class="catIcon" src="{{feed.catImg}}" (click)="getCat(feed.cat_seq)">
               </ion-avatar>
             </ion-col>
             <ion-col>
               <ion-avatar>
-                <img class="userIcon" src="{{feed.userImg}}">
+                <img class="userIcon" src="{{feed.userImg}}" (click)="openOtherUserPage(feed.user_seq)">
               </ion-avatar>
             </ion-col>
           </ion-row>
       </div>
       <div class="namebar">
-        <h2>{{feed.catName}} / {{feed.userName}}</h2>
+        <h2><span (click)="getCat(feed.cat_seq)">{{feed.catName}}</span> / <span (click)="openOtherUserPage(feed.user_seq)">{{feed.userName}}</span></h2>
         <p>{{feed.create_date}}</p>
       </div>
       <div class="icons2" item-end>
@@ -53,7 +53,7 @@
             케첩
           </button>
         </ion-col>
-        <ion-col text-center (click)="openReplyPage(0, feed.wr_seq)">
+        <ion-col text-center (click)="openReplyPage(0, feed)">
           <button ion-button color="GrayCat" clear small icon-left class="buttonText">
             <ion-icon name='text'></ion-icon>
             댓글
@@ -74,7 +74,7 @@
       <div *ngIf="feed.content.length==feed.content_preview.length || feed.content_more==true">
         <p class="content_text">{{feed.content}}</p>
       </div>
-        <p class="infobar"><span (click)="openLikeList(feed.wr_seq)">케첩 {{feed.likeCount}}명</span><span *ngIf="feed.replyCount>0" (click)="openReplyPage(0, feed.wr_seq)"> · 댓글 {{feed.replyCount}}개</span></p>
+        <p class="infobar"><span (click)="openLikeList(feed.wr_seq)">케첩 {{feed.likeCount}}명</span><span *ngIf="feed.replyCount>0" (click)="openReplyPage(0, feed)"> · 댓글 {{feed.replyCount}}개</span></p>
     </ion-card-content>
   </ion-card>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">

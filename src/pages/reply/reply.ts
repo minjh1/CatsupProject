@@ -17,8 +17,12 @@ export class ReplyPage {
 
   replyType: number; //0:글, 1:냥로필
   seq: number;
-  serverURL: string = 'http://45.249.160.73:5555';
+  serverURL: string;
   user_seq: number;
+  replyPlus : number = 10;
+  getReplyCount : number;
+  addCount : number =0;
+  delCount : number =0;
 
   replies: Reply[] = [];
   iconColor: string = "LightGrayCat";
@@ -31,27 +35,28 @@ export class ReplyPage {
     public popoverCtrl: PopoverController,
     public viewCtrl: ViewController,
   ) {
-
+    this.serverURL = this.userData.serverURL;
     this.replyType = this.navParams.get("replyType"); //게시글?프로필?
     this.seq = this.navParams.get("seq");
 
   }
   ionViewDidLoad() {
+    this.getReplyCount=0;
     if (this.replyType == 0) { //글이면
-      this.getFeedReplies(20, 0, this.seq);
+      this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies')
     } else { //고양이 프로필이면
-      this.getCatRelies(20, 0, this.seq);
+      this.getReplies(this.replyPlus, 0, this.seq, '/getCatRelies');
     }
-
-    this.userData.getUserSeq().then(
-      (seq) => {
-        this.user_seq = seq;
-      });
+    setTimeout(()=>{this.content.scrollToBottom()},150);
+    this.user_seq= this.userData.userSeq;
   }
   dismiss() {
-    this.viewCtrl.dismiss() //페이지 끔
+    this.viewCtrl.dismiss({count:this.addCount-this.delCount}) //페이지 끔
   }
-  getFeedReplies(limit, offset, seq) {
+  ionViewWillLeave() {
+    this.viewCtrl.dismiss({count:this.addCount-this.delCount})
+  }
+  getReplies(limit, offset, seq, action) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let body = {
@@ -60,7 +65,7 @@ export class ReplyPage {
       wr_seq: seq,
     }
 
-    this.http.post(this.serverURL + '/getFeedReplies', JSON.stringify(body),
+    this.http.post(this.serverURL + action, JSON.stringify(body),
       { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
@@ -76,6 +81,7 @@ export class ReplyPage {
               data[i].content, data[i].create_date));
           }
         }
+        this.getReplyCount+=data.length;
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -96,10 +102,22 @@ export class ReplyPage {
     popover.onDidDismiss(data => {
       if (data != null) {
         if (data == "delete_reply") { //글삭제
-          this.deleteReply(reply_seq);
+          if(this.replyType == 0){
+            this.deleteReply(reply_seq, '/deleteReply');
+          }else if (this.replyType==1){
+            this.deleteReply(reply_seq, '/deleteCatReply');
+          }
         }
         else if (data == "modify_reply") { //글수정
-          this.modifyReply(reply_seq);
+          switch(this.replyType){
+            case 0:
+              this.modifyReply(reply_seq, '/modifyFeedReply');
+            break;
+            case 1:
+              this.modifyReply(reply_seq, '/modifyCatReply');
+            break;
+          }
+
         }
         else { //글신고
           this.reportReply(data, reply_seq, user_seq);
@@ -109,7 +127,7 @@ export class ReplyPage {
     });
     popover.present();
   }
-  deleteReply(reply_seq) {
+  deleteReply(reply_seq, action) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let body = {
@@ -117,24 +135,26 @@ export class ReplyPage {
       reply_seq: reply_seq
     }
 
-    this.http.post(this.serverURL + '/deleteReply', JSON.stringify(body), { headers: headers })
+    this.http.post(this.serverURL + action, JSON.stringify(body), { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
         if (data == "success") {
           this.replies = [];
           if (this.replyType == 0) {
-            this.getFeedReplies(20, 0, this.seq);
+            this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies');
           } else if (this.replyType == 1) {
-            this.getCatRelies(20, 0, this.seq);
+            this.getReplies(this.replyPlus, 0, this.seq, '/getCatRelies');
           }
         } else {
           //  this.showAlert("글을 삭제하지 못하였습니다.")
         }
+        setTimeout(()=>{this.content.scrollToBottom(0)},100);
+        this.delCount++;
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
   }
-  modifyReply(reply_seq) {
+  modifyReply(reply_seq, action) {
 
   }
   reportReply(data, reply_seq, user_seq) {
@@ -162,16 +182,31 @@ export class ReplyPage {
         .map(res => res.json())
         .subscribe(data => {
           this.replies = [];
+          this.getReplyCount=0;
           if (this.replyType == 0) {
-            this.getFeedReplies(20, 0, this.seq);
+            this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies');
           } else if (this.replyType == 1) {
-            this.getCatRelies(20, 0, this.seq);
+            this.getReplies(this.replyPlus, 0, this.seq, 'getCatRelies');
           }
           this.reply_text = "";
-
+          this.addCount++;
+          setTimeout(()=>{this.content.scrollToBottom(0)},100);
         }, error => {
           console.log(JSON.stringify(error.json()));
         })
     }
   }
+  doRefresh(refresher) {
+    switch(this.replyType){
+      case 0:
+      this.getReplies(this.replyPlus, this.getReplyCount, this.seq, '/getFeedReplies');
+      break;
+      case 1:
+      this.getReplies(this.replyPlus, this.getReplyCount, this.seq, '/getCatReplies');
+      break;
+    }
+   setTimeout(() => {
+     refresher.complete();
+   }, 300);
+ }
 }

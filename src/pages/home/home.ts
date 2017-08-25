@@ -7,6 +7,9 @@ import { Http, Headers } from '@angular/http';
 import { MyPopoverPage } from '../pop_over/my_pop_over';
 import { OtherPopoverPage } from '../pop_over/other_pop_over';
 import { UserData } from '../../providers/user-data'
+import { MyPage } from '../mypage/mypage';
+import { CatProfilePage } from '../cats/detail/detail'
+import { Cat } from '../../models/cat';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -84,14 +87,14 @@ export class HomePage {
       })
   }
 
-  openReplyPage(replyType, seq) {
+  openReplyPage(replyType, feed) {
     let modal = this.modalCtrl.create(ReplyPage, {
       replyType: replyType,
-      seq: seq
+      seq: feed.wr_seq
     });
     modal.onDidDismiss(data => {
       if (data != null) {
-
+        feed.replyCount+=data.count;
       }
     })
     modal.present();
@@ -239,4 +242,32 @@ export class HomePage {
       seq: wr_seq,
     });
   }
+  openOtherUserPage(user_seq) {
+    this.navCtrl.push(MyPage, { pageType: 1, user_seq:user_seq });
+  }
+  getCat(cat_seq) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let body = {
+      cat_seq: cat_seq
+    }
+
+    this.http.post(this.serverURL + '/getCat', JSON.stringify(body), { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+        var cat = new Cat(data.cat_seq, this.serverURL + data.avatar, data.nameCount, data.nameArray,
+          data.countArray, data.sex, data.habitat, data.latitude, data.longitude, data.info1, data.info2, data.info3,
+          data.create_date, data.connection);
+        this.openCatDetailPage(cat);
+
+      }, error => {
+        console.log(JSON.stringify(error.json()));
+      })
+  }
+  openCatDetailPage(cat) {
+  this.navCtrl.push(CatProfilePage, {
+    cat: cat,
+  });
+}
+
 }
