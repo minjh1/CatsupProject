@@ -34,6 +34,7 @@ export class UserData {
 */
   setUserSeq(seq: number): void {
     this.storage.set('userSeq', seq);
+    this.userSeq=seq;
   };
 
   getUserSeq(): Promise<number> {

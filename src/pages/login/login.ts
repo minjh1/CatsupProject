@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController,ModalController } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { AlertController } from 'ionic-angular';
+import { SignUpPage } from '../signup/signup';
+
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
@@ -21,16 +24,18 @@ export class LoginPage {
   } = {};
 
   submitted=false;
-  serverURL: string = 'http://45.249.160.73:5555';
+  serverURL: string;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
     private http: Http,
     public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
     public storage: Storage,
-    public userData: UserData) {
-
+    public userData: UserData,
+    private fb: Facebook) {
+    this.serverURL=this.userData.serverURL;
   }
 
   dismiss(){
@@ -53,7 +58,6 @@ export class LoginPage {
         .subscribe(data => {
           if(data.result==true){ //성공
             this.navCtrl.push(TabsPage).then(() => {
-              this.storage.set('hasSeenTutorial', 'true');
               this.userData.login(data.seq);
             })
           }
@@ -81,5 +85,48 @@ export class LoginPage {
         })
     }
   }
+  openSignUpPage() {
+    let signUpPage = this.modalCtrl.create(SignUpPage);
+    signUpPage.present();
+  }
+  facebookLogin() {
+    this.fb.login(['public_profile', 'email'])
+      .then((res: FacebookLoginResponse) => {
+        console.log('Logged into Facebook!', res)
 
+        this.getFacebookData();
+      })
+      .catch(e => console.log('Error logging into Facebook', e));
+
+
+    this.fb.logEvent(this.fb.EVENTS.EVENT_NAME_ADDED_TO_CART);
+  }
+  getFacebookData() {
+    this.fb.api('me?fields=id,name,email,picture.width(160).height(160).type(square)',
+      ['public_profile', 'email'])
+      .then((res) => {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        let body = {
+          id: res.id,
+          email: res.email,
+          nickname: res.name,
+          picture: res.picture.data.url,
+        }
+        //api로 받은 데이타를 body에 넣음
+        this.http.post(this.serverURL + '/FacebookLoginReq', JSON.stringify(body),
+          { headers: headers })
+          .map(res => res.json())
+          .subscribe(data => {
+            if (data.result == true) { //성공
+              this.navCtrl.push(TabsPage).then(() => {
+                this.storage.set('hasSeenTutorial', 'true');
+                this.userData.signup(data.seq);
+              })
+            }
+          }, error => {
+            console.log(JSON.stringify(error.json()));
+          })
+      })
+  }
 }

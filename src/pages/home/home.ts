@@ -20,6 +20,8 @@ export class HomePage {
   feeds: Feed[] = [];
   serverURL: string;
   getFeedCount: number;
+  more:boolean = true;
+  feedPlus:number = 10;
   constructor(
     public navCtrl: NavController,
     private http: Http,
@@ -32,7 +34,7 @@ export class HomePage {
   }
   ionViewDidLoad() {
     this.getFeedCount = 0;
-    this.getFeeds(0, 10);
+    this.getFeeds(0, this.feedPlus);
   }
 
   getFeeds(offset: number, limit: number) {
@@ -82,6 +84,9 @@ export class HomePage {
 
         }
         this.getFeedCount += data.length;
+        if(data.length < this.feedPlus){
+          this.more=false;
+        }
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -183,14 +188,14 @@ export class HomePage {
   doRefresh(refresher) {
     this.getFeedCount = 0;
     this.feeds = [];
-    this.getFeeds(0, 10);
+    this.getFeeds(0, this.feedPlus);
     setTimeout(() => {
       console.log('Async operation has ended');
       refresher.complete();
     }, 1200);
   }
   doInfinite(infiniteScroll) {
-    this.getFeeds(this.getFeedCount, 10);
+    this.getFeeds(this.getFeedCount, this.feedPlus);
     setTimeout(() => {
       infiniteScroll.complete();
     }, 500);

@@ -77,7 +77,7 @@
         <p class="infobar"><span (click)="openLikeList(feed.wr_seq)">케첩 {{feed.likeCount}}명</span><span *ngIf="feed.replyCount>0" (click)="openReplyPage(0, feed)"> · 댓글 {{feed.replyCount}}개</span></p>
     </ion-card-content>
   </ion-card>
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="more==true">
    <ion-infinite-scroll-content></ion-infinite-scroll-content>
  </ion-infinite-scroll>
 </ion-content>

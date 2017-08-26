@@ -5,7 +5,7 @@ page-about {
   @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
   //@import url(https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css);
   @import url(https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css);
-  
+
   .post{
     margin-right: 6px;
     margin-top:6px;
@@ -26,7 +26,7 @@ page-about {
     font-weight: normal;
     color: #fff;
     text-shadow: 0px 0px 5px #000000;
-    font-family: Nanum Pen Script;
+    font-family: NanumPen;
   }
   .card-title2 {
     position: absolute;
@@ -80,14 +80,14 @@ page-about {
   }
   .news_img{
     width: 100%;
-    border-radius: 6px;
+    border-radius: 6px 6px 0px 0px;
     height: 90px;
   }
   .news_title{
     height: 50px;
     padding-left: 6px;
     padding-right: 6px;
-    padding-top: 4px;
+    padding-top: 6px;
     padding-bottom: 3px;
    //font-family: NanumSquare;
     font-family: Nanum Barun Gothic;

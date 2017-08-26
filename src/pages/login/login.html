@@ -10,6 +10,7 @@
 </ion-header>
 
 <ion-content padding>
+  <p class="slide-title">캐츠업 계정이 있으신가요?</p>
   <form #LoginForm="ngForm" novalidate>
     <ion-list>
       <ion-item>
@@ -27,8 +28,22 @@
         비밀번호를 입력하세요!
       </p>
     </ion-list>
-    <div padding>
+    <div>
       <button ion-button (click)="Login(LoginForm)" type="submit" color="AmberCat" block>로그인</button>
     </div>
   </form>
+  <br>
+  <hr>
+
+  <p class="slide-title">계정이 없다면 5초만에 회원가입!</p>
+  <div>
+    <button ion-button (click)="openSignUpPage()" icon-left color="AmberCat" block>
+      <ion-icon name="person-add"></ion-icon>
+      캐츠업 회원가입
+    </button>
+    <button ion-button (click)="facebookLogin()" icon-left color="facebook" block>
+      <ion-icon name="logo-facebook"></ion-icon>
+      Facebook 계정으로 로그인
+    </button>
+  </div>
 </ion-content>

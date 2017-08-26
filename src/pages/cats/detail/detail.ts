@@ -4,10 +4,12 @@ import { Cat } from '../../../models/cat';
 import { MapPage } from '../../map/map';
 import { Http, Headers } from '@angular/http';
 import { UserData } from '../../../providers/user-data'
+import { Feed } from '../../../models/feed';
 import { UserListPage } from '../../user-list/user-list';
 import 'rxjs/add/operator/map';
 
 @Component({
+  selector: 'page-detail',
   templateUrl: 'detail.html',
 })
 
@@ -18,6 +20,12 @@ export class CatProfilePage {
   watchButton: string;
   myCatName: string;
   alert;
+
+  getFeedCount: number;
+  feedPlus:number = 15;
+  feeds: Array<Feed> = [];
+
+  more:boolean = true;
 
   constructor(public navParams: NavParams,
     public modalCtrl: ModalController,
@@ -32,6 +40,8 @@ export class CatProfilePage {
   }
   ionViewDidLoad() {
     this.getConnectionWithCat();
+    this.getFeedCount=0;
+    this.getCatFeeds(this.getFeedCount, this.feedPlus, this.cat.seq);
   }
   openMap() {
     let modal = this.modalCtrl.create(MapPage, { pageType: 1, name: this.cat.names[0], lat: this.cat.latitude, lng: this.cat.longitude });
@@ -52,7 +62,7 @@ export class CatProfilePage {
           console.log("true" + data.name);
           this.connect = true;
           this.myCatName = data.name;
-          this.watchButton = "♥" + data.name + "♥";
+          this.watchButton =data.name ;
         } else {
           console.log("false");
           this.connect = false;
@@ -77,7 +87,7 @@ export class CatProfilePage {
         this.presentToast(cat_name + "를(을) '지켜보기' 하였습니다!");
         this.connect = true;
         this.myCatName = cat_name;
-        this.watchButton = "♥" + cat_name + "♥";
+        this.watchButton = cat_name;
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -202,4 +212,61 @@ export class CatProfilePage {
       seq: cat_seq,
     });
   }
+  getCatFeeds(offset: number, limit: number, seq: number) {
+
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let body = {
+      seq: seq,
+      limit: limit,
+      offset: offset,
+    }
+
+    this.http.post(this.serverURL + '/getCatFeeds', JSON.stringify(body), { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log(data.length);
+        for (let i = 0; i < data.length; i++) {
+          var text_cut = data[i].content.indexOf('\n');
+          var content_preview, content_temp;
+          if (text_cut == -1 || text_cut > 90) { // 엔터없으면 90자까지 표시
+            content_preview = data[i].content.substr(0, 90);
+          } else { //있음
+            var count = 2; //최대 3줄 표시
+            while (count--) {
+              content_temp = data[i].content.substr(text_cut + 1, 50);
+              var text_cut_temp = content_temp.indexOf('\n');
+              if (text_cut_temp == -1) {
+                break;
+              }
+              text_cut += text_cut_temp + 1;
+            }
+            content_preview = data[i].content.substr(0, text_cut);
+          }
+
+          if (data[i].like_users.indexOf(this.userData.userSeq) == -1) {
+            var isLiked = false;
+          } else {
+            var isLiked = true;
+          }
+          this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL + data[i].catImg, data[i].catName,
+            data[i].user_seq, this.serverURL + data[i].userImg, data[i].userName, data[i].imgUrl, content_preview, data[i].content, data[i].create_date,
+            data[i].likeCount, isLiked, data[i].replyCount));
+        }
+        this.getFeedCount += data.length;
+        if(data.length < this.feedPlus){
+          this.more=false;
+        }
+
+      }, error => {
+        console.log(JSON.stringify(error.json()));
+      })
+
+  }
+  doInfinite(infiniteScroll) {
+      this.getCatFeeds(this.getFeedCount, this.feedPlus, this.cat.seq);
+      setTimeout(() => {
+        infiniteScroll.complete();
+      }, 500);
+    }
 }

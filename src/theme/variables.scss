@@ -4,7 +4,38 @@ $font-path: "../assets/fonts";
 
 @import url('//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css');
 @import "ionic.globals";
-
+@font-face {
+font-family: 'BMJUA';
+src: url('../assets/fonts/BMJUA.ttf') format('truetype'),
+}
+@font-face {
+font-family: 'NanumSquareL';
+src: url('../assets/fonts/NanumSquareL.ttf') format('truetype'),
+}
+@font-face {
+font-family: 'IropkeBatang';
+src: url('../assets/fonts/IropkeBatang.ttf') format('truetype'),
+}
+@font-face {
+font-family: 'NanumSquareR';
+src: url('../assets/fonts/NanumSquareR.ttf') format('truetype'),
+}
+@font-face {
+font-family: 'NanumPen';
+src: url('../assets/fonts/NanumPen.ttf') format('truetype'),
+}
+@font-face {
+font-family: 'yanoljaR';
+src: url('../assets/fonts/yanoljaR.ttf') format('truetype'),
+}
+@font-face {
+font-family: 'BarunGothic';
+src: url('../assets/fonts/BarunGothic.ttf') format('truetype'),
+}
+@font-face {
+font-family: 'BarunGothicB';
+src: url('../assets/fonts/BarunGothicB.ttf') format('truetype'),
+}
 // Shared Variables
 // --------------------------------------------------
 // To customize the look and feel of this app, you can override
@@ -33,6 +64,7 @@ $colors: (
   LightGrayCat : #a1a1a1,
   LightGrayCat2: #b3b3b3,
   LightGrayCat3 :#d9d9d9,
+  LightLightGray : #e9e9e9,
   GrayCat: #616161,
   GrayCat2 : #707070,
   AmberCat :#ffab00,
@@ -41,9 +73,11 @@ $colors: (
   DarkSkyCat : #0b5e7c,
   DarkBrownCat : #49322c,
   OrangeCat : #ff5a00,
+  OrangeCat1 : #ff7300,
   OrangeCat2 : #ff8200,
   ySKyCat : #6bc6d3,
   facebook : #4267B2,
+  LightYellow:#ffcd3b,
 );
 
 
@@ -134,8 +168,20 @@ $refresher-border-color : #e3e3e3;
 //인피니트스크롤
 $infinite-scroll-loading-color : color($colors, YellowCat);
 
-
+//리스트 밑 공간
 $list-ios-margin-bottom : 22px;
+
+//칩
+$chip-ios-background-color : #ededed;
+$chip-ios-text-color : #333333;
+$chip-md-background-color : #ededed;
+$chip-md-text-color : #333333;
+
+//체크박스
+$alert-ios-button-text-color: color($colors, OrangeCat1);
+$alert-md-button-text-color : color($colors, OrangeCat1);
+$alert-md-input-border-color-focused : color($colors, OrangeCat1);
+$alert-ios-input-border-color-focused : color($colors, OrangeCat1);
 // App Theme
 // --------------------------------------------------
 // Ionic apps can have different themes applied, which can

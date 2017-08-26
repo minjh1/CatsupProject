@@ -4,36 +4,84 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-item no-lines>
-    <ion-avatar item-left>
-      <img style="width:60px; height:60px;" src="{{cat.avatar}}" />
-      </ion-avatar>
-      <span class="d_mainName">{{cat.names[0]}}</span><span class="d_subName"> {{cat.names[1]}}</span><span *ngIf="cat.nameCount>2" class="d_subName">, {{cat.names[2]}}</span><br>
-      <ion-icon (click)="openWatchList(cat.seq)" name="people" style="font-size:2.2rem;" color="LightGrayCat"></ion-icon>
-      <span class="d_people">{{cat.connection}}</span><button outline style="margin-left:50px;" ion-button small color="AmberCat" (click)="watchCat()" >{{watchButton}}</button>
-  </ion-item>
-  <ion-item no-lines>
-    <span class="d_title">\> 성별</span><br>
-    <div [ngSwitch]="cat.sex">
-      <span *ngSwitchCase="0" class="d_content"> 여</span>
-      <span *ngSwitchCase="1" class="d_content"> 남</span><br>
+<ion-content class="bg">
+  <div class="mainProfileBox">
+    <div class="mainProfile">
+      <ion-row>
+        <ion-col col-4>
+          <ion-item no-lines class="bck">
+            <ion-avatar>
+              <img style="width:80px; height:80px;" src="{{cat.avatar}}" class="avatarBorder" />
+            </ion-avatar>
+          </ion-item>
+        </ion-col>
+        <ion-col col-8>
+          <div class="mainProfileText">
+            <div (click)="openNameList(cat.seq)" class="marginB">
+              <span class="small up">이름</span><br>
+              <span class="large">{{cat.names[0]}}</span><span class="medium">  {{cat.names[1]}}</span>
+              <span *ngIf="cat.nameCount>2" class="medium">, {{cat.names[2]}}</span>
+              <ion-icon name="ios-arrow-forward" class="arrow"></ion-icon><br>
+            </div>
+            <div (click)="openWatchList(cat.seq)">
+              <span class="small">지켜보는 사람</span><br>
+              <span class="large"><ion-icon name="people" class="peo"></ion-icon>  {{cat.connection}}</span>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
     </div>
-    <br>
-    <span class="d_title">\> 서식 지역</span><br> <span class="arrow" [hidden]="cat.latitude==null" (click)="openMap()"><ion-icon name="pin"></ion-icon></span>
-    <span class="d_content">{{cat.habitat}}</span><br>
-    <br>
-    <span class="d_title">\> 특징</span><br>
-    <span class="d_content">① {{cat.info1}}</span><br>
-    <span class="d_content">② {{cat.info2}}</span><br>
-    <span class="d_content">③ {{cat.info3}}</span><br>
-  </ion-item>
+  </div>
+  <button ion-button class="Btn0 infoBarText2" color="LightYellow" (click)="watchCat()">
+    <ion-icon *ngIf="connect==true" name="heart1" class="heart1"></ion-icon>
+    {{watchButton}}
+    <ion-icon *ngIf="connect==true" name="heart2" class="heart2"></ion-icon>
+  </button>
+  <div class="infoBox">
+    <div class="infoBar border_top infoBarText">성별</div>
+    <div class="catInfo center">
+      <div [ngSwitch]="cat.sex">
+        <ion-icon *ngSwitchCase="0" class="genderIcon1" name="md-female"></ion-icon>
+        <span *ngSwitchCase="0" class="infoText">여</span>
+        <ion-icon *ngSwitchCase="1" class="genderIcon2" name="md-male"></ion-icon>
+        <span *ngSwitchCase="1" class="infoText">남</span><br>
+      </div>
+    </div>
+    <div class="infoBar infoBarText">서식 지역</div>
+    <div class="catInfo infoText center">
+      <span *ngIf ="cat.latitude==null">{{cat.habitat}}</span>
+      <ion-chip *ngIf ="cat.latitude!=null" (click)="openMap()">
+        <ion-icon name="pin" color="DarkBrownCat"></ion-icon>
+        <ion-label class="verticalB">{{cat.habitat}} (지도 확인하기)　</ion-label>
+      </ion-chip>
+    </div>
+    <div class="infoBar infoBarText">특징</div>
+    <div class="catInfo border_bot infoText">
+      ① {{cat.info1}} <br>
+      ② {{cat.info2}} <br>
+      ③ {{cat.info3}} <br>
+    </div>
+  </div>
   <ion-row>
     <ion-col>
-      <button style="" outline ion-button small block color="dark">댓글 17</button>
+      <button ion-button class="Btn2 infoBarText border_left" color="LightYellow">
+        댓글
+    </button>
     </ion-col>
     <ion-col>
-      <button style="" outline ion-button small block color="dark">프로필 수정</button>
+      <button ion-button class="Btn3 infoBarText border_right" color="LightLightGray">
+        프로필 수정
+    </button>
+
     </ion-col>
   </ion-row>
+  <div class="bg2">
+    <span class="feed">게시물</span><ion-icon name="ios-arrow-down" class="arrow2"></ion-icon>
+    <div class="pins">
+        <img class="pin" *ngFor="let feed of feeds" [src]="this.serverURL+feed.imgUrl[0]"/>
+    </div>
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="more==true">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  </div>
 </ion-content>

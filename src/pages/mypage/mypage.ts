@@ -28,10 +28,9 @@ export class MyPage {
   catsup_count: number;
   feedPlus:number = 15;
 
-  images: Array<string> = [];
   feeds: Array<Feed> = [];
   getFeedCount: number;
-
+  more:boolean = true;
   serverURL: string;
 
   constructor(public navCtrl: NavController,
@@ -131,27 +130,10 @@ export class MyPage {
             data[i].user_seq, this.serverURL + data[i].userImg, data[i].userName, data[i].imgUrl, content_preview, data[i].content, data[i].create_date,
             data[i].likeCount, isLiked, data[i].replyCount));
         }
-        /*
-                for (let i = this.getFeedCount; i < this.getFeedCount + data.length; i += 3) { //iterate images
-                  this.grid[this.rowNum] = Array(3); //declare three elements per row
-                  if (this.feeds[i]) { //check file URI exists
-                    this.grid[this.rowNum][0] = this.serverURL + this.feeds[i].imgUrl[0] //insert image
-                  }
-                  if (this.feeds[i + 1]) { //repeat for the second image
-                    this.grid[this.rowNum][1] = this.serverURL + this.feeds[i + 1].imgUrl[0]
-                  } else {
-                    this.grid[this.rowNum][1] = "http://homepages.neiu.edu/~whuang2/cs300/images/white.png"
-                  }
-                  if (this.feeds[i + 2]) { //repeat for the second image
-                    this.grid[this.rowNum][2] = this.serverURL + this.feeds[i + 2].imgUrl[0]
-                  } else {
-                    this.grid[this.rowNum][2] = "http://homepages.neiu.edu/~whuang2/cs300/images/white.png"
-                  }
-                  this.rowNum++; //go on to the next row
-                }
-                */
         this.getFeedCount += data.length;
-
+        if(data.length < this.feedPlus){
+          this.more=false;
+        }
       }, error => {
         console.log(JSON.stringify(error.json()));
       })

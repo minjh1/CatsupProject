@@ -33,26 +33,9 @@
     </ion-slide>
 
     <ion-slide>
-      <img src="assets/img/title1.png" class="slide-image" />
-      <p class="slide-title">캐츠업 계정이 있으신가요?</p>
-      <div padding>
-        <button ion-button (click)="openLoginPage()" icon-left color="AmberCat" block>
-          <ion-icon name="paw"></ion-icon>
-          캐츠업 로그인
-        </button>
-        <button ion-button (click)="openSignUpPage()" icon-left color="AmberCat" block>
-          <ion-icon name="person-add"></ion-icon>
-          캐츠업 회원가입
-        </button>
-        <hr>
-        <button ion-button (click)="facebookLogin()" icon-left color="facebook" block>
-          <ion-icon name="logo-facebook"></ion-icon>
-          Facebook 계정으로 로그인
-        </button>
-      </div>
 
 
-      <button ion-button icon-right large clear (click)="startApp()">
+      <button ion-button icon-right large clear (click)="openLoginPage()">
         Continue
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
