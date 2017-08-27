@@ -1,4 +1,72 @@
 page-mypage {
+  .bg{
+    background-color: #f0f0f0;
+  }
+  .mainProfileBox{
+    background-color: #ffffff;
+    background-size: cover;
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 0px;
+    margin-bottom: 2px;
+    border-radius: 0px 0px 10px 10px;
+    border-width :thick;
+    border-style: solid;
+    border-color: #ffffff;
+    box-shadow: 1px 1px 3px #c2c2c2;
+  }
+  .mainProfileText{
+    padding-top: 16px;
+  }
+  .up{
+    vertical-align: 2px;
+  }
+  .small{
+    color: #4a4a4a;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: NanumSquareL
+  }
+  .medium{
+    color: #444444;
+    font-size: 13px;
+  }
+  .large{
+    margin-left: 0px;
+    color: #333333;
+    font-family: NanumPen;
+    font-size: 31px;
+  }
+  .bck{
+    background-color: transparent !important;
+    padding-top: 0px;
+    padding-left: 12px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+  }
+  .avatarBorder{
+    border: 2px solid #cccccc;
+  }
+  .verticalB{
+    vertical-align: 0px;
+  }
+  .verticalB1{
+    vertical-align: -1px;
+  }
+  .icon0 {
+    margin-right: 2px;
+    color : #ffca28; //#ffca28;
+    font-size: 20px;
+  }
+  .icon1{
+    color : #595959; //#ffca28;
+    font-size: 16px;
+    margin-right: 1px;
+  }
+  .marginB{
+    margin-top: 6px;
+    margin-bottom: 1px;
+  }
   .pins{
     column-count: 3;
     column-gap: 6px;
@@ -12,57 +80,18 @@ page-mypage {
     margin-bottom: 2px;
     padding: 0px;
     border-radius: 6px;
-    box-shadow: 1px 1px 2px #bdbdbd;
+    box-shadow: 1px 1px 2px #838383;
   //  box-shadow: 0px 0px 5px #d7d7d7;
   }
-}
 
-.info {
-  line-height: 200%;
-  text-align: center;
-}
+  .info {
+    line-height: 200%;
+    text-align: center;
+  }
 
-.info_num {
-  font-size: 1.7rem;
-  color: #5e5e5e;
-}
-
-.user_img {
-  border: 0.5px solid #cccccc;
-}
-
-.topdiv {
-  padding: 12px 5px;
-}
-
-.top2 {
-  margin-top: 3px;
-}
-
-.nick {
-  font-weight: 700;
-  font-size: 1.7rem;
-}
-
-.memo {
-  color: #000000;
-  font-size: 1.3rem;
-}
-
-.thumb {
-  display: block;
-  overflow: hidden;
-  width: 100%;
-  height: 116px;
-}
-
-.thumb img {
-  display: block;
-  /* Otherwise it keeps some space around baseline */
-  min-width: 100%;
-  /* Scale up to fill container width */
-  min-height: 100%;
-  /* Scale up to fill container height */
-  -ms-interpolation-mode: bicubic;
-  /* Scaled images look a bit better in IE now */
+  .info_num {
+    font-size: 1.7rem;
+    font-family: BarunGothicB;
+    color: #5e5e5e;
+  }
 }

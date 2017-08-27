@@ -249,14 +249,22 @@ export class CatProfilePage {
             content_preview = data[i].content.substr(0, text_cut);
           }
 
-          if (data[i].like_users.indexOf(this.userData.userSeq) == -1) {
-            var isLiked = false;
+          var isLiked;
+          if (data[i].like_users.indexOf(""+this.userData.userSeq) == -1) {
+            isLiked = false;
           } else {
-            var isLiked = true;
+            isLiked = true;
           }
-          this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL + data[i].catImg, data[i].catName,
-            data[i].user_seq, this.serverURL + data[i].userImg, data[i].userName, data[i].imgUrl, content_preview, data[i].content, data[i].create_date,
-            data[i].likeCount, isLiked, data[i].replyCount));
+          if (data[i].userImg.indexOf("/") == 0) {
+            this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL + data[i].catImg, data[i].catName,
+              data[i].user_seq, this.serverURL + data[i].userImg, data[i].userName, data[i].imgUrl, content_preview, data[i].content, data[i].create_date,
+              data[i].likeCount, isLiked, data[i].replyCount));
+          }
+          else {
+            this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL + data[i].catImg, data[i].catName,
+              data[i].user_seq, data[i].userImg, data[i].userName, data[i].imgUrl, content_preview, data[i].content, data[i].create_date,
+              data[i].likeCount, isLiked, data[i].replyCount));
+          }
         }
         this.getFeedCount += data.length;
         if (data.length < this.feedPlus) {

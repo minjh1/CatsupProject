@@ -77,11 +77,12 @@ export class HomePage {
             }
             content_preview = data[i].content.substr(0, text_cut);
           }
-
+          var isLiked;
+          console.log(data[i].like_users);
           if (data[i].like_users.indexOf(""+this.userData.userSeq) == -1) {
-            var isLiked = false;
+            isLiked = false;
           } else {
-            var isLiked = true;
+            isLiked = true;
           }
           if (data[i].userImg.indexOf("/") == 0) {
             this.feeds.push(new Feed(data[i].wr_seq, data[i].type, data[i].cat_seq, this.serverURL + data[i].catImg, data[i].catName,

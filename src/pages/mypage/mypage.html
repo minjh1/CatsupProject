@@ -19,41 +19,47 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content class="bg">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-
-  <div class="topdiv">
-  <ion-item no-lines>
-    <ion-avatar item-left>
-      <img class="user_img" style="width:80px; height:80px;" src="{{image_url}}" />
-    </ion-avatar>
-      <span class="nick">{{nickname}}</span>
-      <br>
-      <div class="top2">
-      <span class="memo">{{memo}}</span>
-      </div>
-  </ion-item>
-  </div>
-  <ion-grid>
-    <div class="info">
+    <div class="mainProfileBox">
       <ion-row>
-        <ion-col (click)="openMyCatPage()">
-          <span class="info_num"><ion-icon name='paw'></ion-icon>  {{cat_count}}</span>
-          <br>지켜보는 고양이
+        <ion-col col-4>
+          <ion-item no-lines class="bck">
+            <ion-avatar>
+              <img style="width:80px; height:80px;" src="{{image_url}}" class="avatarBorder" />
+            </ion-avatar>
+          </ion-item>
         </ion-col>
-        <ion-col>
-          <span class="info_num"><ion-icon name='create'></ion-icon>  {{feed_count}}</span>
-          <br>게시글 수
-        </ion-col>
-        <ion-col>
-          <span class="info_num"><ion-icon name='heart'></ion-icon>  {{catsup_count}}</span>
-          <br>받은 케첩 수
+        <ion-col col-8>
+          <div class="mainProfileText">
+            <div class="marginB">
+              <span class="large">{{nickname}}</span>
+            </div>
+              <span class="medium" *ngIf="memo!=null"><ion-icon name="quote" class="icon0 verticalB1"></ion-icon>  {{memo}}</span>
+          </div>
         </ion-col>
       </ion-row>
-    </div>
-  </ion-grid>
+      <ion-grid>
+        <div class="info">
+          <ion-row>
+            <ion-col (click)="openMyCatPage()">
+              <span class="info_num"><ion-icon class="verticalB icon1" name='paw'></ion-icon>  {{cat_count}}</span>
+              <br>지켜보는 고양이
+            </ion-col>
+            <ion-col>
+              <span class="info_num"><ion-icon class="verticalB icon1" name='create'></ion-icon>  {{feed_count}}</span>
+              <br>게시글 수
+            </ion-col>
+            <ion-col>
+              <span class="info_num"><ion-icon class="verticalB icon1" name='heart'></ion-icon>  {{catsup_count}}</span>
+              <br>받은 케첩 수
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-grid>
+      </div>
   <hr>
 
   <div class="pins">
