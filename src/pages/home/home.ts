@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, PopoverController, AlertController, ModalController,ToastController } from 'ionic-angular';
+import { NavController, NavParams,ViewController, PopoverController, AlertController, ModalController,ToastController } from 'ionic-angular';
 import { Feed } from '../../models/feed';
 import { ReplyPage } from '../reply/reply';
 import { UserListPage } from '../user-list/user-list';
@@ -8,6 +8,7 @@ import { MyPopoverPage } from '../pop_over/my_pop_over';
 import { OtherPopoverPage } from '../pop_over/other_pop_over';
 import { UserData } from '../../providers/user-data'
 import { MyPage } from '../mypage/mypage';
+import { WritePage } from '../write/write';
 import { CatProfilePage } from '../cats/detail/detail'
 import { Cat } from '../../models/cat';
 import 'rxjs/add/operator/map';
@@ -19,6 +20,7 @@ import 'rxjs/add/operator/map';
 export class HomePage {
   feeds: Feed[] = [];
   serverURL: string;
+  pageType : number;
   getFeedCount: number;
   more:boolean = true;
   feedPlus:number = 10;
@@ -29,12 +31,22 @@ export class HomePage {
     public userData: UserData,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
-    public toastCtrl: ToastController,) {
+    public toastCtrl: ToastController,
+  public navParams: NavParams,) {
     this.serverURL = this.userData.serverURL;
+    this.pageType=navParams.get('pageType');
+    if(this.pageType==1){ //한 피드 확인
+      this.more=false;
+      this.feeds.push(this.navParams.get('feed'));
+    }else{ //홈
+      this.pageType=0;
+    }
   }
   ionViewDidLoad() {
-    this.getFeedCount = 0;
-    this.getFeeds(0, this.feedPlus);
+    if(this.pageType==0){ //홈
+      this.getFeedCount = 0;
+      this.getFeeds(0, this.feedPlus);
+    }
   }
 
   getFeeds(offset: number, limit: number) {
@@ -122,29 +134,41 @@ export class HomePage {
         console.log(JSON.stringify(error.json()));
       })
   }
-  modifyFeed(wr_seq) {
-
+  modifyFeed(feed) {
+    let modal = this.modalCtrl.create(WritePage, {
+      pageType: 1,
+      feed: feed
+    });
+    modal.onDidDismiss(data => {
+      if (data == true) {
+        this.showAlert("수정되었습니다 ^.^");
+        this.getFeedCount = 0;
+        this.feeds = [];
+        this.getFeeds(0, this.feedPlus);
+      }
+    })
+    modal.present();
   }
-  openPopover(wr_seq, user_seq) {
-    if (this.userData.userSeq == user_seq) { //내글
-      this.presentPopover(MyPopoverPage, wr_seq, user_seq);
+  openPopover(feed) {
+    if (this.userData.userSeq == feed.user_seq) { //내글
+      this.presentPopover(MyPopoverPage, feed);
 
     } else { //다른 사람 글
-      this.presentPopover(OtherPopoverPage, wr_seq, user_seq);
+      this.presentPopover(OtherPopoverPage, feed);
     }
   }
-  presentPopover(PageName, wr_seq, user_seq) {
+  presentPopover(PageName, feed) {
     let popover = this.popoverCtrl.create(PageName);
     popover.onDidDismiss(data => {
       if (data != null) {
         if (data == "delete_feed") { //글삭제
-          this.deleteFeed(wr_seq);
+          this.deleteFeed(feed.wr_seq);
         }
         else if (data == "modify_feed") { //글수정
-          this.modifyFeed(wr_seq);
+          this.modifyFeed(feed);
         }
         else { //글신고
-          this.reportFeed(data, wr_seq, user_seq);
+          this.reportFeed(data, feed.wr_seq, feed.user_seq);
         }
       }
 
@@ -262,7 +286,7 @@ export class HomePage {
       .subscribe(data => {
         var cat = new Cat(data.cat_seq, this.serverURL + data.avatar, data.nameCount, data.nameArray,
           data.countArray, data.sex, data.habitat, data.latitude, data.longitude, data.info1, data.info2, data.info3,
-          data.create_date, data.connection);
+          data.create_date, data.connection,data.replyCount);
         this.openCatDetailPage(cat);
 
       }, error => {

@@ -1,9 +1,14 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons end *ngIf="pageType==1">
+      <button ion-button (click)=dismiss()>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>
       글쓰기
     </ion-title>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="pageType==0">
       <button ion-button icon-right color="dark" (click)="write()">
         완료
       </button>
@@ -22,10 +27,10 @@
         <img class="cat_add" style="width:58px; height:58px;" src="{{cat_img}}"/>
       </ion-avatar>
       <span class="mainName">{{cat_name}} </span><br>
-      <span class="habitat">{{cat_habitat}} /</span><span class="info"> {{cat_info}}</span>
+      <span *ngIf="cat_habitat!=null" class="habitat">{{cat_habitat}} /</span><span class="info"> {{cat_info}}</span>
     </ion-item>
 
-    <div class="grey">
+    <div class="grey" *ngIf="pageType==0">
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -58,4 +63,7 @@
       <ion-textarea [(ngModel)]="write_content.content" placeholder="{{cat_name}}와(과) 어떤 일이 있었나요?" autosize></ion-textarea>
     </ion-item>
   </ion-list>
+  <button *ngIf="pageType==1" ion-button class="Btn" color="LightLightGray" (click)="modifyWrite()">
+    수정 완료
+  </button>
 </ion-content>

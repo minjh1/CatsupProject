@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, ModalController, ActionSheetController, AlertController, LoadingController  } from 'ionic-angular';
+import { NavController, ModalController, ActionSheetController, AlertController, LoadingController,NavParams,ViewController  } from 'ionic-angular';
 import {Autosize} from 'ionic2-autosize';
 
 import { Camera, CameraOptions  } from '@ionic-native/camera';
@@ -21,6 +21,8 @@ import { ImageCropperPage } from '../image-cropper/image-cropper';
   templateUrl: 'write.html',
 })
 export class WritePage {
+  pageType :number ; //0 글쓰기 1 수정
+  feed ;
   write_content:
   {
     cat_seq?: number,
@@ -37,6 +39,7 @@ export class WritePage {
   aspectRatio: number;
   submitted = false;
   loading;
+  modOK = false;
   serverURL: string = 'http://45.249.160.73:5555';
   constructor(
     public navCtrl: NavController,
@@ -50,16 +53,28 @@ export class WritePage {
     public userData: UserData,
     public actionSheetCtrl: ActionSheetController,
     public loadingCtrl: LoadingController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController
   ) {
-    this.photos = [];
-    this.cat_img = "assets/img/add.png";
-    this.write_content.type = 0; //기본:글
-    this.upload_count = 0; //기본:글
-    this.cat_name = "고양이";
-    this.userData.getUserSeq().then(
-      (seq) => {
-        this.write_content.user_seq = seq;
-      });
+    this.pageType = navParams.get('pageType');
+    this.write_content.user_seq = this.userData.userSeq;
+    if(this.pageType!=1){
+      this.pageType=0;
+      this.photos = [];
+      this.cat_img = "assets/img/add.png";
+      this.write_content.type = 0; //기본:글
+      this.upload_count = 0; //기본:글
+      this.cat_name = "고양이";
+    }else if(this.pageType==1){ //수정
+      this.feed=navParams.get('feed');
+      this.photos = [];
+      this.write_content.type= this.feed.type;
+      this.upload_count = 0;
+      this.cat_name = this.feed.catName;
+      this.cat_img = this.feed.catImg;
+      this.write_content.content=this.feed.content;
+      this.write_content.cat_seq = this.feed.cat_seq;
+    }
   }
   write() { //완료
     if (this.write_content.cat_seq == undefined) {
@@ -125,6 +140,9 @@ export class WritePage {
 
         });
     }
+  }
+  dismiss() {
+  this.viewCtrl.dismiss(this.modOK); //페이지 끔
   }
   refresh(){
     this.navCtrl.parent.select(2); //새로고침의 의미로 한번클릭
@@ -247,5 +265,34 @@ export class WritePage {
     });
 
     this.loading.present();
+  }
+  modifyWrite(){
+    if (this.write_content.cat_seq == undefined) {
+      this.showAlert("고양이를 선택해주세요.")
+    }
+    else if (this.write_content.content == undefined) {
+      this.showAlert("글을 입력해주세요.")
+    } else {
+      this.presentLoading();
+      this.modifyFeed(this.feed.wr_seq, this.write_content);
+    }
+  }
+  modifyFeed(wr_seq, content){
+    var body = {
+      wr_seq : wr_seq,
+      content : content,
+    }
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.http.post(this.serverURL + '/modifyFeed', JSON.stringify(body),
+      { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+        if (data.result == true) { //성공
+          this.loading.dismiss();
+          this.modOK=true;
+          this.dismiss();
+        }
+      });
   }
 }

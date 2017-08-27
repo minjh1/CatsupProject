@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import { UserData } from '../../providers/user-data'
 import { Feed } from '../../models/feed';
 import { MyCatPage } from '../mycat/mycat';
+import { HomePage } from '../home/home';
 
 /**
  * Generated class for the Mypage page.
@@ -74,9 +75,7 @@ export class MyPage {
         this.nickname = data.nickname;
         if (data.image_url.indexOf("/") == 0) { //서버이미지. 페북 계정 유저가 아님
           this.image_url = this.serverURL + data.image_url;
-          this.id = data.id;
         } else { //페북유저
-          this.id = data.nickname;
           this.image_url = data.image_url;
         }
         this.memo = data.memo;
@@ -158,5 +157,8 @@ export class MyPage {
     setTimeout(() => {
       infiniteScroll.complete();
     }, 500);
+  }
+  openThisFeed(feed){
+    this.navCtrl.push(HomePage, {pageType:1, feed:feed});
   }
 }

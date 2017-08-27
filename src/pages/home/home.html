@@ -1,11 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-center><img src="assets/img/title1_s.png" height="32rem"></ion-title>
+    <ion-title *ngIf="pageType!=1" text-center><img src="assets/img/title1_s.png" height="32rem"></ion-title>
+    <ion-title *ngIf="pageType==1">게시글</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="home">
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="pageType!=1">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-card *ngFor="let feed of feeds" class="home_card">
@@ -30,7 +31,7 @@
       </div>
       <div class="icons2" item-end>
         <button ion-button color="LightGrayCat" clear icon-only
-        (click)="openPopover(feed.wr_seq, feed.user_seq)">
+        (click)="openPopover(feed)">
           <ion-icon name="more" style="zoom:1.3;"></ion-icon>
         </button>
       </div>

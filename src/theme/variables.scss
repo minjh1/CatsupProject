@@ -2,7 +2,6 @@
 // http://ionicframework.com/docs/v2/theming/
 $font-path: "../assets/fonts";
 
-@import url('//cdn.jsdelivr.net/font-iropke-batang/1.2/font-iropke-batang.css');
 @import "ionic.globals";
 @font-face {
 font-family: 'BMJUA';
@@ -36,6 +35,7 @@ src: url('../assets/fonts/BarunGothic.ttf') format('truetype'),
 font-family: 'BarunGothicB';
 src: url('../assets/fonts/BarunGothicB.ttf') format('truetype'),
 }
+
 // Shared Variables
 // --------------------------------------------------
 // To customize the look and feel of this app, you can override
@@ -43,6 +43,9 @@ src: url('../assets/fonts/BarunGothicB.ttf') format('truetype'),
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
+$font-family-ios-base : 'BarunGothic';
+$font-family-md-base : 'BarunGothic';
+$font-family-wp-base : 'BarunGothic';
 
 
 
@@ -72,6 +75,7 @@ $colors: (
   BarunSkyCat : #02b8f9,
   DarkSkyCat : #0b5e7c,
   DarkBrownCat : #49322c,
+  ChocoCat : #693f30,
   OrangeCat : #ff5a00,
   OrangeCat1 : #ff7300,
   OrangeCat2 : #ff8200,
@@ -156,7 +160,7 @@ $text-input-md-highlight-color:	color($colors, YellowCat);
 $text-input-ios-highlight-color:	color($colors, YellowCat);
 $text-input-wp-highlight-color:	color($colors, YellowCat);
 
-$text-input-highlight-color-valid:	color($colors, ySKyCat);
+$text-input-highlight-color-valid:	color($colors, LightGrayCat3);
 $text-input-highlight-color-invalid: color($colors, OrangeCat2);
 
 //로딩 스피너
@@ -178,10 +182,10 @@ $chip-md-background-color : #ededed;
 $chip-md-text-color : #333333;
 
 //체크박스
-$alert-ios-button-text-color: color($colors, OrangeCat1);
-$alert-md-button-text-color : color($colors, OrangeCat1);
-$alert-md-input-border-color-focused : color($colors, OrangeCat1);
-$alert-ios-input-border-color-focused : color($colors, OrangeCat1);
+$alert-ios-button-text-color: color($colors, DarkSkyCat);
+$alert-md-button-text-color : color($colors, DarkSkyCat);
+$alert-md-input-border-color-focused : color($colors, DarkSkyCat);
+$alert-ios-input-border-color-focused : color($colors, DarkSkyCat);
 // App Theme
 // --------------------------------------------------
 // Ionic apps can have different themes applied, which can

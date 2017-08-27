@@ -13,9 +13,9 @@
 
 
 <ion-content>
-  <div class="title_bar">
+  <div class="title_bar_text">
     기본 정보
-    <span class="arrow"><ion-icon name="clipboard"></ion-icon></span>
+    <span class="iconSpan2"><ion-icon name="clipboard"></ion-icon></span>
   </div>
   <form #addCatForm="ngForm" novalidate>
     <button ion-item no-lines detail-none (click)="select_photo()">
@@ -56,10 +56,10 @@
         <ion-label color="GrayCat">특징 ③</ion-label>
         <ion-input [(ngModel)]="catinfo.info3" name="info3" #info3="ngModel" type="text"></ion-input>
       </ion-item>
-      <div class="title_bar" (click)="openMap()">
+      <button ion-item no-lines detail-none class="title_bar" (click)="openMap()">
         지도로 찾기
         <span class="arrow"><ion-icon name="pin"></ion-icon></span>
-      </div>
+      </button>
       <ion-item>
         <ion-label color="GrayCat">서식 지역 *</ion-label>
         <ion-input [(ngModel)]="catinfo.habitat" name="habitat" #habitat="ngModel" type="text" required></ion-input>

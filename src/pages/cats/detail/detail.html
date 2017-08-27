@@ -17,7 +17,7 @@
         </ion-col>
         <ion-col col-8>
           <div class="mainProfileText">
-            <div (click)="openNameList(cat.seq)" class="marginB">
+            <div (click)="openNameList()" class="marginB">
               <span class="small up">이름</span><br>
               <span class="large">{{cat.names[0]}}</span><span class="medium">  {{cat.names[1]}}</span>
               <span *ngIf="cat.nameCount>2" class="medium">, {{cat.names[2]}}</span>
@@ -64,12 +64,12 @@
   </div>
   <ion-row>
     <ion-col>
-      <button ion-button class="Btn2 infoBarText border_left" color="LightYellow">
-        댓글
+      <button ion-button class="Btn2 infoBarText2 border_left" color="LightYellow" (click)="openReplyPage()">
+        댓글 {{cat.replyCount}}
     </button>
     </ion-col>
     <ion-col>
-      <button ion-button class="Btn3 infoBarText border_right" color="LightLightGray">
+      <button ion-button class="Btn3 infoBarText2 border_right" color="LightLightGray">
         프로필 수정
     </button>
 
@@ -78,7 +78,7 @@
   <div class="bg2">
     <span class="feed">게시물</span><ion-icon name="ios-arrow-down" class="arrow2"></ion-icon>
     <div class="pins">
-        <img class="pin" *ngFor="let feed of feeds" [src]="this.serverURL+feed.imgUrl[0]"/>
+        <img class="pin" *ngFor="let feed of feeds" [src]="this.serverURL+feed.imgUrl[0]" (click)="openThisFeed(feed)"/>
     </div>
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="more==true">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>

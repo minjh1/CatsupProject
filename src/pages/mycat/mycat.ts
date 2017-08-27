@@ -19,6 +19,8 @@ export class MyCatPage {
   user_seq: number;
   serverURL: string;
   getCatCount: number;
+  more:boolean = true;
+  feedPlus : number =15;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -34,9 +36,9 @@ export class MyCatPage {
     this.getCatCount = 0;
     if(this.pageType==1){
       this.user_seq=this.navParams.get("user_seq");
-      this.getMyCats(0, 15, this.user_seq);
+      this.getMyCats(0, this.feedPlus, this.user_seq);
     }else{
-      this.getMyCats(0, 15, this.userData.userSeq);
+      this.getMyCats(0, this.feedPlus, this.userData.userSeq);
     }
   }
   dismiss() {
@@ -62,6 +64,10 @@ export class MyCatPage {
             data[i].habitat, data[i].info1));
         }
         this.getCatCount += data.length;
+        if(data.length < this.feedPlus){
+          this.more=false;
+        }
+
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -86,7 +92,7 @@ export class MyCatPage {
       .subscribe(data => {
         this.cat = new Cat(data.cat_seq, this.serverURL + data.avatar, data.nameCount, data.nameArray,
           data.countArray, data.sex, data.habitat, data.latitude, data.longitude, data.info1, data.info2, data.info3,
-          data.create_date, data.connection);
+          data.create_date, data.connection,data.replyCount);
         this.openDetailPage(this.cat);
 
       }, error => {
@@ -99,7 +105,7 @@ export class MyCatPage {
     });
   }
   doInfinite(infiniteScroll) {
-    this.getMyCats(this.getCatCount, 15, this.userData.userSeq);
+    this.getMyCats(this.getCatCount, this.feedPlus, this.userData.userSeq);
     setTimeout(() => {
       infiniteScroll.complete();
     }, 500);

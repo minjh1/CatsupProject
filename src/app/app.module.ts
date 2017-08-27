@@ -10,6 +10,7 @@ import { MyPopoverPage } from '../pages/pop_over/my_pop_over';
 import { OtherPopoverPage } from '../pages/pop_over/other_pop_over';
 import { MyReplyPopPage } from '../pages/pop_over/my_reply_pop';
 import { OtherReplyPopPage } from '../pages/pop_over/other_reply_pop';
+import { CatNamesPage } from '../pages/pop_over/cat_names';
 import { TabsPage } from '../pages/tabs/tabs';
 import { MyPage } from '../pages/mypage/mypage';
 import { CatsPage } from '../pages/cats/cats';
@@ -67,6 +68,7 @@ import { Geolocation } from '@ionic-native/geolocation';
     OtherReplyPopPage,
     PostPage,
     UserListPage,
+    CatNamesPage,
   ],
   imports: [
     BrowserModule,
@@ -100,6 +102,7 @@ import { Geolocation } from '@ionic-native/geolocation';
     OtherReplyPopPage,
     PostPage,
     UserListPage,
+    CatNamesPage,
   ],
   providers: [
     StatusBar,

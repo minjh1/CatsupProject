@@ -22,6 +22,8 @@ export class CatsPage {
   cats: Cat[] = [];
   serverURL: string;
   getCatCount:number;
+  more:boolean = true;
+  feedPlus:number = 15;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
@@ -31,7 +33,7 @@ export class CatsPage {
   }
   ionViewDidLoad() {
     this.getCatCount=0;
-    this.getCats(0, 15);
+    this.getCats(0, this.feedPlus);
   }
   getCats(offset: number, limit: number) {
     let headers = new Headers();
@@ -47,9 +49,12 @@ export class CatsPage {
         for (let i = 0; i < data.length; i++) {
           this.cats.push(new Cat(data[i].cat_seq, this.serverURL + data[i].avatar, data[i].nameCount, data[i].nameArray,
             data[i].countArray, data[i].sex, data[i].habitat, data[i].latitude, data[i].longitude, data[i].info1, data[i].info2, data[i].info3,
-            data[i].create_date, data[i].connection));
+            data[i].create_date, data[i].connection, data[i].replyCount));
         }
         this.getCatCount+=data.length;
+        if(data.length < this.feedPlus){
+          this.more=false;
+        }
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -77,7 +82,7 @@ export class CatsPage {
   doRefresh(refresher) {
     this.cats = [];
     this.getCatCount=0;
-    this.getCats(0, 15);
+    this.getCats(0, this.feedPlus);
     setTimeout(() => {
       console.log('Async operation has ended');
       refresher.complete();

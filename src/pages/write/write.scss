@@ -1,4 +1,18 @@
-//page-write {
+page-write {
+.Btn{
+  width: 96%;
+  margin-top:0px;
+  margin-right:0px;
+  margin-left: 6px;
+  margin-bottom: 6px;
+  border-width : thin;
+  border-style: solid;
+  border-color: #ffffff;
+  box-shadow: 1px 1px 3px #c2c2c2;
+  padding: 8px;
+  margin-bottom: 6px;
+  background-color: #ffcd3b;
+}
   .con{
     padding-top: 16px;
     padding-left: 16px;
@@ -79,4 +93,4 @@
     font-size: 14px;
     color: #c7c7c7;
   }
-//}
+}

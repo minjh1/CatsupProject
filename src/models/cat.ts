@@ -13,6 +13,7 @@ export class Cat {
   info3: string="";
   create_date: string="";
   connection: number;
+  replyCount:number;
   constructor(
     seq:number,
     avatar:string,
@@ -27,7 +28,8 @@ export class Cat {
     info2:string,
     info3:string,
     create_date:string,
-    connection:number){
+    connection:number,
+    replyCount:number){
     this.seq=seq;
     this.avatar=avatar;
     this.nameCount=nameCount;
@@ -42,5 +44,6 @@ export class Cat {
     this.info3 =info3;
     this.create_date=create_date;
     this.connection=connection;
+    this.replyCount=replyCount;
   }
 }

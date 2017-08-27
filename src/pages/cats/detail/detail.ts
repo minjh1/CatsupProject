@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams,NavController, ModalController, AlertController, ToastController } from 'ionic-angular'
+import { NavParams, NavController, ModalController, AlertController, ToastController, PopoverController } from 'ionic-angular'
 import { Cat } from '../../../models/cat';
 import { MapPage } from '../../map/map';
 import { Http, Headers } from '@angular/http';
@@ -7,7 +7,9 @@ import { UserData } from '../../../providers/user-data'
 import { Feed } from '../../../models/feed';
 import { UserListPage } from '../../user-list/user-list';
 import 'rxjs/add/operator/map';
-
+import { CatNamesPage } from '../../pop_over/cat_names';
+import { HomePage } from '../../home/home';
+import { ReplyPage } from '../../reply/reply';
 @Component({
   selector: 'page-detail',
   templateUrl: 'detail.html',
@@ -22,10 +24,10 @@ export class CatProfilePage {
   alert;
 
   getFeedCount: number;
-  feedPlus:number = 15;
+  feedPlus: number = 15;
   feeds: Array<Feed> = [];
 
-  more:boolean = true;
+  more: boolean = true;
 
   constructor(public navParams: NavParams,
     public modalCtrl: ModalController,
@@ -34,13 +36,14 @@ export class CatProfilePage {
     public userData: UserData,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
+    public popoverCtrl: PopoverController,
   ) {
     this.serverURL = this.userData.serverURL;
     this.cat = this.navParams.get("cat");
   }
   ionViewDidLoad() {
     this.getConnectionWithCat();
-    this.getFeedCount=0;
+    this.getFeedCount = 0;
     this.getCatFeeds(this.getFeedCount, this.feedPlus, this.cat.seq);
   }
   openMap() {
@@ -62,7 +65,7 @@ export class CatProfilePage {
           console.log("true" + data.name);
           this.connect = true;
           this.myCatName = data.name;
-          this.watchButton =data.name ;
+          this.watchButton = data.name;
         } else {
           console.log("false");
           this.connect = false;
@@ -88,6 +91,7 @@ export class CatProfilePage {
         this.connect = true;
         this.myCatName = cat_name;
         this.watchButton = cat_name;
+        this.cat.connection++;
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -194,6 +198,7 @@ export class CatProfilePage {
         this.connect = false;
         this.myCatName = null;
         this.watchButton = "나도 지켜보기";
+        this.cat.connection--;
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -254,8 +259,8 @@ export class CatProfilePage {
             data[i].likeCount, isLiked, data[i].replyCount));
         }
         this.getFeedCount += data.length;
-        if(data.length < this.feedPlus){
-          this.more=false;
+        if (data.length < this.feedPlus) {
+          this.more = false;
         }
 
       }, error => {
@@ -264,9 +269,30 @@ export class CatProfilePage {
 
   }
   doInfinite(infiniteScroll) {
-      this.getCatFeeds(this.getFeedCount, this.feedPlus, this.cat.seq);
-      setTimeout(() => {
-        infiniteScroll.complete();
-      }, 500);
-    }
+    this.getCatFeeds(this.getFeedCount, this.feedPlus, this.cat.seq);
+    setTimeout(() => {
+      infiniteScroll.complete();
+    }, 500);
+  }
+  openNameList() {
+    let popover = this.popoverCtrl.create(CatNamesPage, { cat: this.cat });
+    popover.present();
+
+  }
+  openThisFeed(feed) {
+    this.navCtrl.push(HomePage, { pageType: 1, feed: feed });
+  }
+
+  openReplyPage() {
+    let modal = this.modalCtrl.create(ReplyPage, {
+      replyType: 1,
+      seq: this.cat.seq,
+    });
+    modal.onDidDismiss(data => {
+      if (data != null) {
+        this.cat.replyCount+=data.count;
+      }
+    })
+    modal.present();
+  }
 }
