@@ -1,0 +1,42 @@
+page-user-mod {
+  .arrow{
+    margin-left: 4px;
+    font-size: 14px;
+    color: #ffc10a;
+  }
+  .iconSpan{
+    margin-left: 6px;
+    font-size: 14px;
+    color: #ffc929;
+  }
+  .iconSpan2{
+    margin-left: 6px;
+    font-size: 14px;
+    color: #c7c7c7;
+  }
+  .img_addcat {
+    border:2px solid #cccccc;
+    margin-bottom: 8px;
+  }
+  .Btn{
+  width: 96%;
+  margin-top:0px;
+  margin-right:0px;
+  margin-left: 6px;
+  margin-bottom: 6px;
+  border-width : thin;
+  border-style: solid;
+  border-color: #ffffff;
+  box-shadow: 1px 1px 3px #c2c2c2;
+  padding: 8px;
+  color:#373737;
+  margin-bottom: 6px;
+}
+  .center_avatar{
+    display: flex;
+    flex-direction: column;    /* align flex items vertically */
+    justify-content: center;   /* center items vertically, in this case */
+    align-items: center;       /* center single-line items horizontally, in this case */
+    align-content: center;     /* center multi-line items horizontally, in this case */
+  }
+}

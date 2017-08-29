@@ -25,6 +25,8 @@ import { MapPage } from '../pages/map/map';
 import { ImageCropperPage } from '../pages/image-cropper/image-cropper';
 import { PostPage } from '../pages/post/post';
 import { UserListPage } from '../pages/user-list/user-list';
+import { SettingPage } from '../pages/setting/setting';
+import { UserModPage } from '../pages/user-mod/user-mod';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -69,6 +71,8 @@ import { Geolocation } from '@ionic-native/geolocation';
     PostPage,
     UserListPage,
     CatNamesPage,
+    SettingPage,
+    UserModPage
   ],
   imports: [
     BrowserModule,
@@ -103,6 +107,8 @@ import { Geolocation } from '@ionic-native/geolocation';
     PostPage,
     UserListPage,
     CatNamesPage,
+    SettingPage,
+    UserModPage
   ],
   providers: [
     StatusBar,

@@ -25,13 +25,15 @@ export class UserData {
     this.setUserSeq(seq);
 //    this.events.publish('user:signup');
   };
-/*
+
   logout(): void {
     this.storage.remove('hasLoggedIn');
-    this.storage.remove('username');
-    this.events.publish('user:logout');
+    this.storage.remove('userSeq');
+    this.userSeq=null;
+    this.storage.remove('hasSeenTutorial');
+  //  this.events.publish('user:logout');
   };
-*/
+
   setUserSeq(seq: number): void {
     this.storage.set('userSeq', seq);
     this.userSeq=seq;

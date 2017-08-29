@@ -26,7 +26,7 @@ export class AddCat {
   submitted=false;
   loading;
 
-  imgUrl:string;
+  imgUrl:string ="";
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -50,7 +50,10 @@ export class AddCat {
   }
   onSubmit(form: NgForm){
     this.submitted =true;
-    if (form.valid){
+    if(this.imgUrl=="assets/img/add2.png"){
+      this.showAlert("고양이의 프로필 사진을 입력해주세요!");
+    }
+    else if (form.valid){
       this.upload();
       this.presentLoading();
     }

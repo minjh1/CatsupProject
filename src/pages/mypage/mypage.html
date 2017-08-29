@@ -9,8 +9,8 @@
   <ion-navbar>
     <ion-title *ngIf="pageType==0">My Page</ion-title>
     <ion-title *ngIf="pageType==1">{{nickname}}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only icon-right color="GrayCat2">
+    <ion-buttons end *ngIf="pageType==0">
+      <button (click)="openSetting()" ion-button icon-only icon-right color="GrayCat2">
         <ion-icon name="settings"></ion-icon>
       </button>
     </ion-buttons>
@@ -28,7 +28,7 @@
         <ion-col col-4>
           <ion-item no-lines class="bck">
             <ion-avatar>
-              <img style="width:80px; height:80px;" src="{{image_url}}" class="avatarBorder" />
+              <img (click)="select()" style="width:80px; height:80px;" src="{{image_url}}" class="avatarBorder" />
             </ion-avatar>
           </ion-item>
         </ion-col>

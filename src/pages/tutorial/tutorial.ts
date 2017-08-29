@@ -45,7 +45,7 @@ export class TutorialPage {
   }
 
   openLoginPage() {
-    this.storage.set('hasSeenTutorial', 'true');
+  
     let loginPage = this.modalCtrl.create(LoginPage);
     loginPage.present();
   }

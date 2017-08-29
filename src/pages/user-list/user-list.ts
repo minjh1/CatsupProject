@@ -52,6 +52,7 @@ export class UserListPage {
             user_seq: data[i].user_seq,
             nickname: data[i].nickname,
             image_url: this.serverURL+data[i].image_url,
+            email : data[i].email,
             memo: data[i].memo
           }
           if (data[i].image_url.indexOf("/") != 0) { //페북 계정 유저

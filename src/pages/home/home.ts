@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,ViewController, PopoverController, AlertController, ModalController,ToastController } from 'ionic-angular';
+import { NavController, NavParams,ViewController,Events, PopoverController, AlertController, ModalController,ToastController } from 'ionic-angular';
 import { Feed } from '../../models/feed';
 import { ReplyPage } from '../reply/reply';
 import { UserListPage } from '../user-list/user-list';
@@ -23,10 +23,12 @@ export class HomePage {
   pageType : number;
   getFeedCount: number;
   more:boolean = true;
-  feedPlus:number = 10;
+  feedPlus:number = 6;
+  OpenReplyindex:number;
   constructor(
     public navCtrl: NavController,
     private http: Http,
+    public events: Events,
     public popoverCtrl: PopoverController,
     public userData: UserData,
     public alertCtrl: AlertController,
@@ -41,6 +43,12 @@ export class HomePage {
     }else{ //홈
       this.pageType=0;
     }
+    events.subscribe('reply:changed', (count, feed) => {
+      var changeReply=this.feeds.indexOf(feed);
+      if(changeReply!=-1){
+        this.feeds[changeReply].replyCount+=count;
+      }
+    });
   }
   ionViewDidLoad() {
     if(this.pageType==0){ //홈
@@ -108,11 +116,12 @@ export class HomePage {
   openReplyPage(replyType, feed) {
     let modal = this.modalCtrl.create(ReplyPage, {
       replyType: replyType,
-      seq: feed.wr_seq
+      seq: feed.wr_seq,
+      feed:feed,
     });
     modal.onDidDismiss(data => {
       if (data != null) {
-        feed.replyCount+=data.count;
+    //    feed.replyCount+=data.count;
       }
     })
     modal.present();
@@ -136,19 +145,64 @@ export class HomePage {
       })
   }
   modifyFeed(feed) {
+    var index = this.feeds.indexOf(feed);
+    console.log(index);
     let modal = this.modalCtrl.create(WritePage, {
       pageType: 1,
       feed: feed
     });
     modal.onDidDismiss(data => {
       if (data == true) {
-        this.showAlert("수정되었습니다 ^.^");
-        this.getFeedCount = 0;
-        this.feeds = [];
-        this.getFeeds(0, this.feedPlus);
+        this.ThisFeedModify(index, feed.wr_seq);
       }
     })
     modal.present();
+  }
+  ThisFeedModify(index, seq){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let body = {
+      seq: seq,
+    }
+    this.http.post(this.serverURL + '/getThisFeed', JSON.stringify(body), { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+          var text_cut = data.content.indexOf('\n');
+          var content_preview, content_temp;
+          if (text_cut == -1 || text_cut > 90) { // 엔터없으면 90자까지 표시
+            content_preview = data.content.substr(0, 90);
+          } else { //있음
+            var count = 2; //최대 3줄 표시
+            while (count--) {
+              content_temp = data.content.substr(text_cut + 1, 50);
+              var text_cut_temp = content_temp.indexOf('\n');
+              if (text_cut_temp == -1) {
+                break;
+              }
+              text_cut += text_cut_temp + 1;
+            }
+            content_preview = data.content.substr(0, text_cut);
+          }
+          var isLiked;
+          console.log(data.like_users);
+          if (data.like_users.indexOf(""+this.userData.userSeq) == -1) {
+            isLiked = false;
+          } else {
+            isLiked = true;
+          }
+          if (data.userImg.indexOf("/") == 0) {
+            this.feeds[index]=new Feed(data.wr_seq, data.type, data.cat_seq, this.serverURL + data.catImg, data.catName,
+              data.user_seq, this.serverURL + data.userImg, data.userName, data.imgUrl, content_preview, data.content, data.create_date,
+              data.likeCount, isLiked, data.replyCount);
+          }
+          else {
+            this.feeds[index]=new Feed(data.wr_seq, data.type, data.cat_seq, this.serverURL + data.catImg, data.catName,
+              data.user_seq, data.userImg, data.userName, data.imgUrl, content_preview, data.content, data.create_date,
+              data.likeCount, isLiked, data.replyCount);
+          }
+      }, error => {
+        console.log(JSON.stringify(error.json()));
+      })
   }
   openPopover(feed) {
     if (this.userData.userSeq == feed.user_seq) { //내글

@@ -1,0 +1,51 @@
+<!--
+  Generated template for the UserModPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button (click)=dismiss(null)>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>프로필 수정</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <form #userForm="ngForm" novalidate>
+    <button ion-item no-lines detail-none (click)="select()">
+      <ion-avatar class="center_avatar">
+        <img class="img_addcat" style="width:80px; height:80px;" src="{{user.image_url}}" />
+      </ion-avatar>
+      <p text-center>사진 변경</p>
+    </button>
+
+    <ion-list>
+      <ion-item>
+        <ion-label color="GrayCat">닉네임 *</ion-label>
+        <ion-input [(ngModel)]="user.nickname" name="nickname" #nickname="ngModel" type="text" required></ion-input>
+      </ion-item>
+      <p ion-text [hidden]="nickname.valid || submitted == false" color="danger" padding-left>
+        닉네임을 입력하세요!
+      </p>
+      <ion-item>
+        <ion-label color="GrayCat">이메일</ion-label>
+        <ion-input [(ngModel)]="user.email" name="email" #email="ngModel" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="GrayCat">한마디</ion-label>
+        <ion-input [(ngModel)]="user.memo" name="memo" #memo="ngModel" type="text"></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button color="LightYellow" class="Btn" (click)="OK(userForm)" type="submit">
+      수정 완료
+    </button>
+  </form>
+</ion-content>

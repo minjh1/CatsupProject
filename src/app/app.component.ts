@@ -22,7 +22,7 @@ export class MyApp {
     public userData: UserData) {
 
     //this.userData.getUserSeq();
-  //  this.rootPage = TutorialPage;
+    //this.rootPage = TutorialPage;
     //this.rootPage = TabsPage;
 
     this.storage.get('hasSeenTutorial')

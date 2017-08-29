@@ -4,6 +4,7 @@ import { ViewController,AlertController } from 'ionic-angular';
   template: `
     <ion-list>
       <ion-list-header>CATSUP</ion-list-header>
+      <button ion-item (click)="close('user_check')">프로필 확인</button>
       <button ion-item (click)="showPrompt()">신고하기</button>
     </ion-list>
   `

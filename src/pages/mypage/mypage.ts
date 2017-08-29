@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, Events,ActionSheetController,LoadingController,AlertController} from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import 'rxjs/add/operator/map';
 import { UserData } from '../../providers/user-data'
+import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import { Feed } from '../../models/feed';
+import { User } from '../../models/user';
 import { MyCatPage } from '../mycat/mycat';
 import { HomePage } from '../home/home';
+
+import { SettingPage } from '../setting/setting';
 
 /**
  * Generated class for the Mypage page.
@@ -18,6 +23,7 @@ import { HomePage } from '../home/home';
   templateUrl: 'mypage.html',
 })
 export class MyPage {
+  user : User;
   pageType: number ; //0:나, 1:타인
   user_seq: number;
   id: string;
@@ -27,8 +33,8 @@ export class MyPage {
   cat_count: number;
   feed_count: number;
   catsup_count: number;
-  feedPlus:number = 15;
-
+  feedPlus:number = 12;
+  loading;
   feeds: Array<Feed> = [];
   getFeedCount: number;
   more:boolean = true;
@@ -38,10 +44,19 @@ export class MyPage {
     public navParams: NavParams,
     private http: Http,
     public userData: UserData,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController,
+    public events: Events,
+    public actionSheetCtrl: ActionSheetController,
+    private camera: Camera,
+    private transfer: Transfer,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController) {
     this.serverURL = this.userData.serverURL;
     if(this.navParams.get("pageType") == null){
       this.pageType = 0;
+      events.subscribe('user:modified', () => {
+        this.getUserData(this.user_seq);
+      });
     }else{
       this.pageType = this.navParams.get("pageType");
     }
@@ -82,7 +97,7 @@ export class MyPage {
         this.cat_count = data.catCount;
         this.feed_count = data.feed;
         this.catsup_count = data.catsup;
-        //  this.user = new User(seq,data.id,data.nickname,this.serverURL+data.image_url,data.memo,data.catCount,data.feed,data.catsup);
+        this.user = new User(seq,data.nickname,this.image_url,data.email,data.memo);
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -169,5 +184,116 @@ export class MyPage {
   }
   openThisFeed(feed){
     this.navCtrl.push(HomePage, {pageType:1, feed:feed});
+  }
+  openSetting(){
+    this.navCtrl.push(SettingPage, {user:this.user});
+  }
+  select() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: '프로필 사진 변경',
+      buttons: [
+        {
+          text: '갤러리에서 변경하기',
+          icon: 'images',
+          handler: () => {
+            this.select_photo();
+          }
+        }, {
+          text: '기본 이미지로 변경하기',
+          icon: 'image',
+          handler: () => {
+            this.user.image_url = this.userData.serverURL + '/user_profile/default.jpg';
+            this.presentLoading().then(()=>{
+              this.onlyUser();
+            });
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          //icon: !this.platform.is('ios') ? 'close' : null,
+          icon: 'close',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+  select_photo() {
+    var options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      allowEdit: true,
+      targetWidth: 200,
+      targetHeight: 200,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM,
+      encodingType: 0,
+    }
+
+    this.camera.getPicture(options).then((imageUrl) => {
+      this.user.image_url = imageUrl;
+      this.presentLoading().then(()=>{
+        this.upload();
+      })
+    }, (err) => {
+      //  alert("사진을 불러오지 못했습니다.");
+    });
+  }
+  upload() {
+    const fileTransfer: TransferObject = this.transfer.create();
+    let fileOptions: FileUploadOptions = {
+      fileKey: 'user',
+      fileName: "img",
+      params: this.user,
+    }
+    fileTransfer.upload(this.user.image_url, this.userData.serverURL + '/modifyUserImg', fileOptions)
+      .then((data) => {
+        this.loading.dismiss();
+        this.events.publish('user:modified');
+        this.showAlert("변경되었습니다.");
+      }, (err) => {
+
+      });
+  }
+  presentLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: '잠시만 기다려주세요 ^^)/'
+    });
+
+    return this.loading.present();
+  }
+  onlyUser() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    var body ={
+      user_seq :this.user.user_seq,
+      nickname:this.user.nickname,
+      email:this.user.email,
+      image_url:this.user.image_url.replace(this.userData.serverURL, ""),
+      memo:this.user.memo
+    }
+
+    this.http.post(this.userData.serverURL + '/modifyUser', JSON.stringify(body),
+      { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+        if (data.result == true) { //성공
+          this.loading.dismiss();
+          this.events.publish('user:modified');
+          this.showAlert("변경되었습니다.");
+        }
+      }, error => {
+        console.log(JSON.stringify(error.json()));
+      })
+  }
+  showAlert(text: string) {
+    let alert = this.alertCtrl.create({
+      title: '알림',
+      subTitle: text,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, PopoverController, ViewController,AlertController } from 'ionic-angular';
+import { NavController, NavParams,Events, PopoverController, ViewController,AlertController } from 'ionic-angular';
 import { Reply } from '../../models/reply';
 import { Content } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import { UserData } from '../../providers/user-data'
 import { MyReplyPopPage } from '../pop_over/my_reply_pop';
 import { OtherReplyPopPage } from '../pop_over/other_reply_pop';
+import { MyPage } from '../mypage/mypage';
 
 @Component({
   selector: 'page-reply',
@@ -21,20 +22,19 @@ export class ReplyPage {
   user_seq: number;
   replyPlus : number = 10;
   getReplyCount : number;
-  addCount : number =0;
-  delCount : number =0;
 
   replies: Reply[] = [];
   iconColor: string = "LightGrayCat";
   reply_text: string;
-
+  OpenReplyindex;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
     public userData: UserData,
     public popoverCtrl: PopoverController,
     public viewCtrl: ViewController,
-    public alertCtrl:AlertController
+    public alertCtrl:AlertController,
+    public events: Events
   ) {
     this.serverURL = this.userData.serverURL;
     this.replyType = this.navParams.get("replyType"); //게시글?프로필?
@@ -52,11 +52,11 @@ export class ReplyPage {
     this.user_seq= this.userData.userSeq;
   }
   dismiss() {
-    this.viewCtrl.dismiss({count:this.addCount-this.delCount}) //페이지 끔
-  }
+    this.viewCtrl.dismiss() //페이지 끔
+  }/*
   ionViewWillLeave() {
     this.viewCtrl.dismiss({count:this.addCount-this.delCount})
-  }
+  }*/
   getReplies(limit, offset, seq, action) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -105,7 +105,9 @@ export class ReplyPage {
         else if (data == "modify_reply") { //글수정
           this.modifyReply(reply);
         }
-        else { //글신고
+        else if (data=="user_check"){ //글신고
+          this.openOtherUserPage(reply.user_seq);
+        }else{
           this.reportReply(data, reply.reply_seq, reply.user_seq);
         }
       }
@@ -128,14 +130,15 @@ export class ReplyPage {
           this.replies = [];
           if (this.replyType == 0) {
             this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies');
+            this.events.publish('reply:changed',-1,this.navParams.get("feed"));
           } else if (this.replyType == 1) {
             this.getReplies(this.replyPlus, 0, this.seq, '/getCatReplies');
+            this.events.publish('catReply:changed',this.seq,-1);
           }
         } else {
           //  this.showAlert("글을 삭제하지 못하였습니다.")
         }
         setTimeout(()=>{this.content.scrollToBottom(0)},100);
-        this.delCount++;
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
@@ -206,11 +209,12 @@ export class ReplyPage {
           this.getReplyCount=0;
           if (this.replyType == 0) {
             this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies');
+            this.events.publish('reply:changed',1,this.navParams.get("feed"));
           } else if (this.replyType == 1) {
             this.getReplies(this.replyPlus, 0, this.seq, '/getCatReplies');
+            this.events.publish('catReply:changed',this.seq,1);
           }
           this.reply_text = "";
-          this.addCount++;
           setTimeout(()=>{this.content.scrollToBottom(0)},100);
         }, error => {
           console.log(JSON.stringify(error.json()));
@@ -229,5 +233,8 @@ export class ReplyPage {
    setTimeout(() => {
      refresher.complete();
    }, 300);
+ }
+ openOtherUserPage(user_seq) {
+   this.navCtrl.push(MyPage, { pageType: 1, user_seq:user_seq });
  }
 }

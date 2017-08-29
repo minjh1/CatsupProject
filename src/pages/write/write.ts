@@ -40,7 +40,7 @@ export class WritePage {
   submitted = false;
   loading;
   modOK = false;
-  serverURL: string = 'http://45.249.160.73:5555';
+  serverURL: string ;
   constructor(
     public navCtrl: NavController,
     private file: File,
@@ -56,6 +56,7 @@ export class WritePage {
     public navParams: NavParams,
     public viewCtrl: ViewController
   ) {
+    this.serverURL = this.userData.serverURL;
     this.pageType = navParams.get('pageType');
     this.write_content.user_seq = this.userData.userSeq;
     if(this.pageType!=1){

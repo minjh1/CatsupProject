@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, ModalController, AlertController, ToastController, PopoverController } from 'ionic-angular'
+import { NavParams, Events,NavController, ModalController, AlertController, ToastController, PopoverController } from 'ionic-angular'
 import { Cat } from '../../../models/cat';
 import { MapPage } from '../../map/map';
 import { Http, Headers } from '@angular/http';
@@ -33,6 +33,7 @@ export class CatProfilePage {
     public modalCtrl: ModalController,
     public navCtrl: NavController,
     private http: Http,
+    public events: Events,
     public userData: UserData,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
@@ -40,6 +41,11 @@ export class CatProfilePage {
   ) {
     this.serverURL = this.userData.serverURL;
     this.cat = this.navParams.get("cat");
+    events.subscribe('catReply:changed', (seq, count) => {
+      if(this.cat.seq == seq){
+        this.cat.replyCount+=count;
+      }
+    });
   }
   ionViewDidLoad() {
     this.getConnectionWithCat();
@@ -296,11 +302,6 @@ export class CatProfilePage {
       replyType: 1,
       seq: this.cat.seq,
     });
-    modal.onDidDismiss(data => {
-      if (data != null) {
-        this.cat.replyCount+=data.count;
-      }
-    })
     modal.present();
   }
 }

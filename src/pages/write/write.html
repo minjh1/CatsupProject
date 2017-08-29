@@ -20,7 +20,7 @@
   <ion-list>
     <button ion-item no-lines detail-none class="title_bar" (click)="openSelectCatPage()">
       고양이 선택
-      <span class="arrow"><ion-icon name="ios-arrow-forward"></ion-icon></span>
+      <span class="arrow verticalB1"><ion-icon name="ios-arrow-forward"></ion-icon></span>
     </button>
     <ion-item no-lines detail-none [hidden]="write_content.cat_seq==undefined">
       <ion-avatar item-left>
@@ -36,19 +36,19 @@
           <ion-col>
             <button ion-item no-lines detail-none class="title_bar1" (click)="select_photos()">
             사진 선택
-              <span class="iconSpan"><ion-icon name="images"></ion-icon></span>
+              <span class="iconSpan verticalB1"><ion-icon name="images"></ion-icon></span>
           </button>
           </ion-col>
           <ion-col>
             <button ion-item no-lines detail-none class="title_bar2" (click)="TakePicture()">
             사진 촬영
-              <span class="iconSpan"><ion-icon name="camera"></ion-icon></span>
+              <span class="iconSpan verticalB1"><ion-icon name="camera"></ion-icon></span>
           </button>
           </ion-col>
           <ion-col>
             <button ion-item no-lines detail-none class="title_bar3" (click)="check(3)">
             동영상 선택
-            <span class="iconSpan"><ion-icon name="videocam"></ion-icon></span>
+            <span class="iconSpan verticalB1"><ion-icon name="videocam"></ion-icon></span>
             </button>
           </ion-col>
         </ion-row>
@@ -57,13 +57,13 @@
     <img *ngFor="let photo of photos" src="{{photo}}" class="photo_add" style="width:78px; height:78px;" (click)="delete_photo(photo)" />
     <div class="title_bar_text">
       글
-      <span class="iconSpan2"><ion-icon name="text"></ion-icon></span>
+      <span class="iconSpan2 verticalB1"><ion-icon name="text"></ion-icon></span>
     </div>
     <ion-item>
       <ion-textarea [(ngModel)]="write_content.content" placeholder="{{cat_name}}와(과) 어떤 일이 있었나요?" autosize></ion-textarea>
     </ion-item>
   </ion-list>
-  <button *ngIf="pageType==1" ion-button class="Btn" color="LightLightGray" (click)="modifyWrite()">
+  <button *ngIf="pageType==1" ion-button class="Btn" color="LightYellow" (click)="modifyWrite()">
     수정 완료
   </button>
 </ion-content>

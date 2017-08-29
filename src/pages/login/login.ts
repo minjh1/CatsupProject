@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 import { TabsPage } from '../tabs/tabs';
 import { UserData } from '../../providers/user-data'
 import { Storage } from '@ionic/storage';
+import scrypt from 'scrypt-async';
 
 @Component({
   selector: 'page-login',
@@ -45,44 +46,49 @@ export class LoginPage {
   Login(form: NgForm){
     this.submitted=true;
     if(form.valid){
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      let body = {
-        id: this.loginInfo.id,
-        password: this.loginInfo.password,
-      }
+      console.log(this.loginInfo.password)
+      scrypt(this.loginInfo.password, this.loginInfo.password+'catsup@saltysalt',4,8,16, (hash)=>{
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        let body = {
+          id: this.loginInfo.id,
+          password: hash,
+        }
 
-      this.http.post(this.serverURL + '/Login', JSON.stringify(body),
-      { headers: headers })
-        .map(res => res.json())
-        .subscribe(data => {
-          if(data.result==true){ //성공
-            this.navCtrl.push(TabsPage).then(() => {
-              this.userData.login(data.seq);
-            })
-          }
-          else {
-            if(data.msg=="id check"){ // result==false
-              let alert = this.alertCtrl.create({
-                title: '로그인 실패',
-                subTitle: '존재하지 않는 아이디입니다.',
-                buttons: ['OK']
-              });
-              alert.present();
+        this.http.post(this.serverURL + '/Login', JSON.stringify(body),
+        { headers: headers })
+          .map(res => res.json())
+          .subscribe(data => {
+            if(data.result==true){ //성공
+              this.navCtrl.push(TabsPage).then(() => {
+                this.storage.set('hasSeenTutorial', 'true');
+                this.userData.login(data.seq);
+              })
             }
-            else if (data.msg=="password check"){
-              let alert = this.alertCtrl.create({
-                title: '로그인 실패',
-                subTitle: '비밀번호를 다시 확인해주세요.',
-                buttons: ['OK']
-              });
-              alert.present();
+            else {
+              if(data.msg=="id check"){ // result==false
+                let alert = this.alertCtrl.create({
+                  title: '로그인 실패',
+                  subTitle: '존재하지 않는 아이디입니다.',
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
+              else if (data.msg=="password check"){
+                let alert = this.alertCtrl.create({
+                  title: '로그인 실패',
+                  subTitle: '비밀번호를 다시 확인해주세요.',
+                  buttons: ['OK']
+                });
+                alert.present();
+              }
             }
-          }
-          console.log(data.result+" "+data.seq+" "+data.msg);
-        }, error => {
-          console.log(JSON.stringify(error.json()));
-        })
+            console.log(data.result+" "+data.seq+" "+data.msg);
+          }, error => {
+            console.log(JSON.stringify(error.json()));
+          })
+      },'hex');
+
     }
   }
   openSignUpPage() {
