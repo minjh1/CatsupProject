@@ -83,6 +83,28 @@ page-add-cat {
     border:2px solid #cccccc;
     margin-bottom: 8px;
   }
+  .border_left2{
+    margin-left: 6px;
+  }
+  .border_left{
+    margin-left: 4px;
+  }
+  .border_right{
+    margin-left: 0px;
+  }
+  .Btn{
+  width: 96%;
+  margin-top:0px;
+  margin-right:0px;
+  margin-bottom: 6px;
+  border-width : thin;
+  border-style: solid;
+  border-color: #ffffff;
+  box-shadow: 1px 1px 3px #c2c2c2;
+  padding: 8px;
+  color:#373737;
+  margin-bottom: 6px;
+}
   .center_avatar{
     display: flex;
     flex-direction: column;    /* align flex items vertically */

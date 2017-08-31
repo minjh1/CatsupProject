@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController,Events } from 'ionic-angular';
 import { Cat } from '../../models/cat';
 import { CatProfilePage } from './detail/detail';
 import { AddCat } from './add-cat/add-cat';
@@ -28,8 +28,14 @@ export class CatsPage {
     public navParams: NavParams,
     private http: Http,
     public modalCtrl: ModalController,
-    public userData: UserData) {
+    public userData: UserData,
+    public events: Events) {
     this.serverURL = this.userData.serverURL;
+    events.subscribe('cat:modified', () => {
+      this.cats = [];
+      this.getCatCount=0;
+      this.getCats(0, this.feedPlus);
+    });
   }
   ionViewDidLoad() {
     this.getCatCount=0;
@@ -63,8 +69,6 @@ export class CatsPage {
   openAddCatPage() {
     let addCatPage = this.modalCtrl.create(AddCat);
     addCatPage.onDidDismiss(data => {
-
-      this.navCtrl.parent.select(3); //새로고침
     });
     addCatPage.present();
   }

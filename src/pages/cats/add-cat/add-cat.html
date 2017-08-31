@@ -2,11 +2,12 @@
 
   <ion-navbar>
     <ion-buttons end>
-      <button ion-button (click)=dismiss()>
+      <button ion-button (click)=dismiss(false)>
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>고양이 등록</ion-title>
+    <ion-title *ngIf="pageType==0">고양이 등록</ion-title>
+    <ion-title *ngIf="pageType==1">고양이 프로필 수정</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -22,17 +23,15 @@
       <ion-avatar class="center_avatar">
         <img class="img_addcat" style="width:80px; height:80px;" src="{{imgUrl}}" />
       </ion-avatar>
-      <p text-center>사진 등록</p>
+      <p *ngIf="pageType==0" text-center>사진 등록</p>
+      <p *ngIf="pageType==1" text-center>사진 변경</p>
     </button>
 
     <ion-list>
-      <ion-item>
+      <ion-item *ngIf="pageType==0">
         <ion-label color="GrayCat">이름 *</ion-label>
-        <ion-input [(ngModel)]="catinfo.name" name="name" #name="ngModel" type="text" required></ion-input>
+        <ion-input [(ngModel)]="catinfo.name" name="name" #name="ngModel" type="text"></ion-input>
       </ion-item>
-      <p ion-text [hidden]="name.valid || submitted == false" color="danger" padding-left>
-        이름을 지어주세요!
-      </p>
       <ion-item>
         <ion-label color="GrayCat">성별</ion-label>
         <ion-select [(ngModel)]="catinfo.sex" interface="action-sheet" name="sex" #sex="ngModel">
@@ -68,8 +67,20 @@
         주로 마주치는 곳이 어딘가요?
       </p>
     </ion-list>
-    <div padding>
-      <button ion-button (click)="onSubmit(addCatForm)" type="submit" outline color="AmberCat" block>등록</button>
-    </div>
+    <button *ngIf="pageType==0" ion-button class="Btn border_left2" color="LightYellow" (click)="onSubmit(addCatForm)">
+   등록
+    </button>
+    <ion-row *ngIf="pageType==1">
+      <ion-col>
+        <button ion-button class="Btn border_left" color="LightYellow" (click)="onSubmit(addCatForm)">
+          수정 완료
+      </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button class="Btn border_right" color="LightLightGray" (click)="deleteCat()">
+          프로필 삭제
+      </button>
+      </ion-col>
+    </ion-row>
   </form>
 </ion-content>

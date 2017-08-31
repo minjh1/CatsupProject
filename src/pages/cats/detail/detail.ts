@@ -10,6 +10,8 @@ import 'rxjs/add/operator/map';
 import { CatNamesPage } from '../../pop_over/cat_names';
 import { HomePage } from '../../home/home';
 import { ReplyPage } from '../../reply/reply';
+import { AddCat } from '../add-cat/add-cat';
+
 @Component({
   selector: 'page-detail',
   templateUrl: 'detail.html',
@@ -303,5 +305,34 @@ export class CatProfilePage {
       seq: this.cat.seq,
     });
     modal.present();
+  }
+  openModifyPage() {
+    let confirm = this.alertCtrl.create({
+      title: '알림',
+      message: "프로필을 수정하시면 수정 내역이 댓글로 표시됩니다.<br/>계속하시겠습니까?",
+      buttons: [
+        {
+          text: '아니오',
+          handler: () => {
+          }
+        },
+        {
+          text: '네',
+          handler: () => {
+            let ModifyCatPage = this.modalCtrl.create(AddCat,{
+                pageType:1,
+                cat:this.cat,
+              });
+            ModifyCatPage.onDidDismiss(data => {
+              if(data==true){
+                this.navCtrl.pop();
+              }
+            });
+            ModifyCatPage.present();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }

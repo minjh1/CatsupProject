@@ -89,8 +89,9 @@ export class ReplyPage {
   }
   clickReply(reply) {
     if (this.userData.userSeq == reply.user_seq) { //내 댓글
-      this.presentPopover(MyReplyPopPage, reply);
-
+      if(reply.content.indexOf("프로필을 수정하였습니다.")==-1){
+        this.presentPopover(MyReplyPopPage, reply);
+      }
     } else { //다른 사람 글
       this.presentPopover(OtherReplyPopPage, reply);
     }
