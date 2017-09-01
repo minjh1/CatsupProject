@@ -18,4 +18,7 @@
 
 <ion-content>
 <div class="post_content" [innerHTML]="postContent"></div>
+<button *ngIf="postContent!=null" ion-button class="Btn" color="DarkSkyCat" (click)="openReplyPage()">
+  댓글 {{post.replyCount}}
+</button>
 </ion-content>

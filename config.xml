@@ -64,4 +64,8 @@
     <plugin name="cordova-plugin-browsertab" spec="~0.2.0" />
     <plugin name="cordova-base64-to-gallery" spec="~4.1.2" />
     <engine name="android" spec="~6.1.2" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="1000" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="FadeSplashScreenDuration" value="500" />
 </widget>

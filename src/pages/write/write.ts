@@ -107,10 +107,9 @@ export class WritePage {
     })
     modal.present();
   }
-  check(data: any) {
-    alert(data);
+  selectVideo(){
+    this.showAlert("준비 중입니다.")
   }
-
   delete_photo(photo: string) {
     let index: number = this.photos.indexOf(photo);
     if (index !== -1) {
@@ -179,20 +178,28 @@ export class WritePage {
     var options: CameraOptions = {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
-      allowEdit: true,
       sourceType: this.camera.PictureSourceType.CAMERA,
       encodingType: 0,
       saveToPhotoAlbum: true,
     }
 
     this.camera.getPicture(options).then((imageUrl) => {
-      this.photos.push(imageUrl);
-      alert(imageUrl);
+      var image=[];
+      image.push(imageUrl);
+      this.openCropperPage(image);
     }, (err) => {
       this.showAlert("사진을 불러오지 못했습니다.");
     });
   }
-  select_ratio() {
+  TakePicture_before(){
+    if (this.photos.length == 0) {
+      this.select_ratio(1);
+    }
+    else {
+      this.TakePicture();
+    }
+  }
+  select_ratio(type) {
     let actionSheet = this.actionSheetCtrl.create({
       title: '업로드 할 사진의 비율을 선택해주세요.',
       buttons: [
@@ -201,21 +208,42 @@ export class WritePage {
           icon: 'photos',
           handler: () => {
             this.aspectRatio=4/3;
-            this.openPhotoLibrary();
+            switch(type){
+              case 0:
+                this.openPhotoLibrary();
+              break;
+              case 1:
+                this.TakePicture();
+              break;
+            }
           }
         }, {
           text: '1:1',
           icon: 'photos',
           handler: () => {
             this.aspectRatio=1/1;
-            this.openPhotoLibrary();
+            switch(type){
+              case 0:
+                this.openPhotoLibrary();
+              break;
+              case 1:
+                this.TakePicture();
+              break;
+            }
           }
         }, {
           text: '3:4',
           icon: 'photos',
           handler: () => {
             this.aspectRatio=3/4;
-            this.openPhotoLibrary();
+            switch(type){
+              case 0:
+                this.openPhotoLibrary();
+              break;
+              case 1:
+                this.TakePicture();
+              break;
+            }
           }
         }, {
           text: 'Cancel',
@@ -232,7 +260,7 @@ export class WritePage {
   }
   select_photos() {
     if (this.photos.length == 0) {
-      this.select_ratio();
+      this.select_ratio(0);
     }
     else {
       this.openPhotoLibrary();

@@ -21,6 +21,7 @@ export class MyCatPage {
   getCatCount: number;
   more:boolean = true;
   feedPlus : number =15;
+  searchValue:string="";
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -36,10 +37,10 @@ export class MyCatPage {
     this.getCatCount = 0;
     if(this.pageType==1){
       this.user_seq=this.navParams.get("user_seq");
-      this.getMyCats(0, this.feedPlus, this.user_seq);
     }else{
-      this.getMyCats(0, this.feedPlus, this.userData.userSeq);
+      this.user_seq = this.userData.userSeq;
     }
+    this.getMyCats(0, this.feedPlus, this.user_seq);
   }
   dismiss() {
     this.viewCtrl.dismiss();
@@ -105,12 +106,55 @@ export class MyCatPage {
     });
   }
   doInfinite(infiniteScroll) {
-    this.getMyCats(this.getCatCount, this.feedPlus, this.userData.userSeq);
+    if(this.searchValue==""){
+      this.getMyCats(this.getCatCount, this.feedPlus, this.user_seq);
+    }else{
+      this.searchMyCats(this.getCatCount, this.feedPlus, '%'+this.searchValue+'%', this.user_seq);
+    }
     setTimeout(() => {
       infiniteScroll.complete();
     }, 500);
 
   }
+  getItems(ev: any) {
+  // Reset items back to all of the items
+    this.cats = [];
+    this.getCatCount=0;
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+    this.searchValue = val;
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.searchMyCats(0, this.feedPlus, '%'+val+'%', this.user_seq);
+    }
+    else if (val ==''){
+      this.getMyCats(0, this.feedPlus, this.user_seq);
+    }
+  }
+  searchMyCats(offset: number, limit: number,value:string, user_seq: number) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let body = {
+      limit: limit,
+      offset: offset,
+      seq: user_seq,
+      value: value,
+    }
+    this.http.post(this.serverURL + '/searchMyCats', JSON.stringify(body), { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+        for (let i = 0; i < data.length; i++) {
+          this.cats.push(new MyCat(data[i].cat_seq, data[i].name,
+            this.serverURL + data[i].avatar,
+            data[i].habitat, data[i].info1));
+        }
+        this.getCatCount += data.length;
+        if(data.length < this.feedPlus){
+          this.more=false;
+        }
 
-
+      }, error => {
+        console.log(JSON.stringify(error.json()));
+      })
+  }
 }

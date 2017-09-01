@@ -24,7 +24,6 @@ export class HomePage {
   getFeedCount: number;
   more:boolean = true;
   feedPlus:number = 6;
-  OpenReplyindex:number;
   constructor(
     public navCtrl: NavController,
     private http: Http,
@@ -351,7 +350,9 @@ export class HomePage {
   openCatDetailPage(cat) {
   this.navCtrl.push(CatProfilePage, {
     cat: cat,
-  });
-}
-
+    });
+  }
+  share(feed){
+    this.presentToast("준비 중인 기능입니다.")
+  }
 }

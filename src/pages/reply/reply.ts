@@ -16,7 +16,7 @@ import { MyPage } from '../mypage/mypage';
 export class ReplyPage {
   @ViewChild(Content) content: Content;
 
-  replyType: number; //0:글, 1:냥로필
+  replyType: number; //0:글, 1:냥로필, 2:포스트
   seq: number;
   serverURL: string;
   user_seq: number;
@@ -43,10 +43,16 @@ export class ReplyPage {
   }
   ionViewDidLoad() {
     this.getReplyCount=0;
-    if (this.replyType == 0) { //글이면
-      this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies')
-    } else if(this.replyType == 1){ //고양이 프로필이면
-      this.getReplies(this.replyPlus, 0, this.seq, '/getCatReplies');
+    switch(this.replyType){
+      case 0:
+        this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies')
+      break;
+      case 1:
+        this.getReplies(this.replyPlus, 0, this.seq, '/getCatReplies');
+      break;
+      case 2:
+        this.getReplies(this.replyPlus, 0, this.seq, '/getPostReplies');
+      break;
     }
     setTimeout(()=>{this.content.scrollToBottom()},150);
     this.user_seq= this.userData.userSeq;
@@ -129,12 +135,19 @@ export class ReplyPage {
       .subscribe(data => {
         if (data == "success") {
           this.replies = [];
-          if (this.replyType == 0) {
+          switch(this.replyType){
+            case 0:
             this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies');
             this.events.publish('reply:changed',-1,this.navParams.get("feed"));
-          } else if (this.replyType == 1) {
+            break;
+            case 1:
             this.getReplies(this.replyPlus, 0, this.seq, '/getCatReplies');
             this.events.publish('catReply:changed',this.seq,-1);
+            break;
+            case 2:
+            this.getReplies(this.replyPlus, 0, this.seq, '/getPostReplies');
+            this.events.publish('postReply:changed',this.seq,-1);
+            break;
           }
         } else {
           //  this.showAlert("글을 삭제하지 못하였습니다.")
@@ -149,16 +162,23 @@ export class ReplyPage {
   }
   reportReply(data, reply_seq, user_seq) {
     var type;
-    if(this.replyType==0){
-      type=1;
-    }else{
-      type=3;
+    switch(this.replyType){
+      case 0:
+        type=1;
+      break;
+      case 1:
+        type=3;
+      break;
+      case 2:
+        type=4;
+      break;
     }
+
     let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         let body = {
           reporter_seq: this.userData.userSeq, //신고자(나)
-          wr_type: type, //0:글, 1:글 댓글, 2: 냥이, 3:냥로필 댓글
+          wr_type: type, //0:글, 1:글 댓글, 2: 냥이, 3:냥로필 댓글, 4: 포스트 댓글
           its_seq: reply_seq,
           user_seq: user_seq,
           content: data
@@ -208,13 +228,21 @@ export class ReplyPage {
         .subscribe(data => {
           this.replies = [];
           this.getReplyCount=0;
-          if (this.replyType == 0) {
-            this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies');
-            this.events.publish('reply:changed',1,this.navParams.get("feed"));
-          } else if (this.replyType == 1) {
-            this.getReplies(this.replyPlus, 0, this.seq, '/getCatReplies');
-            this.events.publish('catReply:changed',this.seq,1);
+          switch(this.replyType){
+            case 0:
+              this.getReplies(this.replyPlus, 0, this.seq, '/getFeedReplies');
+              this.events.publish('reply:changed',1,this.navParams.get("feed"));
+            break;
+            case 1:
+              this.getReplies(this.replyPlus, 0, this.seq, '/getCatReplies');
+              this.events.publish('catReply:changed',this.seq,1);
+            break;
+            case 2:
+              this.getReplies(this.replyPlus, 0, this.seq, '/getPostReplies');
+              this.events.publish('postReply:changed',this.seq,1);
+            break;
           }
+
           this.reply_text = "";
           setTimeout(()=>{this.content.scrollToBottom(0)},100);
         }, error => {
@@ -229,6 +257,8 @@ export class ReplyPage {
       break;
       case 1:
       this.getReplies(this.replyPlus, this.getReplyCount, this.seq, '/getCatReplies');
+      case 2:
+      this.getReplies(this.replyPlus, this.getReplyCount, this.seq, '/getPostReplies');
       break;
     }
    setTimeout(() => {

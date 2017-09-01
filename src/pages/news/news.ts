@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController,ToastController } from 'ionic-angular';
 import { UserData } from '../../providers/user-data';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -23,6 +23,7 @@ export class NewsPage {
     public modalCtrl: ModalController,
     public userData: UserData,
     private browserTab: BrowserTab,
+    public toastCtrl: ToastController
   ) {
 
   }
@@ -42,7 +43,7 @@ export class NewsPage {
       .map(res => res.json())
       .subscribe(data => {
         for (var i = 0; i < data.length; i++) {
-          this.posts.push(new Post(data[i].post_seq, data[i].title, this.userData.serverURL + data[i].image_url, data[i].content_url));
+          this.posts.push(new Post(data[i].post_seq, data[i].title, this.userData.serverURL + data[i].image_url, data[i].content_url, data[i].replyCount));
         }
       }, error => {
         console.log(JSON.stringify(error.json()));
@@ -60,7 +61,7 @@ export class NewsPage {
       .map(res => res.json())
       .subscribe(data => {
         for (var i = 0; i < data.length; i++) {
-          this.news.push(new News(data[i].news_seq,/*this.userData.serverURL +*/ data[i].image_url,data[i].title, data[i].news_url, data[i].company));
+          this.news.push(new News(data[i].news_seq,this.userData.serverURL + data[i].image_url,data[i].title, data[i].news_url, data[i].company));
         }
       }, error => {
         console.log(JSON.stringify(error.json()));
@@ -106,6 +107,16 @@ export class NewsPage {
       refresher.complete();
     }, 1000);
   }
-
+  presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 1000,
+      cssClass: "toast",
+    });
+    toast.present();
+  }
+  openDiscussionPage(){
+    this.presentToast("준비 중인 기능입니다.")
+  }
 
 }

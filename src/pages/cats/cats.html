@@ -10,7 +10,7 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-searchbar (ionInput)="getItems($event)" class="Bar"></ion-searchbar>
+  <ion-searchbar (ionInput)="getItems($event)" class="Bar" placeholder="이름 또는 사는 곳 검색"></ion-searchbar>
   <ion-fab right bottom>
     <button ion-fab color="AmberCat" (click)="openAddCatPage()">
       <ion-icon name="add"></ion-icon>

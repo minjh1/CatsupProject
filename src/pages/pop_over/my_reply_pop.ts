@@ -4,7 +4,7 @@ import { NavController, ViewController,AlertController } from 'ionic-angular';
   template:`
     <ion-list>
       <ion-list-header>CATSUP</ion-list-header>
-      <button ion-item (click)="close('modify_reply')">댓글 수정</button>
+    <!--  <button ion-item (click)="close('modify_reply')">댓글 수정</button>-->
       <button ion-item (click)="showConfirm()">댓글 삭제</button>
     </ion-list>
   `

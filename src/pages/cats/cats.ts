@@ -24,6 +24,7 @@ export class CatsPage {
   getCatCount:number;
   more:boolean = true;
   feedPlus:number = 15;
+  searchValue:string='';
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
@@ -78,10 +79,14 @@ export class CatsPage {
     });
   }
   doInfinite(infiniteScroll) {
-    this.getCats(this.getCatCount, 15);
-       setTimeout(() => {
-         infiniteScroll.complete();
-       }, 500);
+    if(this.searchValue!=''){
+      this.searchCat(this.getCatCount, this.feedPlus, this.searchValue);
+    }else{
+      this.getCats(this.getCatCount, this.feedPlus);
+    }
+     setTimeout(() => {
+       infiniteScroll.complete();
+     }, 500);
   }
   doRefresh(refresher) {
     this.cats = [];
@@ -92,5 +97,44 @@ export class CatsPage {
       refresher.complete();
     }, 1000);
   }
+  getItems(ev: any) {
+  // Reset items back to all of the items
+    this.cats = [];
+    this.getCatCount=0;
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+    this.searchValue = val;
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.searchCat(0, this.feedPlus, '%'+val+'%');
+    }
+    else if (val ==''){
+      this.getCats(0, this.feedPlus);
+    }
+  }
+  searchCat(offset:number, limit:number, value:string){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let body = {
+      limit: limit,
+      offset: offset,
+      value: value
+    }
 
+    this.http.post(this.serverURL + '/searchCat', JSON.stringify(body), { headers: headers })
+      .map(res => res.json())
+      .subscribe(data => {
+        for (let i = 0; i < data.length; i++) {
+          this.cats.push(new Cat(data[i].cat_seq, this.serverURL + data[i].avatar, data[i].nameCount, data[i].nameArray,
+            data[i].countArray, data[i].sex, data[i].habitat, data[i].latitude, data[i].longitude, data[i].info1, data[i].info2, data[i].info3,
+            data[i].create_date, data[i].connection, data[i].replyCount));
+        }
+        this.getCatCount+=data.length;
+        if(data.length < this.feedPlus){
+          this.more=false;
+        }
+      }, error => {
+        console.log(JSON.stringify(error.json()));
+      })
+  }
 }

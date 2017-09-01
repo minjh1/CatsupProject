@@ -42,7 +42,7 @@
       </ion-item>
       <ion-item>
         <ion-label color="GrayCat">특징 ① *</ion-label>
-        <ion-input [(ngModel)]="catinfo.info1" name="info1" #info1="ngModel" type="text" required></ion-input>
+        <ion-input [(ngModel)]="catinfo.info1" name="info1" #info1="ngModel" type="text" placeholder="털 색, 성격, 행동 등" required></ion-input>
       </ion-item>
       <p ion-text [hidden]="info1.valid || submitted == false" color="danger" padding-left>
         특징을 하나 이상 적어주세요.
