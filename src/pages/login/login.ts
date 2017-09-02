@@ -60,9 +60,10 @@ export class LoginPage {
           .map(res => res.json())
           .subscribe(data => {
             if(data.result==true){ //성공
+              this.dismiss();
+              this.userData.login(data.seq);
               this.navCtrl.push(TabsPage).then(() => {
                 this.storage.set('hasSeenTutorial', 'true');
-                this.userData.login(data.seq);
               })
             }
             else {
@@ -125,9 +126,9 @@ export class LoginPage {
           .map(res => res.json())
           .subscribe(data => {
             if (data.result == true) { //성공
+              this.userData.signup(data.seq);
               this.navCtrl.push(TabsPage).then(() => {
                 this.storage.set('hasSeenTutorial', 'true');
-                this.userData.signup(data.seq);
               })
             }
           }, error => {

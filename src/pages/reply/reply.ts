@@ -22,7 +22,7 @@ export class ReplyPage {
   user_seq: number;
   replyPlus : number = 10;
   getReplyCount : number;
-
+  more:boolean = true;
   replies: Reply[] = [];
   iconColor: string = "LightGrayCat";
   reply_text: string;
@@ -76,6 +76,8 @@ export class ReplyPage {
       { headers: headers })
       .map(res => res.json())
       .subscribe(data => {
+
+        console.log("1: "+data.length+" "+ this.replyPlus)
         for (let i = 0; i < data.length; i++) {
           if (data[i].imgUrl.indexOf("/") == 0) {
             this.replies.push(new Reply(data[i].reply_seq, this.serverURL + data[i].imgUrl,
@@ -87,6 +89,9 @@ export class ReplyPage {
               data[i].user_seq, data[i].nickname,
               data[i].content, data[i].create_date));
           }
+        }
+        if(data.length < this.replyPlus){
+          this.more=false;
         }
         this.getReplyCount+=data.length;
       }, error => {
@@ -257,6 +262,7 @@ export class ReplyPage {
       break;
       case 1:
       this.getReplies(this.replyPlus, this.getReplyCount, this.seq, '/getCatReplies');
+      break;
       case 2:
       this.getReplies(this.replyPlus, this.getReplyCount, this.seq, '/getPostReplies');
       break;

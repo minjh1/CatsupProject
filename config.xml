@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.catsupdeveloper.catsup" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>CatsUp</name>
+<widget id="com.catsupdeveloper.catsup" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>캐츠업</name>
     <description>길 고양이 SNS</description>
-    <author email="minjh_@naver.com" href="http://ionicframework.com/">민지현</author>
+    <author email="catsup_b@naver.com" href="catsup_b@naver.com">캐츠업프로젝트</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*" />
@@ -67,5 +67,4 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="1000" />
     <preference name="AutoHideSplashScreen" value="false" />
-    <preference name="FadeSplashScreenDuration" value="500" />
 </widget>

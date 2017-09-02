@@ -76,9 +76,9 @@ export class SignUpPage {
                   handler: () => {
                     let navTransition = alert.dismiss(); //alert 끄기
                     navTransition.then(() => { //끄고,
+                      this.userData.signup(data.seq);
                       this.navCtrl.push(TabsPage).then(() => {
                         this.storage.set('hasSeenTutorial', 'true');
-                        this.userData.signup(data.seq);
                       })
                     });
                   }

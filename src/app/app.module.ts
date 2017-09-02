@@ -27,6 +27,9 @@ import { PostPage } from '../pages/post/post';
 import { UserListPage } from '../pages/user-list/user-list';
 import { SettingPage } from '../pages/setting/setting';
 import { UserModPage } from '../pages/user-mod/user-mod';
+import { AllNewsPage } from '../pages/all-news/all-news';
+import { AllPostPage } from '../pages/all-post/all-post';
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -72,7 +75,9 @@ import { Geolocation } from '@ionic-native/geolocation';
     UserListPage,
     CatNamesPage,
     SettingPage,
-    UserModPage
+    UserModPage,
+    AllNewsPage,
+    AllPostPage
   ],
   imports: [
     BrowserModule,
@@ -108,7 +113,9 @@ import { Geolocation } from '@ionic-native/geolocation';
     UserListPage,
     CatNamesPage,
     SettingPage,
-    UserModPage
+    UserModPage,
+    AllNewsPage,
+    AllPostPage
   ],
   providers: [
     StatusBar,

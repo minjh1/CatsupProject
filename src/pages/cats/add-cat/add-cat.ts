@@ -132,6 +132,10 @@ export class AddCat {
     if(this.catinfo.info3==null){
       this.catinfo.info3="";
     }
+    if(this.catinfo.latitude==null){
+      this.catinfo.latitude="";
+      this.catinfo.longitude="";
+    }
     const fileTransfer: TransferObject = this.transfer.create();
 
       var filename = this.imgUrl.substr(this.imgUrl.lastIndexOf('/')+1);
