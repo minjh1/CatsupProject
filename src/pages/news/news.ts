@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 import { News } from '../../models/news';
 import { Post } from '../../models/post';
 import { PostPage } from '../post/post';
-import { BrowserTab } from '@ionic-native/browser-tab';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @Component({
   selector: 'page-about',
@@ -22,7 +22,7 @@ export class NewsPage {
     private http: Http,
     public modalCtrl: ModalController,
     public userData: UserData,
-    private browserTab: BrowserTab,
+    private iab: InAppBrowser,
     public toastCtrl: ToastController
   ) {
 
@@ -80,22 +80,7 @@ export class NewsPage {
     modal.present();
   }
   openThisNews(news){
-    this.browserTab.isAvailable()
-        .then((isAvailable: boolean) => {
-
-          if (isAvailable) {
-
-            this.browserTab.openUrl(news.news_url);
-
-          } else {
-
-            alert("notAvailavle");
-            // open URL with InAppBrowser instead or SafariViewController
-
-          }
-
-        });
-
+    const browser = this.iab.create(news.news_url);
   }
   doRefresh(refresher) {
     this.posts=[];

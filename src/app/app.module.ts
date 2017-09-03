@@ -36,8 +36,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from "@angular/http";
 import { IonicStorageModule } from '@ionic/storage';
 import { Facebook } from '@ionic-native/facebook';
-import { BrowserTab } from '@ionic-native/browser-tab';
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { Diagnostic } from '@ionic-native/diagnostic';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 import { UserData } from '../providers/user-data';
 
@@ -128,8 +130,10 @@ import { Geolocation } from '@ionic-native/geolocation';
     Transfer,
     ImagePicker,
     Geolocation,
-    BrowserTab,
     Base64ToGallery,
+    InAppBrowser,
+    Diagnostic,
+    LocationAccuracy
   ]
 })
 export class AppModule { }

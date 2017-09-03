@@ -14,7 +14,7 @@
   <ion-refresher-content></ion-refresher-content>
 </ion-refresher>
   <ion-list>
-    <button ion-item text-wrap detail-none *ngFor="let reply of replies.reverse()" (click)="clickReply(reply)">
+    <button ion-item text-wrap detail-none *ngFor="let reply of replies" (click)="clickReply(reply)">
       <ion-avatar item-left>
         <img src="{{reply.avatar_user}}" class="avatar">
       </ion-avatar>

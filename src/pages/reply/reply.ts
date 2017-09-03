@@ -80,12 +80,12 @@ export class ReplyPage {
         console.log("1: "+data.length+" "+ this.replyPlus)
         for (let i = 0; i < data.length; i++) {
           if (data[i].imgUrl.indexOf("/") == 0) {
-            this.replies.push(new Reply(data[i].reply_seq, this.serverURL + data[i].imgUrl,
+            this.replies.unshift(new Reply(data[i].reply_seq, this.serverURL + data[i].imgUrl,
               data[i].user_seq, data[i].nickname,
               data[i].content, data[i].create_date));
           }
           else {
-            this.replies.push(new Reply(data[i].reply_seq, data[i].imgUrl,
+            this.replies.unshift(new Reply(data[i].reply_seq, data[i].imgUrl,
               data[i].user_seq, data[i].nickname,
               data[i].content, data[i].create_date));
           }

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.catsupdeveloper.catsup" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.catsupdeveloper.catsup" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>캐츠업</name>
     <description>길 고양이 SNS</description>
     <author email="catsup_b@naver.com" href="catsup_b@naver.com">캐츠업프로젝트</author>
@@ -61,10 +61,12 @@
     <plugin name="cordova-plugin-file" spec="~4.3.3" />
     <allow-navigation href="http://192.168.200.108:8100" />
     <plugin name="cordova-plugin-compat" spec="~1.1.0" />
-    <plugin name="cordova-plugin-browsertab" spec="~0.2.0" />
     <plugin name="cordova-base64-to-gallery" spec="~4.1.2" />
     <engine name="android" spec="~6.1.2" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="1000" />
     <preference name="AutoHideSplashScreen" value="false" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~1.7.1" />
+    <plugin name="cordova.plugins.diagnostic" spec="~3.6.6" />
+    <plugin name="cordova-plugin-request-location-accuracy" spec="~2.2.2" />
 </widget>

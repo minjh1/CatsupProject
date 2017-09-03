@@ -1,6 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, ViewController, LoadingController} from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Diagnostic } from '@ionic-native/diagnostic';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 declare var google;
 
@@ -13,15 +15,16 @@ export class MapPage {
   map: any;
   service: any;
   marker: any;
-  footer_text:string;
+  footer_text: string;
   infoWindow: any;
-  title:string;
+  title: string;
+  loading;
 
-  cat_info:{
-    cat_name?:string;
-    cat_lat?:any;
-    cat_lng?:any;
-  }={};
+  cat_info: {
+    cat_name?: string;
+    cat_lat?: any;
+    cat_lng?: any;
+  } = {};
 
   pageType: number; //0: 냥이 추가에서, 1:냥이 정보에서
   info: {
@@ -35,28 +38,56 @@ export class MapPage {
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public geolocation: Geolocation,
+    public loadingCtrl: LoadingController,
+    private diagnostic: Diagnostic,
+    private locationAccuracy: LocationAccuracy,
   ) {
     this.pageType = this.navParams.get("pageType");
-    if(this.pageType==0){
-      this.footer_text="완료";
-      this.title="서식지역 선택"
-    }else if(this.pageType==1){
-      this.footer_text="확인";
-      this.title="서식 지역"
-      this.cat_info.cat_name=this.navParams.get("name");
-      this.cat_info.cat_lat=this.navParams.get("lat");
-      this.cat_info.cat_lng=this.navParams.get("lng");
+    if (this.pageType == 0) {
+      this.footer_text = "완료";
+      this.title = "서식지역 선택"
+    } else if (this.pageType == 1) {
+      this.footer_text = "확인";
+      this.title = "서식 지역"
+      this.cat_info.cat_name = this.navParams.get("name");
+      this.cat_info.cat_lat = this.navParams.get("lat");
+      this.cat_info.cat_lng = this.navParams.get("lng");
     }
   }
   ionViewDidLoad() {
     console.log("맵페이지");
-    if(this.pageType==0){
-      this.loadMap();
-    }else if (this.pageType==1){
+    if (this.pageType == 0) {
+      this.checkGPS();
+    } else if (this.pageType == 1) {
       this.catHabitat();
     }
   }
+  checkGPS() {
+    this.diagnostic.isLocationEnabled()
+      .then((state) => {
+        if (state == true) {
+          this.presentLoading("현재 위치를 불러오는 중입니다...");
+          this.loadMap();
+        } else {
+          this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+            if (canRequest) {
+              // the accuracy option will be ignored by iOS
+              this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+                () =>{
+                  this.presentLoading("현재 위치를 불러오는 중입니다...");
+                  this.loadMap();
+                 },
+                error => {
+                  alert("위치정보를 사용할 수 없습니다!");
+              }
+              );
+            }
 
+          });
+        }
+      }).catch(e => console.error(e));
+
+  }
 
   dismiss() {
     this.viewCtrl.dismiss();
@@ -72,7 +103,6 @@ export class MapPage {
   loadMap() {
     // create LatLng object
     this.geolocation.getCurrentPosition().then((position) => {
-
       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       let mapOptions = {
         center: latLng,
@@ -80,7 +110,7 @@ export class MapPage {
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-
+      this.loading.dismiss();
       this.marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
@@ -88,8 +118,8 @@ export class MapPage {
         position: this.map.getCenter()
       });
       this.map.addListener('click', (e) => {
-        this.info.latitude=e.latLng.lat();
-        this.info.longitude=e.latLng.lng();
+        this.info.latitude = e.latLng.lat();
+        this.info.longitude = e.latLng.lng();
         this.marker.setPosition(e.latLng);
         this.getPlace(e.latLng);
       })
@@ -104,31 +134,31 @@ export class MapPage {
     });
 
   }
-  catHabitat(){
+  catHabitat() {
 
-      let latLng = new google.maps.LatLng(this.cat_info.cat_lat,this.cat_info.cat_lng);
+    let latLng = new google.maps.LatLng(this.cat_info.cat_lat, this.cat_info.cat_lng);
 
-      let mapOptions = {
-        center: latLng,
-        zoom: 15,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      }
+    let mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
 
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
 
-      this.marker = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: this.map.getCenter()
-      });
+    this.marker = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: this.map.getCenter()
+    });
 
-      this.infoWindow = new google.maps.InfoWindow({
-        content: this.cat_info.cat_name
-      });
+    this.infoWindow = new google.maps.InfoWindow({
+      content: this.cat_info.cat_name
+    });
 
-      this.infoWindow.open(this.map, this.marker);
-      //this.addMarker();
+    this.infoWindow.open(this.map, this.marker);
+    //this.addMarker();
   }
   getPlace(latlng) {
     this.infoWindow.close();
@@ -151,10 +181,10 @@ export class MapPage {
                 <ion-label>`+ results[i].name + `</ion-label>
                 </ion-item>`;
         }
-        if(results.length==1){
-          this.info.placeName=results[0].name;
-        }else{
-          this.info.placeName=results[1].name;
+        if (results.length == 1) {
+          this.info.placeName = results[0].name;
+        } else {
+          this.info.placeName = results[1].name;
         }
       }
       contentString += `</ion-list></div>`;
@@ -163,5 +193,12 @@ export class MapPage {
       });
       this.infoWindow.open(this.map, this.marker);
     });
+  }
+  presentLoading(str) {
+    this.loading = this.loadingCtrl.create({
+      content: str
+    });
+
+    this.loading.present();
   }
 }
