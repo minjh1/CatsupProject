@@ -1,0 +1,41 @@
+<!--
+  Generated template for the CategoryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons end >
+      <button ion-button icon-only (click)="dismiss()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+      <button *ngIf="pageType==0" ion-button color="OrangeCat" large clear class ="ok" (click)="selectArea1()">
+      완료
+    </button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="con">
+<div class="left noselect">
+  <ion-list>
+    <button [color]="area.color" class="btn" ion-item detail-none *ngFor="let area of area1" (click)="getArea2(area)">
+      {{area.name}}
+      <span *ngIf="area.color=='WhiteCat'" class="paw"><ion-icon name="paw"></ion-icon></span>
+    </button>
+  </ion-list>
+</div>
+<div class="right">
+  <ion-list>
+    <button ion-item detail-none *ngFor="let area of area2" (click)="selectArea2(area)">
+      {{area.name}}
+      <ion-icon item-right name="ios-arrow-forward" class="arrow"></ion-icon>
+    </button>
+  </ion-list>
+</div>
+</ion-content>

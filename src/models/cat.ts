@@ -14,6 +14,10 @@ export class Cat {
   create_date: string="";
   connection: number;
   replyCount:number;
+  area1:number;
+  area2:number;
+  area1Name:string;
+  area2Name:string;
   constructor(
     seq:number,
     avatar:string,
@@ -29,7 +33,11 @@ export class Cat {
     info3:string,
     create_date:string,
     connection:number,
-    replyCount:number){
+    replyCount:number,
+    area1:number,
+    area2:number,
+    area1Name:string,
+    area2Name:string){
     this.seq=seq;
     this.avatar=avatar;
     this.nameCount=nameCount;
@@ -45,5 +53,9 @@ export class Cat {
     this.create_date=create_date;
     this.connection=connection;
     this.replyCount=replyCount;
+    this.area1=area1;
+    this.area2=area2;
+    this.area1Name=area1Name;
+    this.area2Name=area2Name;
   }
 }

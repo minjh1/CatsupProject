@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="dismiss()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button color="OrangeCat" large clear class ="ok" (click)="cropDone()">
+      완료
+    </button>
+    </ion-buttons>
+    <ion-title>사진 편집</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <img #imageSrc>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="grey">
+      <ion-row *ngIf="first==true">
+        <ion-col>
+          <button ion-item no-lines detail-none class="crop_footer" (click)="changeRatio(4/3)">
+            <img src="assets/img/43.png" class="ra" alt="">
+            <span class="btext">4:3</span>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-item no-lines detail-none class="crop_footer" (click)="changeRatio(1/1)">
+            <img src="assets/img/11.png" class="ra" alt="">
+            <span class="btext">1:1</span>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-item no-lines detail-none class="crop_footer" (click)="changeRatio(3/4)">
+            <img src="assets/img/34.png" class="ra" alt="">
+            <span class="btext">3:4</span>
+          </button>
+        </ion-col>
+      </ion-row>
+    <button ion-item no-lines detail-none class="crop_footer" *ngIf="first==false" (click)="cropDone()">
+    완료
+    <span class="c_arrow"><ion-icon name="paw"></ion-icon></span>
+    </button>
+    </div>
+  </ion-toolbar>
+
+</ion-footer>

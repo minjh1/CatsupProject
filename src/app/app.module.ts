@@ -23,12 +23,14 @@ import { SignUpPage } from '../pages/signup/signup';
 import { MyCatPage } from '../pages/mycat/mycat';
 import { MapPage } from '../pages/map/map';
 import { ImageCropperPage } from '../pages/image-cropper/image-cropper';
+import { ImageCropper2Page } from '../pages/image-cropper2/image-cropper2';
 import { PostPage } from '../pages/post/post';
 import { UserListPage } from '../pages/user-list/user-list';
 import { SettingPage } from '../pages/setting/setting';
 import { UserModPage } from '../pages/user-mod/user-mod';
 import { AllNewsPage } from '../pages/all-news/all-news';
 import { AllPostPage } from '../pages/all-post/all-post';
+import { CategoryPage } from '../pages/category/category';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -47,7 +49,6 @@ import {Autosize} from 'ionic2-autosize'; //텍스트아리아 크기자동조�
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
-import { ImagePicker } from '@ionic-native/image-picker'; //이미지 다중선택
 import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
@@ -79,7 +80,9 @@ import { Geolocation } from '@ionic-native/geolocation';
     SettingPage,
     UserModPage,
     AllNewsPage,
-    AllPostPage
+    AllPostPage,
+    ImageCropper2Page,
+    CategoryPage,
   ],
   imports: [
     BrowserModule,
@@ -117,7 +120,9 @@ import { Geolocation } from '@ionic-native/geolocation';
     SettingPage,
     UserModPage,
     AllNewsPage,
-    AllPostPage
+    AllPostPage,
+    ImageCropper2Page,
+    CategoryPage
   ],
   providers: [
     StatusBar,
@@ -128,12 +133,11 @@ import { Geolocation } from '@ionic-native/geolocation';
     Camera,
     File,
     Transfer,
-    ImagePicker,
     Geolocation,
     Base64ToGallery,
     InAppBrowser,
     Diagnostic,
-    LocationAccuracy
+    LocationAccuracy,
   ]
 })
 export class AppModule { }

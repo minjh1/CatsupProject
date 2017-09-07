@@ -55,10 +55,20 @@
         <ion-label color="GrayCat">특징 ③</ion-label>
         <ion-input [(ngModel)]="catinfo.info3" name="info3" #info3="ngModel" type="text"></ion-input>
       </ion-item>
-      <button ion-item no-lines detail-none class="title_bar" (click)="openMap()">
-        지도로 찾기
-        <span class="arrow"><ion-icon name="pin"></ion-icon></span>
-      </button>
+      <ion-row class="bg">
+        <ion-col>
+          <button ion-item no-lines detail-none class="title_bar btnCenter" (click)="openCategory()">
+            <span class="arrow"><ion-icon name="map"></ion-icon></span>
+          지역 선택 *
+        </button>
+      </ion-col>
+        <ion-col>
+          <button ion-item no-lines detail-none class="title_bar btnCenter" (click)="openMap()">
+            <span class="arrow"><ion-icon name="pin"></ion-icon></span>
+            지도로 찾기
+          </button>
+        </ion-col>
+      </ion-row>
       <ion-item>
         <ion-label color="GrayCat">서식 지역 *</ion-label>
         <ion-input [(ngModel)]="catinfo.habitat" name="habitat" #habitat="ngModel" type="text" required></ion-input>

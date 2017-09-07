@@ -93,7 +93,7 @@ export class MyCatPage {
       .subscribe(data => {
         this.cat = new Cat(data.cat_seq, this.serverURL + data.avatar, data.nameCount, data.nameArray,
           data.countArray, data.sex, data.habitat, data.latitude, data.longitude, data.info1, data.info2, data.info3,
-          data.create_date, data.connection,data.replyCount);
+          data.create_date, data.connection,data.replyCount,data.area1,data.area2,data.area1Name, data.area2Name);
         this.openDetailPage(this.cat);
 
       }, error => {

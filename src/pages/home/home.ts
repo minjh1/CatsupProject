@@ -23,7 +23,7 @@ export class HomePage {
   pageType : number;
   getFeedCount: number;
   more:boolean = true;
-  feedPlus:number = 6;
+  feedPlus:number = 7;
   constructor(
     public navCtrl: NavController,
     private http: Http,
@@ -266,6 +266,7 @@ export class HomePage {
   doRefresh(refresher) {
     this.getFeedCount = 0;
     this.feeds = [];
+    this.more=true;
     this.getFeeds(0, this.feedPlus);
     setTimeout(() => {
       console.log('Async operation has ended');
@@ -340,7 +341,7 @@ export class HomePage {
       .subscribe(data => {
         var cat = new Cat(data.cat_seq, this.serverURL + data.avatar, data.nameCount, data.nameArray,
           data.countArray, data.sex, data.habitat, data.latitude, data.longitude, data.info1, data.info2, data.info3,
-          data.create_date, data.connection,data.replyCount);
+          data.create_date, data.connection,data.replyCount,data.area1,data.area2,data.area1Name, data.area2Name);
         this.openCatDetailPage(cat);
 
       }, error => {

@@ -34,13 +34,13 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <button ion-item no-lines detail-none class="title_bar1" (click)="select_photos()">
+            <button ion-item no-lines detail-none class="title_bar1" (click)="openGallery()">
             사진 선택
               <span class="iconSpan verticalB1"><ion-icon name="images"></ion-icon></span>
           </button>
           </ion-col>
           <ion-col>
-            <button ion-item no-lines detail-none class="title_bar2" (click)="TakePicture_before()">
+            <button ion-item no-lines detail-none class="title_bar2" (click)="TakePicture()">
             사진 촬영
               <span class="iconSpan verticalB1"><ion-icon name="camera"></ion-icon></span>
           </button>
@@ -49,12 +49,12 @@
             <button ion-item no-lines detail-none class="title_bar3" (click)="selectVideo()">
             동영상 선택
             <span class="iconSpan verticalB1"><ion-icon name="videocam"></ion-icon></span>
-            </button>
+          </button>
           </ion-col>
         </ion-row>
       </ion-grid>
     </div>
-    <img *ngFor="let photo of photos" src="{{photo}}" class="photo_add" style="width:78px; height:78px;" (click)="delete_photo(photo)" />
+    <img *ngFor="let photo of photos" src="{{photo}}" class="photo_add" style="height:78px;" (click)="delete_photo(photo)" />
     <div class="title_bar_text">
       글
       <span class="iconSpan2 verticalB1"><ion-icon name="text"></ion-icon></span>

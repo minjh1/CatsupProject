@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController,Events,NavController, NavParams, ViewController,ModalController,LoadingController } from 'ionic-angular';
+import { AlertController,Events,NavController, NavParams, ViewController,ModalController,LoadingController,ToastController } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { Camera, CameraOptions  } from '@ionic-native/camera';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
@@ -7,6 +7,8 @@ import { UserData } from '../../../providers/user-data';
 import { MapPage } from '../../map/map';
 import { Cat } from '../../../models/cat';
 import { Http, Headers } from '@angular/http';
+
+import { CategoryPage } from '../../category/category';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -27,6 +29,8 @@ export class AddCat {
     info2?:string,
     info3?:string,
     user_seq?:number,
+    area1?:number,
+    area2?:number,
     cat_seq?:number, //수정시에만 있음
     modifyList?:string, //수정시에만 있음
     img?:string, //수정시에만 있음
@@ -47,6 +51,7 @@ export class AddCat {
     public modalCtrl: ModalController,
     public loadingCtrl: LoadingController,
     public events: Events,
+    public toastCtrl: ToastController,
   ) {
     this.userData.getUserSeq().then((seq)=>{
       this.catinfo.user_seq =seq;
@@ -64,6 +69,8 @@ export class AddCat {
       this.catinfo.latitude=this.cat.latitude;
       this.catinfo.longitude=this.cat.longitude;
       this.catinfo.cat_seq = this.cat.seq;
+      this.catinfo.area1=this.cat.area1;
+      this.catinfo.area2 = this.cat.area2;
     }else{
       this.pageType=0;
       this.imgUrl="assets/img/add2.png";
@@ -77,10 +84,13 @@ export class AddCat {
   onSubmit(form: NgForm){
     this.submitted =true;
     if(this.imgUrl=="assets/img/add2.png"){
-      this.showAlert("프로필 사진을 입력해주세요!");
+      this.presentToast("프로필 사진을 입력해주세요!");
     }
-    if(this.pageType==0 && (this.catinfo.name==null||this.catinfo.name=="")){
-      this.showAlert("이름을 적어주세요!");
+    else if(this.pageType==0 && (this.catinfo.name==null||this.catinfo.name=="")){
+      this.presentToast("이름을 적어주세요!");
+    }
+    else if(this.catinfo.area1==null){
+      this.presentToast("지역을 선택해주세요!");
     }
     else if (form.valid){
       this.presentLoading();
@@ -94,7 +104,7 @@ export class AddCat {
         if(this.catinfo.info1!=this.cat.info1 || this.catinfo.info2!=this.cat.info2 || this.catinfo.info3!=this.cat.info3 ){
           this.catinfo.modifyList+=" 특징";
         }
-        if(this.catinfo.habitat!=this.cat.habitat){
+        if(this.catinfo.habitat!=this.cat.habitat ||this.catinfo.area2!=this.cat.area2){
           this.catinfo.modifyList+=" 서식지역";
         }
         if(this.imgUrl!=this.cat.avatar){
@@ -258,5 +268,24 @@ export class AddCat {
       }, error => {
         console.log(JSON.stringify(error.json()));
       })
+  }
+  openCategory(){
+    let Category = this.modalCtrl.create(CategoryPage,{pageType:1});
+    Category.onDidDismiss(data => {
+      if(data!=null){
+        this.catinfo.area1=data.area1;
+        this.catinfo.area2=data.area2;
+        this.catinfo.habitat=data.area1Name+" "+data.area2Name;
+      }
+    });
+    Category.present();
+  }
+  presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 1000,
+      cssClass: "toast",
+    });
+    toast.present();
   }
 }

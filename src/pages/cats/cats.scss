@@ -3,6 +3,29 @@ page-cats{
     //border-radius: 6px;
     background-color: #eeeeee;
   }
+  .mapicon{
+    color:#ff8a00;
+    margin-right: 4px;
+    vertical-align: -1px;
+    font-size: 19px;
+  }
+  .peopleicon{
+    vertical-align: -1px;
+    color: #acacac;
+  }
+  .catImg{
+    border : 1px solid #bbbbbb;
+  }
+  .nocat{
+    font-family: BMJUA;
+    font-size: 18px;
+    text-align: center;
+    margin: 6px;
+    padding: 8px;
+    color:#4d4d4d;
+    background-color: #eeeeee;
+    border-radius: 5px;
+  }
 }
 .mainName{
   font-size : 1.4rem;

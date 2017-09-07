@@ -6,7 +6,6 @@ import { Camera, CameraOptions  } from '@ionic-native/camera';
 
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import { File } from '@ionic-native/file';
-import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker';
 
 import { UserData } from '../../providers/user-data';
 import { Http, Headers } from '@angular/http';
@@ -16,6 +15,7 @@ import { NgForm } from '@angular/forms';
 import { MyCatPage } from '../mycat/mycat';
 import { ImageCropperPage } from '../image-cropper/image-cropper';
 
+import { ImageCropper2Page } from '../image-cropper2/image-cropper2';
 @Component({
   selector: 'page-write',
   templateUrl: 'write.html',
@@ -36,7 +36,7 @@ export class WritePage {
   cat_habitat: string;
   cat_info: string;
   upload_count: number;
-  aspectRatio: number;
+  ratio: number;
   submitted = false;
   loading;
   modOK = false;
@@ -46,7 +46,6 @@ export class WritePage {
     private file: File,
     private camera: Camera,
     private transfer: Transfer,
-    private imagePicker: ImagePicker,
     public alertCtrl: AlertController,
     private http: Http,
     public modalCtrl: ModalController,
@@ -114,6 +113,7 @@ export class WritePage {
     let index: number = this.photos.indexOf(photo);
     if (index !== -1) {
       this.photos.splice(index, 1);
+
     }
   }
   image_upload(feed_seq: number) {
@@ -135,6 +135,7 @@ export class WritePage {
           if (this.upload_count == this.photos.length) { //업로드 완료
             this.loading.dismiss();
             this.refresh();
+
             }
         }, (err) => {
 
@@ -182,108 +183,40 @@ export class WritePage {
       encodingType: 0,
       saveToPhotoAlbum: true,
     }
+    this.camera.getPicture(options).then((imageUrl) => {
+      this.openCropperPage2(imageUrl);
+    }, (err) => {
+    });
+  }
+  openGallery(){
+  //  this.openCropperPage2("http://45.249.160.73:5555/image/image_148_1504597891464.png");
+
+    var options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      mediaType: this.camera.MediaType.PICTURE,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      encodingType: 0,
+    }
 
     this.camera.getPicture(options).then((imageUrl) => {
-      var image=[];
-      image.push(imageUrl);
-      this.openCropperPage(image);
+      this.openCropperPage2(imageUrl);
     }, (err) => {
-      this.showAlert("사진을 불러오지 못했습니다.");
     });
   }
-  TakePicture_before(){
-    if (this.photos.length == 0) {
-      this.select_ratio(1);
+  openCropperPage2(image) {
+    var fir;
+    if(this.photos.length==0){
+      this.ratio=4/3;
+      fir=true;
+    }else{
+      fir=false;
     }
-    else {
-      this.TakePicture();
-    }
-  }
-  select_ratio(type) {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: '업로드 할 사진의 비율을 선택해주세요.',
-      buttons: [
-        {
-          text: '4:3',
-          icon: 'photos',
-          handler: () => {
-            this.aspectRatio=4/3;
-            switch(type){
-              case 0:
-                this.openPhotoLibrary();
-              break;
-              case 1:
-                this.TakePicture();
-              break;
-            }
-          }
-        }, {
-          text: '1:1',
-          icon: 'photos',
-          handler: () => {
-            this.aspectRatio=1/1;
-            switch(type){
-              case 0:
-                this.openPhotoLibrary();
-              break;
-              case 1:
-                this.TakePicture();
-              break;
-            }
-          }
-        }, {
-          text: '3:4',
-          icon: 'photos',
-          handler: () => {
-            this.aspectRatio=3/4;
-            switch(type){
-              case 0:
-                this.openPhotoLibrary();
-              break;
-              case 1:
-                this.TakePicture();
-              break;
-            }
-          }
-        }, {
-          text: 'Cancel',
-          role: 'cancel',
-          //icon: !this.platform.is('ios') ? 'close' : null,
-          icon: 'close',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-  select_photos() {
-    if (this.photos.length == 0) {
-      this.select_ratio(0);
-    }
-    else {
-      this.openPhotoLibrary();
-    }
-  }
-  openPhotoLibrary() {
-
-    var options: ImagePickerOptions = {
-      maximumImagesCount: 10,
-    }
-    this.imagePicker.getPictures(options).then((results) => {
-      if(results.length!=0){
-        this.openCropperPage(results);
-      }
-    }, (err) => { });
-  }
-  openCropperPage(images) {
-    let modal = this.modalCtrl.create(ImageCropperPage, { images: images, ratio:this.aspectRatio });
+    let modal = this.modalCtrl.create(ImageCropper2Page, { image: image, first:fir, ratio:this.ratio });
     modal.onDidDismiss(data => {
       if (data != null) {
-        for (var i = 0; i < data.length; i++) {
-          this.photos.push(data[i]);
-        }
+          this.photos.push(data.img);
+          this.ratio = data.ratio;
       }
     })
     modal.present();

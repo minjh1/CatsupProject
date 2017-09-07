@@ -1,13 +1,21 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>Cat List</ion-title>
+    <ion-buttons end>
+      <button ion-button color="GrayCat" clear class ="size" (click)="openCategory()">
+        <ion-icon name="map" class="mapicon"></ion-icon>
+      지역 모아보기
+    </button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons end>
+
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content class="bg">
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="title=='Cat List'&&searchValue==''">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-searchbar (ionInput)="getItems($event)" class="Bar" placeholder="이름 또는 사는 곳 검색"></ion-searchbar>
@@ -16,16 +24,19 @@
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
+  <div class="nocat" *ngIf="cats.length==0&&nowLoading==false">
+    고양이가 없어요 TㅅT
+  </div>
   <ion-list>
-    <button ion-item *ngFor="let cat of cats" (click)="openDetailPage(cat)">
+    <button ion-item detail-none *ngFor="let cat of cats" (click)="openDetailPage(cat)">
       <ion-avatar item-left>
-        <img style="height: 4.6rem; width: 4.6rem;" src="{{cat.avatar}}">
+        <img style="height: 4.8rem; width: 4.8rem;" src="{{cat.avatar}}" class="catImg">
       </ion-avatar>
       <span class="mainName">{{cat.names[0]}} </span><span class="subName">{{cat.names[1]}}</span><span *ngIf="cat.nameCount>2" class="subName">, {{cat.names[2]}}</span><br>
       <span class="pin_icon"><ion-icon name="pin"></ion-icon></span>
       <span class="habitat">{{cat.habitat}} /</span><span class="info"> {{cat.info1}}</span>
       <div item-right>
-        <ion-icon name="people" color="LightGrayCat"></ion-icon>
+        <ion-icon name="people" class="peopleicon"></ion-icon>
         <span class="people">{{cat.connection}}</span>
       </div>
     </button>

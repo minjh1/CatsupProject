@@ -7,7 +7,13 @@ page-tutorial {
   .bg{
     background-color: #f8f8f8;
   }
-
+  .sltext{
+    margin-top: 4%;
+    font-family: NanumPen;
+    font-size: 24px;
+    color: #fff;
+    text-shadow: 0px 0px 5px #000000;
+  }
   .slide-zoom {
     height: 100%;
   }
@@ -17,7 +23,7 @@ page-tutorial {
   .iconImg{
   }
   .str{
-    margin-top: 41%;
+    margin-top: 34%;
     margin-bottom: 4px;
     font-family: NanumPen;
     font-size: 30px;
