@@ -189,36 +189,38 @@ export class MyPage {
     this.navCtrl.push(SettingPage, {user:this.user});
   }
   select() {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: '프로필 사진 변경',
-      buttons: [
-        {
-          text: '갤러리에서 변경하기',
-          icon: 'images',
-          handler: () => {
-            this.select_photo();
+    if(this.pageType==0){
+      let actionSheet = this.actionSheetCtrl.create({
+        title: '프로필 사진 변경',
+        buttons: [
+          {
+            text: '갤러리에서 변경하기',
+            icon: 'images',
+            handler: () => {
+              this.select_photo();
+            }
+          }, {
+            text: '기본 이미지로 변경하기',
+            icon: 'image',
+            handler: () => {
+              this.user.image_url = this.userData.serverURL + '/user_profile/default.jpg';
+              this.presentLoading().then(()=>{
+                this.onlyUser();
+              });
+            }
+          }, {
+            text: 'Cancel',
+            role: 'cancel',
+            //icon: !this.platform.is('ios') ? 'close' : null,
+            icon: 'close',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
           }
-        }, {
-          text: '기본 이미지로 변경하기',
-          icon: 'image',
-          handler: () => {
-            this.user.image_url = this.userData.serverURL + '/user_profile/default.jpg';
-            this.presentLoading().then(()=>{
-              this.onlyUser();
-            });
-          }
-        }, {
-          text: 'Cancel',
-          role: 'cancel',
-          //icon: !this.platform.is('ios') ? 'close' : null,
-          icon: 'close',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    actionSheet.present();
+        ]
+      });
+      actionSheet.present();
+    }
   }
   select_photo() {
     var options: CameraOptions = {
